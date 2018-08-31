@@ -1,0 +1,452 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard | World Trade{% endblock %}
+
+{% block js %}
+
+<script src="/static/assets/js/getinfo.js"></script>
+<script src="/static/assets/js/main.js"></script>
+<script type="text/javascript">
+   $('#datatables_history').DataTable({
+            "order": [[ 1, "desc" ]],
+            "pagingType": "full_numbers",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            autoWidth: false, 
+              searching: false,
+              ordering: true, 
+              responsive: true, 
+              lengthChange: false, 
+              destroy: true,
+              paging: true, 
+              info: false
+
+        });
+</script>
+{% endblock %}
+{% block main %}
+
+
+<a href="#" id="ppimg" data-toggle="modal" data-target=".pop-up-2"></a>
+<div class="modal fade pop-up-2" tabindex="-1" role="dialog"  aria-hidden="true" style="z-index: 3">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content" style=" background: transparent; box-shadow: none; ">
+         <!--   <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            
+            </div> -->
+         <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" padding: 10px 14px; background: #b31166; opacity: 1; color: #fff; border-radius: 50%; ">×</button>
+            <img src="/static/img/bb18eaf5d7e53bbb62f4.jpg" class="img-responsive img-rounded center-block" alt="">
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="modalBuyXVG" tabindex="-1" role="dialog" aria-labelledby="modalExchangeLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+            <h4 class="modal-title" id="ModalTransfer-label">Buy WTX</h4>
+         </div>
+         <form role="form" class="form-horizontal" id="frmBuyXVG" novalidate="novalidate">
+            <div class="modal-body">
+               <div class="well">
+                  <div class="text-black"> Price : <strong>1 WTX</strong> = <strong> <span class="">{{data.xvg_btc | format_satoshi}}</span> BTC</strong> </div>
+               </div>
+               <div class="well" style="    background-color: #c3c0c0;">
+                  <div class="text-black"> BTC Wallet : <strong class="btc_balance">{{ (data.float(data.user.btc_balance)) | format_round}} BTC</strong> </div>
+               </div>
+               <div class="well" style="    background-color: #c3c0c0;">
+                  <div class="text-black"> WTX Wallet : <strong class="xvg_balance">{{ (data.float(data.user.sva_balance)) | format_usd}} WTX</strong> </div>
+               </div>
+               <input type="hidden" value="{{data.xvg_btc}}" name="price_xvg" id="price_xvg_btc">
+               <div class="form-group">
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" placeholder="Amount" class="form-control amount_usd" name="amount" id="amount_xvg"> <span class="input-group-addon">WTX</span> </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" class="form-control amount_coin" readonly="" id="amount_btc" name="amount_btc"> <span class="input-group-addon">BTC</span> </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" id="btnbuyxvg" class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Buy WTX</button> </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modalSellXVG" tabindex="-1" role="dialog" aria-labelledby="modalExchangeLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+            <h4 class="modal-title" id="ModalTransfer-label">Sell XVG</h4>
+         </div>
+         <form role="form" class="form-horizontal" id="frmSellXVG" novalidate="novalidate">
+            <div class="modal-body">
+               <div class="well">
+                  <div class="text-black"> Price : <strong>1 XVG</strong> = <strong> <span class="">{{data.xvg_btc}}</span> BTC</strong> </div>
+               </div>
+               <div class="well" style="    background-color: #c3c0c0;">
+                  <div class="text-black"> BTC Wallet : <strong class="btc_balance">{{ (data.float(data.user.btc_balance)) | format_round}} BTC</strong> </div>
+               </div>
+               <div class="well" style="    background-color: #c3c0c0;">
+                  <div class="text-black"> XVG Wallet : <strong class="xvg_balance">{{ (data.float(data.user.sva_balance)) | format_usd}} XVG</strong> </div>
+               </div>
+               <input type="hidden" value="{{data.xvg_btc}}" name="price_xvg" id="price_xvg_btc">
+               <div class="form-group">
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" placeholder="Amount" class="form-control amount_usd" name="amount" id="amount_xvg"> <span class="input-group-addon">XVG</span> </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" class="form-control amount_coin" readonly="" id="amount_btc" name="amount_btc"> <span class="input-group-addon">BTC</span> </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" id="btnsellxvg" class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Sell XVG</button> </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="modalConvertUSDBTC" tabindex="-1" role="dialog" aria-labelledby="modalExchangeLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+            <h4 class="modal-title" id="ModalTransfer-label">Convert USD to BTC</h4>
+         </div>
+         <form role="form" class="form-horizontal" id="ConvertUSDBTC" novalidate="novalidate">
+            <div class="modal-body">
+               
+               <div class="well">
+                  <div class="text-black"> USD Wallet : <strong class="usd_balance">{{ (data.float(data.user.usd_balance)) | format_usd}} USD</strong> </div>
+               </div>
+               <div class="well">
+                  <div class="text-black"> BTC Wallet : <strong class="btc_balance">{{ (data.float(data.user.btc_balance)) | format_round}} BTC</strong> </div>
+               </div>
+               <input type="hidden" value="{{data.btc_usd}}" name="" id="price_usd_btc">
+               <div class="form-group">
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" placeholder="Amount" class="form-control amount_usd" value="" name="amount" id="amount_usd"> <span class="input-group-addon">USD</span> </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" class="form-control amount_coin" readonly="" id="amount_btc" name="amount_btc"> <span class="input-group-addon">BTC</span> </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" id="btnconvertusdbtc" class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Convert USD to BTC</button> </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="modalTranfers" tabindex="-1" role="dialog" aria-labelledby="modalExchangeLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+            <h4 class="modal-title" id="ModalTransfer-label">Transfer USD</h4>
+         </div>
+         <form role="form" class="form-horizontal" id="ConvertUSDBTC" novalidate="novalidate">
+            <div class="modal-body">
+               
+               <div class="well">
+                  <div class="text-black"> USD Wallet : <strong class="usd_balance">{{ (data.float(data.user.usd_balance)) | format_usd}} USD</strong> </div>
+               </div>
+            
+               <div class="row" style="margin-top: 10px;">
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" placeholder="Email or Username" class="form-control" name="username" id="username"> <span class="input-group-addon">ID</span> </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="input-group"> <input type="text" class="form-control amount_coin"  id="amount" name="amount"> <span class="input-group-addon">USD</span> </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="input-group"> <input id="password" type="password" placeholder="Password for Login" class="form-control" name="password" id=""> <span class="input-group-addon">PASSWORD</span> </div>
+                  </div>
+                 
+               </div>
+            </div>
+            <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" id="btntransfer" class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Transfer USD</button> </div>
+         </form>
+      </div>
+   </div>
+</div>
+ 
+
+<div class="row">
+   <!-- style="background: url(/static/assets/img/api_block.jpg) 50% 0%; background-size: cover; background-repeat: no-repeat;" -->
+   <div class="col-md-12">
+      {% if data.user.roi == 0 %}
+      <div class="alert alert-danger ">
+        <strong>Notification!</strong> Please activate your account so that your account will not be deleted. <a href="/account/dashboard/active-account" class="label label-success" style="padding: 10px;background: #449d44">Activate Now</a>
+      {% endif %}
+      </div>
+   </div>
+   <div class="clearfix"></div>
+   <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-wallet" data-color="navy" style="background: linear-gradient(to right, #525a61 0%, #969696 100%);">
+         <div class="content">
+            <div class="row">
+               
+               <div class="clearfix"></div>
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>BTC Wallet</p>
+                     <span class="btc_balance">{{ (data.float(data.user.btc_balance)) | format_round}}</span>
+                      BTC
+                      <br/>
+                      <span style="font-size: 15px; float: right;position: absolute;right: 0">{{ (data.float(data.user.btc_balance)) | format_btc_usd}} USD</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               <i class="ti-wallet text-warning"></i> 
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-wallet" data-color="orange" style="background: linear-gradient(to right, #525a61 0%, #969696 100%);">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>WTX Wallet</p>
+                     <span class="xvg_balance">{{ (data.float(data.user.sva_balance)) | format_usd}}</span> WTX
+                     <br/>
+                      <span style="font-size: 15px; float: right;position: absolute;right: 0">{{ (data.float(data.user.sva_balance)) | format_xvg_usd}} USD</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               <i class="ti-wallet text-warning"></i> 
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-wallet" data-color="lightseagreen" style="background: linear-gradient(to right, #525a61 0%, #969696 100%);">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>Cash Wallet</p>
+                     <span class="usd_balance">{{ (data.float(data.user.usd_balance)) | format_usd}}</span> USD 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   
+   
+   <div class="col-lg-4 col-md-6 col-sm-6 ">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>Daily Profit</p>
+                     $<span class="m_wallet">{{ (data.float(data.user.m_wallet)) | format_usd}}</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               <i class="ti-wallet text-warning"></i> 
+            </div>
+         </div>
+      </div>
+   </div>
+ 
+  <div class="col-lg-4 col-md-6 col-sm-6 ">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>System commissions</p>
+                     $<span class="s_wallet">{{ (data.float(data.user.s_wallet)) | format_usd}}</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               <i class="ti-wallet text-warning"></i> 
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-4 col-md-6 col-sm-6 ">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>Direct commissions</p>
+                     $<span class="r_wallet">{{ (data.float(data.user.r_wallet)) | format_usd}}</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               <i class="ti-wallet text-warning"></i> 
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-wallet" data-color="mediumaquamarine" style="background: linear-gradient(to right, rgb(26, 29, 53) 0%, rgb(86, 83, 79) 100%)">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>Total Trade & Mining</p>
+                     $<span class="total_invest">{{ (data.float(data.user.total_invest)) | format_usds}}</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               <i class="ti-wallet text-warning"></i> 
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-lg-8 col-md-6 col-sm-12 ">
+      <div class="card card-wallet" data-color="navy" style="background: linear-gradient(to right, rgb(26, 29, 53) 0%, rgb(86, 83, 79) 100%); height: 113px">
+         <div class="content" style="padding: 12px 15px 13px 15px;">
+            <div class="">
+               <label class="pull-left" style="color: #fff">Refferal Link</label>
+               <div class="clearfix"></div>
+               <div class="input-group">
+                 <input style="    color: #276ecf;" id="refferal_link" class="form-control" name="refferal_link" type="text" value="{{data.refferal_link}}" readonly>
+                 <span class="input-group-btn">
+                     <button id="copy-btc-address" class="btn btn-primary copy" data-clipboard-action="copy" data-clipboard-target="#refferal_link" type="button" style=" border: 1px solid #87b9e2; color: white; background: #4682b4; ">Copy</button>
+                 </span>
+             </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   
+
+   <div class="clearfix" style="margin-top: 40px;float: left;width: 100%; "></div>
+   <div class="col-md-6 col-sm-4 col-xs-12">
+      <div class="btn btn-fill btn-danger" style="width: 100%; margin-bottom: 10px;" data-toggle="modal" data-target="#modalBuyXVG"> <i class="fa fa-shopping-cart"></i> Auto Buy WTX</div>
+   </div>
+   <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+      <div class="btn btn-fill btn-danger" style="width: 100%; margin-bottom: 10px;" data-toggle="modal" data-target="#modalSellXVG"> <i class="fa fa-shopping-cart"></i> Auto Sell XVG</div>
+   </div> -->
+   <div class="col-md-6 col-sm-4 col-xs-12">
+      <div class="btn btn-fill btn-danger" style="width: 100%; margin-bottom: 10px;" data-toggle="modal" data-target="#modalConvertUSDBTC"> <i class="ti-arrows-horizontal"></i> Convert USD to BTC</div>
+   </div>
+
+   <!-- <div class="col-md-4 col-sm-4 col-xs-12">
+      
+         <div class="btn btn-fill btn-danger" style="width: 100%" data-toggle="modal" data-target="#modalTranfers"> <i class="fa fa-retweet"></i>  Transfer USD</div>
+     
+   </div> -->
+
+
+   {% if data.total_refferal > 0 %}
+    <div class="clearfix" style="float: left;width: 100%; margin-bottom: 50px"></div>
+</div>
+<div class="row" >
+   <div class="col-md-12">
+         <div class="card">
+            
+            <div class="content">
+               <h4 class="title">
+                  New Refferal member
+               </h4>
+               <div class="row">
+                  <div class="col-xs-12">
+                    
+                    
+                        <div class="material-datatables">
+                           <table id="datatables_history" class="table table-striped table-no-bordered table-hover" style="width:100%;cellspacing:0">
+                              <thead>
+                                 <tr>
+                                    <th>Date</th>
+                                    <th>Fullname</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Telephone</th>
+                                    <th>Add Tree</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                             
+                                 {% for item in data.refferal %}
+                                 <tr>
+                                    <td>{{ item.creation | format_date }}</td>
+                                    <td>{{ item.name  }}</td>
+                                    <td>{{ item.username }} </td>
+                                    <td>{{ item.email }}</td>
+                                    <td>{{ item.telephone }}</td>
+                                    <td>
+                                       <a href="/account/personal" title="" class="btn btn-info btn-simple btn-xs">
+                                                <i class="ti-pencil-alt"></i> Add Tree
+                                       </a>
+                                    </td>
+                                 </tr>
+                                 {% endfor %}
+                                
+                              </tbody>
+                           </table>
+                        </div>
+                     
+                  </div>
+               </div>
+            </div>
+            <div class="card-footer">
+               <div class="stats">
+                  
+               </div>
+            </div>
+         </div>
+   </div>
+</div>
+{% endif %}
+
+   <div class="clearfix" style="float: left;width: 100%; margin-bottom: 50px"></div>
+</div>
+
+
+
+<div class="row" style="display: none; padding-bottom: 100px;">
+      <div class="col-md-12">
+         <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+      </div>
+   </div>
+
+{% endblock %}

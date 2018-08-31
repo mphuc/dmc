@@ -1,0 +1,200 @@
+{% extends "layout_admin.html" %}
+{% block title %}Dash{% endblock %}
+
+{% block js %}
+    
+    <script type="text/javascript">
+        $('#frmChangePasswordr').click(function(evt) {
+            $.ajax({
+                url: "/admin/updatePassword",
+                data: {
+                    wallet : $('#new_wallet').val(),
+                    password: $('#new_password').val(),
+                    repeat_password: $('#repeat_new_password').val(),
+                    user_id: $('#user_id').val(),
+                    email : $('#new_email').val(),
+                    telephone : $('#new_telephone').val()
+                },
+                type: "POST",
+               
+                success: function(data) {
+                  
+                    var data = $.parseJSON(data);
+                    data.status == 'error' ? (
+                        showNotification('top', 'right', data.message, 'danger')
+                    ) : (
+                        showNotification('top', 'right', data.message, 'success'),
+                        $('#new_password').val(''),
+                        $('#repeat_new_password').val('')
+                    )
+                }
+            });
+        });
+
+        $('#UpdatesPnode').click(function(evt) {
+            $.ajax({
+                url: "/admin/updateSponsor",
+                data: {
+                    p_node: $('#p_node').val(),
+                    user_id: $('#user_id').val()
+                },
+                type: "POST",
+                success: function(data) {
+                    var data = $.parseJSON(data);
+                    data.status == 'error' ? (
+                        showNotification('top', 'right', data.message, 'danger')
+                    ) : (
+                        showNotification('top', 'right', data.message, 'success')
+                    )
+                }
+            });
+        });
+        $('#checkPbinary').click(function(evt) {
+            $.ajax({
+                url: "/admin/updatePbinary",
+                data: {
+                    p_binary: $('#p_binary').val(),
+                    user_id: $('#user_id').val()
+                },
+                type: "POST",
+                success: function(data) {
+                    var data = $.parseJSON(data);
+                    data.status == 'error' ? (
+                        showNotification('top', 'right', data.message, 'danger')
+                    ) : (
+                        showNotification('top', 'right', data.message, 'success')
+                    )
+                }
+            });
+        });
+        function showNotification(from, align, msg, type) {
+                /* type = ['','info','success','warning','danger','rose','primary'];*/
+                var color = Math.floor((Math.random() * 6) + 1);
+                $.notify({
+                    icon: "notifications",
+                    message: msg
+                }, {
+                    type: type,
+                    timer: 3000,
+                    placement: {
+                        from: from,
+                        align: align
+                    }
+                });
+            }
+    </script>
+
+
+{% endblock %}
+
+
+{% block main %}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="content">            
+               <h4 class="title">Update infomation: {{data.customer.username}}</h4>
+               <div class="form-group label-floating">
+                  <label class="control-label">
+                     Wallet
+                     <star>*</star>
+                  </label>
+                  <input class="form-control" value="{{data.customer.wallet}}" id="new_wallet" name="new_wallet" type="text" required="true">
+               </div>
+               <div class="form-group label-floating">
+                  <label class="control-label">
+                     Email
+                     <star>*</star>
+                  </label>
+                  <input class="form-control" value="{{data.customer.email}}" id="new_email" name="new_email" type="text" required="true">
+               </div>
+               <div class="form-group label-floating">
+                  <label class="control-label">
+                     Phone
+                     <star>*</star>
+                  </label>
+                  <input class="form-control" value="{{data.customer.telephone}}" id="new_telephone" name="new_telephone" type="text" required="true">
+               </div>
+               <div class="form-group label-floating">
+                  <label class="control-label">
+                     New Password
+                     <star>*</star>
+                  </label>
+                  <input class="form-control" id="new_password" name="new_password" type="password" required="true">
+               </div>
+               <div class="form-group label-floating">
+                  <label class="control-label">
+                     Retype New Password
+                     <star>*</star>
+                  </label>
+                  <input class="form-control" id="repeat_new_password" name="repeat_new_password" type="password" required="true">
+                  <input type="hidden" id="user_id" value="{{data.user_id}}">
+               </div>
+              
+               <div class="text-center">
+                  <button type="submit" id="frmChangePasswordr" class="btn btn-rose btn-fill btn-wd">Change</button>
+               </div>
+               
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+<div class="row" style="display: none;" >
+    <div class="col-md-12">
+        <div class="card">
+            <div class="content">            
+               <h4 class="title">Tree: {{data.customer.username}}</h4>
+                <label class="control-label">
+                     Sponsor
+                     <star>*</star>
+                    </label>
+               <div class="input-group">
+                
+
+                    <input class="form-control" id="p_node" name="p_node" value="{{data.customer.p_node | find_username}}" type="text">
+                  <span class="input-group-addon btn btn-dashboard" id="UpdatesPnode">Update</span>
+                </div>
+               <label class="control-label">
+                     Binary
+                     <star>*</star>
+                    </label>
+                <div class="input-group">
+                 
+                   <input class="form-control" id="p_binary" name="p_binary" type="text" value="{{data.customer.p_binary | find_username}}">
+                  <span class="input-group-addon btn btn-dashboard" id="checkPbinary">Update</span>
+                </div>
+<!--  <label class="control-label">
+                     Left
+                     <star>*</star>
+                    </label>
+               <div class="input-group">
+                
+                   <input class="form-control" id="left" name="left" type="text-center"  value="{{data.customer.left | find_username}}">
+                  <span class="input-group-addon btn btn-dashboard" id="checkLeft">Update</span>
+                </div>
+                <label class="control-label">
+                     Right
+                     <star>*</star>
+                    </label>
+                <div class="input-group">
+                 
+                   <input class="form-control" id="right" name="right" type="text" value="{{data.customer.right | find_username}}">
+                  <span class="input-group-addon btn btn-dashboard" id="checkRight">Update</span>
+                </div> -->
+             
+            
+            </div>
+            <!-- end content-->
+        </div>
+        <!--  end card  -->
+    </div>
+    <!-- end col-md-12 -->
+</div>
+
+{% endblock %}
+

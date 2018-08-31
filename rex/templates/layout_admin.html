@@ -1,0 +1,344 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" >
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.html" >
+    <link rel="icon" type="image/png" href="/static/home/images/logo.png" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' name='viewport' >
+    <meta name="viewport" content="width=device-width" >
+
+    <!-- Bootstrap core CSS     -->
+    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" >
+
+    <!--  Paper Dashboard CSS    -->
+    <link href="/static/assets/css/amaze.css" rel="stylesheet" >
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="/static/assets/css/demo.css" rel="stylesheet" >
+
+    <!--     Fonts and icons     -->
+    <link href="/static/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/assets/css/font-muli.css" rel='stylesheet' type='text/css'>
+    <link href="/static/assets/css/themify-icons.css" rel="stylesheet">
+    <link href="/static/assets/vendors/sweetalert/css/sweetalert2.min.css" rel="Stylesheet" >
+    <!-- fakeLoader -->
+    <link href="/static/assets/css/fakeLoader.css" rel="stylesheet" >
+
+    {% block css %}{% endblock %}
+    <!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://certify.alexametrics.com/atrk.gif?account=awLMq1Fx9f207i" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->  
+</head>
+
+<body>
+<div class="fakeloader"></div>
+    <div class="wrapper">
+		{% include "sidebar_admin.html" %}
+        <div class="main-panel">
+            {% include "navbar_admin.html" %}
+            <div class="content">
+                <div class="container-fluid">
+                <div class="row">
+                <div class="col-lg-12">
+                         <style type="text/css">
+                          #tradertab span{
+                            display: none !important; 
+                          }
+                          #tradertab iframe{
+                            height: 73px !important;
+                          }
+                        </style>
+                    
+                </div>
+                </div>
+                {% block main %}{% endblock %}
+
+                </div>
+            </div>
+            <!-- {% include "footer.html" %} -->
+        </div>
+    </div>
+<!--   Core JS Files   -->
+<script src="/static/assets/vendors/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="/static/assets/vendors/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/static/assets/vendors/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/assets/vendors/material.min.js" type="text/javascript"></script>
+<script src="/static/assets/vendors/perfect-scrollbar.jquery.min.js" type="text/javascript"></script>
+
+<!--  Plugin for the Wizard -->
+<script src="/static/assets/vendors/jquery.bootstrap-wizard.js"></script>
+<!--  Notifications Plugin    -->
+<script src="/static/assets/vendors/bootstrap-notify.js"></script>
+<!-- DateTimePicker Plugin -->
+<!-- <script src="/static/assets/vendors/bootstrap-datetimepicker.js"></script> -->
+<!-- Vector Map plugin -->
+<script src="/static/assets/vendors/jquery-jvectormap.js"></script>
+
+<!--  DataTables.net Plugin    -->
+<script src="/static/assets/vendors/jquery.datatables.js"></script>
+<!-- Sweet Alert 2 plugin -->
+        <script type="text/javascript" src="https://cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+
+<!-- Sweet Alert 2 plugin -->
+<script src="/static/assets/vendors/sweetalert/js/sweetalert2.min.js"></script>
+<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+<script src="/static/assets/vendors/jasny-bootstrap.min.js"></script>
+
+<!-- TagsInput Plugin -->
+<script src="/static/assets/vendors/jquery.tagsinput.js"></script>
+<!-- Material Dashboard javascript methods -->
+<script src="/static/assets/js/amaze.js"></script>
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="/static/assets/js/demo.js"></script>
+<!-- fakeLoader -->
+<script src="/static/assets/js/fakeLoader.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // $(".fakeloader").fakeLoader({
+        //     timeToHide:100200,
+        //     bgColor:"rgba(231, 76, 60, 0.45)",
+        //     spinner:"spinner3"
+        // });
+        
+
+      
+    });
+    
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.input-daterange input').each(function() {
+  $(this).datepicker('clearDates');
+}); 
+
+
+        $('#datatables_depoist').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 2 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotal = api
+                    .column( 2, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $( api.column( 2 ).footer() ).html(
+                    ''+pageTotal +' ('+ total +')'
+                );
+            },
+        });
+
+        $('#datatables_withdraw').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 2 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotal = api
+                    .column( 2, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $( api.column( 2 ).footer() ).html(
+                    ''+pageTotal +' ('+ total +')'
+                );
+            },
+        });
+
+
+        $('#datatables_trademining').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 2 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotal = api
+                    .column( 2, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $( api.column( 2 ).footer() ).html(
+                    ''+pageTotal +' ('+ total +')'
+                );
+            },
+        });
+        $('#datatables_history').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 2 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotal = api
+                    .column( 2, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $( api.column( 2 ).footer() ).html(
+                    ''+pageTotal +' ('+ total +')'
+                );
+            },
+        });
+
+
+        $('#datatables_customer').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 4 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotal = api
+                    .column( 4, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $( api.column( 4 ).footer() ).html(
+                    ''+pageTotal +' ('+ total +')'
+                );
+            },
+        });
+      /*var table= $('#datatables').DataTable({
+            "order": [[ 1, "desc" ]],
+            dom: 'Bfrtip',
+                buttons: [
+                 'excel'
+                ],
+            "pagingType": "full_numbers",
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            responsive: true,
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search records",
+            }
+
+        });*/
+
+      $.fn.dataTable.ext.search.push(
+          function(settings, data, dataIndex) {
+            var min = $('#min-date').val();
+            var max = $('#max-date').val();
+            var createdAt = data[0] || 0; // Our date column in the table
+
+            if (
+              (min == "" || max == "") ||
+              (moment(createdAt).isSameOrAfter(min) && moment(createdAt).isSameOrBefore(max))
+            ) {
+              return true;
+            }
+            return false;
+          }
+        );
+
+        // Re-draw the table when the a date range filter changes
+        $('.date-range-filter').change(function() {
+          table.draw();
+        });
+
+        // var table = $('#datatables').DataTable();
+
+        $('.card .material-datatables label').addClass('form-group');
+    });
+</script>
+{% block js %}
+{% endblock %}
+{% with messages = get_flashed_messages() %}
+ {% if messages %}
+ {% for message in messages %}
+        <script type="text/javascript">
+            showNotification('top','right','{{ message.msg }}', '{{ message.type }}');
+            function showNotification(from, align, msg, type){
+                // type = ['','info','success','warning','danger','rose','primary'];
+                var color = Math.floor((Math.random() * 6) + 1);
+                $.notify({
+                    icon: "notifications",
+                    message: msg
+                },{
+                    type: type,
+                    timer: 3000,
+                    placement: {
+                        from: from,
+                        align: align
+                    }
+                });
+            }
+        </script>
+        {% endfor %}
+    {% endif %}
+   {% endwith %}
+</body>
+</html>

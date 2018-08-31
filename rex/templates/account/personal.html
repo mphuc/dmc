@@ -1,0 +1,172 @@
+{% extends "layout.html" %}
+{% block title %}System | World Trade{% endblock %}
+{% block css %}
+<link href="/static/assets/css/tree.css" rel="stylesheet" >
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="/static/assets/js/lodash.min.js"></script>
+<script src="/static/assets/js/personal.js"></script>
+<script src="/static/assets/js/getinfo.js"></script>
+{% endblock %}
+{% block main %}
+
+<div class="col-md-12">
+   <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12"> 
+         <div class="card card-wallet" data-color="navy">
+            <div class="content">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <div class="numbers">
+                        <p>LEFT LEG TEAM</p>
+                        <span class="Network_Left"><small><i>Waiting...</i></small></span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         
+         </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+         <div class="card card-wallet" data-color="orange">
+            <div class="content">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <div class="numbers">
+                        <p>RIGHT LEG TEAM</p>
+                        <span class="Network_Right"><small><i>Waiting...</i></small></span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+           
+         </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+         <div class="card card-wallet" data-color="orange">
+            <div class="content" style=" height: 112px; ">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <div class="numbers">
+                        <p>Team Left</p>
+                        {{ (data.float(data.user.total_pd_left)) | format_usds}} USD
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="card-footer">
+               <div class="stats">
+                  <i class="ti-wallet text-warning"></i> Wallet
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+         <div class="card card-wallet" data-color="lightseagreen">
+            <div class="content" style=" height: 112px;">
+               <div class="row">
+                  <div class="col-xs-12">
+                     <div class="numbers">
+                        <p>Team Right</p>
+                        {{ (data.float(data.user.total_pd_right)) | format_usds}} USD
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="card-footer">
+               <div class="stats">
+                  <i class="ti-wallet text-warning"></i>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="row">
+   <div class="col-sm-12">
+      
+   
+    <div class="card" style="box-shadow: none; background: transparent;">
+         <div class="content">
+            <h4 class="title">Binary Tree</h4>
+            <div class="toolbar">
+               <!--        Here you can write extra buttons/actions for the toolbar              -->
+            </div>
+            <div class="main-container content-personal" >
+               <div class="accountContent responsive">
+                  <div>
+                     <ul class="list-unstyled" style="float: left;">
+                        <li style="margin-bottom:15px;">
+                           <a style="line-height:11px;color: #fff;border-color: #fff;" class="btn btn-default btn-rounded" href="javascript:void(0)" onclick='click_node({{data.uid}})'> <span class="" style="font-weight:700">Top</span> </a>
+                           <a style="line-height:11px;color: #fff;border-color: #fff;" class="btn btn-default btn-rounded" href="javascript:void(0)" onclick='click_back()'> <span class="" style="font-weight:700">Back</span> </a>
+                        </li>
+                        <li>
+                          
+            <div class="input-group p-b-10" style=" width: 300px; ">
+               <input id="search_tree" class="form-control" name="s_username" type="text" value="" placeholder="Enter Username">
+               <span class="input-group-btn">
+               <button id="btnSearchTree"  class="btn btn-social btn-dashboard btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing" type="button" >Search</button>
+               </span>
+            </div>
+                        </li>
+                        <li>
+                           <div class="input-group" style=" width: 300px; display: none; ">
+                                <input id="search_tree" class="form-control" name="username_tree" type="text" placeholder ="Enter username">
+                                <span class="input-group-btn">
+                                    <button id="btnSearchTree"  class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing" type="button">Search</button>
+                                </span>
+                            </div>
+                        </li>
+                     </ul>
+                   
+                     <div class="clearfix"></div>
+                    <!--  <ul class="list-package-invest">
+                        <li class="package-0"><span class="background"></span><br/><span>0$</span></li>
+                        <li class="package-200"><span class="background"></span><br/><span>200$</span></li>
+                        <li class="package-500"><span class="background"></span><br/><span>500$</span></li>
+                        <li class="package-1000"><span class="background"></span><br/><span>1.000$</span></li>
+                        <li class="package-2000"><span class="background"></span><br/><span>2.000$</span></li>
+                        <li class="package-3000"><span class="background"></span><br/><span>3.000$</span></li>
+                     </ul> -->
+                     <div class="personal-tree text-center">
+                        <!-- <img style="width:50px; margin:70px auto; margin-left:-120px" src="//static/img/ajax-loader.gif" /> -->
+                     </div>
+                     <input type="hidden" id="uid_customer" value="{{data.uid}}" />
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- end content-->
+      </div>
+   <!-- end col-md-12 -->
+   </div>
+</div>
+<div class="row">
+   <div class="col-lg-12 col-md-12">
+      <div class="card icons-card" style=" background: #b78e8b;">
+         <div class="header">
+            Package Icon
+         </div>
+         <div class="content card-padding personal-icon ">
+            <ul>
+               <li data-name="ti-arrow-up"><span class="package-add"></span>Register</li>
+               <li data-name="ti-arrow-up"><span class="package-new"></span>New Member</li>
+               <li data-name="ti-arrow-up"><span class="package-100"></span>$100</li>
+               <li data-name="ti-arrow-right"><span class="package-500"></span>$500</li>
+               <li data-name="ti-arrow-left" ><span class="package-1000"></span>$1,000</li>
+               <li data-name="ti-arrow-down" ><span class="package-2000"></span>$2,000</li>
+               <li data-name="ti-arrows-vertical" ><span class="package-5000"></span>$5,000</li>
+               <li data-name="ti-arrows-vertical" ><span class="package-10000"></span>$10,000</li>
+               <li data-name="ti-arrows-vertical" ><span class="package-20000"></span>$20,000</li>
+               <li data-name="ti-arrows-vertical" ><span class="package-50000"></span>$50,000</li>
+            </ul>
+         </div>
+      </div>
+      
+      <!--  end card  -->
+   </div>
+</div>
+<div id="alertTree"></div>
+<div id="dataRefferal"></div>
+{% endblock %}
