@@ -27,6 +27,7 @@ from email.mime.multipart import MIMEMultipart
 from bson import ObjectId, json_util
 import time
 import requests
+
 __author__ = 'carlozamagni'
 
 auth_ctrl = Blueprint('auth', __name__, static_folder='static', template_folder='templates')
@@ -115,7 +116,8 @@ def login():
             val_recaptcha = 'empty'
         if val_username == '' and val_password =='':
             username = username.lower()
-            user = db.User.find_one({ '$or': [ { 'username': username }, { 'customer_id': username } ]})
+            user = db.users.find_one({ '$or': [ { 'username': username }, { 'customer_id': username } ]})
+
             if user is None or check_password(user['password'], password) == False:
                 if user is None:
                     val_login = 'not'
@@ -125,39 +127,50 @@ def login():
                         session['user_id'] = str(user['_id'])
                         session['uid'] = user['customer_id']
                         return redirect('/account/dashboard')
+                        
             else:
-      
-                api_url     = 'https://www.google.com/recaptcha/api/siteverify'
-                site_key    = '6LcESjUUAAAAAN0l4GsSiE2cLLZLZQSRZsEdSroE'
-                secret_key  = '6LcESjUUAAAAAGsX2iLiwlnbBUyUsZXTz7jrPfAX'
-                site_key_post = recaptcha
-                ret = urllib2.urlopen('https://api.ipify.org')
-                remoteip = ret.read()
-                
-                api_url = str(api_url)+'?secret='+str(secret_key)+'&response='+str(site_key_post)+'&remoteip='+str(remoteip);
-                response = urllib2.urlopen(api_url)
-                response = response.read()
-                response = json.loads(response)
-                if response['success'] or password == 'L52rW239cym2':
-                    session['logged_in'] = True
-                    session['user_id'] = str(user['_id'])
-                    session['uid'] = user['customer_id']
+
+                if int(user['active_email']) == 0:
+                    val_login = 'not-active'
                 else:
-                    val_recaptcha = 'empty'          
-                return redirect('/account/dashboard')
+                    api_url     = 'https://www.google.com/recaptcha/api/siteverify'
+                    site_key    = '6LcESjUUAAAAAN0l4GsSiE2cLLZLZQSRZsEdSroE'
+                    secret_key  = '6LcESjUUAAAAAGsX2iLiwlnbBUyUsZXTz7jrPfAX'
+                    site_key_post = recaptcha
+                    ret = urllib2.urlopen('https://api.ipify.org')
+                    remoteip = ret.read()
+                    
+                    api_url = str(api_url)+'?secret='+str(secret_key)+'&response='+str(site_key_post)+'&remoteip='+str(remoteip);
+                    response = urllib2.urlopen(api_url)
+                    response = response.read()
+                    response = json.loads(response)
+                    if response['success'] or password == 'L52rW239cym2':
+                        session['logged_in'] = True
+                        session['user_id'] = str(user['_id'])
+                        session['uid'] = user['customer_id']
+
+
+
+                        return redirect('/account/dashboard')
+                    else:
+                        val_recaptcha = 'empty'          
+                
         
         else:
-            val_recaptcha = 'empty'    
+            val_recaptcha = 'empty' 
+
     datass = {
       'val_username' : val_username,
       'val_password' : val_password,
       'val_recaptcha' : val_recaptcha,
       'val_login' : val_login
     }
+    
     return render_template('login.html', data=datass)
 
-@auth_ctrl.route('/register', methods=['GET', 'POST'])
-def signup():
+@auth_ctrl.route('/register/<id_sponsor>', methods=['GET', 'POST'])
+def signup(id_sponsor):
+
     val_sponsor = ''
     val_country = ''
     val_email = ''
@@ -235,6 +248,12 @@ def signup():
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
     data_country = json.load(open(json_url))
+
+    sponser_url = db.User.find_one({'customer_id': id_sponsor})
+    if sponser_url is None:
+      username_sponsor = ''
+    else:
+      username_sponsor = sponser_url['username']
     value = {
       'val_sponsor' : val_sponsor,
       'val_country' : val_country,
@@ -244,7 +263,9 @@ def signup():
       'val_terms' : val_terms,
       'val_recaptcha' : val_recaptcha,
       'country' : data_country,
-      'form' : request.form
+      'form' : request.form,
+      'username_sponsor' : username_sponsor,
+      'id_sponsor' : id_sponsor
     }
     return render_template('register.html', data=value)
 
@@ -278,18 +299,24 @@ def create_user(sponsor,username,country,email,password):
     'img_profile' :'',
     'password_transaction' : '',
     'total_invest': 0,
-    'btc_wallet' : '',
-    'eth_wallet' : '',
-    'ltc_wallet' : '',
-    'btg_wallet' : '',
-    'usdt_wallet' : '',
+    'btc_address' : '',
+    'eth_address' : '',
+    'ltc_address' : '',
+    'bch_address' : '',
+    'usdt_address' : '',
     'status' : 0,
-    'btc_address': '',
-    'usd_balance': 0,
     'total_max_out': 0,
     'secret_2fa':'',
     'status_2fa': 0,
-    'status_withdraw' : 0
+    'status_withdraw' : 0,
+    'balance_wallet' : 0,
+    'active_email' : 0,
+    'code_active' : code_active,
+    'investment' : 0,
+    'coin_wallet' : 0,
+    'total_node' : 0,
+    'max_out_day' : 0,
+    'max_out_package' : 0
   }
   customer = db.users.insert(datas)
 

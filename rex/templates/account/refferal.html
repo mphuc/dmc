@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Refferal | World Trade{% endblock %}
+{% block title %}Refferals{% endblock %}
 {% block css %}
 <link href="/static/assets/css/jstree.css" rel="stylesheet" >
 {% endblock %}
@@ -23,111 +23,62 @@
 	
 
 {% block main %}
-<div class="modal fade" id="modalActiveCode" tabindex="-1" role="dialog" aria-labelledby="modalExchangeLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
 
-            <h4 style="margin-top: 5px;" class="modal-title" id="ModalTransfer-label">Active Account <b id="username_account"></b></h4>
-         </div>
-         <form role="form" class="form-horizontal" id="frmActiveCode" novalidate="novalidate">
-            <div class="modal-body">
-               
-               <input type="hidden" name="customer_id" id="customer_id" value="">
-               <div class="form-group">
-                  <div class="col-sm-12">
-                     <div class="input-group"> <input type="text" placeholder="CODE" class="form-control amount_usd" name="code" id="code" > <span class="input-group-addon">CODE</span> </div>
-                  </div>
-                  
-               </div>
-            </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" id="btnActiveCode" class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Active Account</button> </div>
-         </form>
+
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">REFERRAL</strong>
       </div>
-   </div>
-</div>
-<div class="row">
-   <div class="col-md-12">
-      <div class="card">
-         <div class="content">
-            <h4 class="title">Your Refferal Link</h4>
-            <div class="input-group p-b-10">
-               <input style="color: #1a1d35" id="refferal_link" class="form-control" name="refferal_link" type="text" value="{{data.refferal_link}}" readonly>
-               <span class="input-group-btn">
-               <button id="copy-btc-address" class="btn btn-primary copy" data-clipboard-action="copy" data-clipboard-target="#refferal_link" type="button">Copy</button>
-               </span>
-            </div>
-         </div>
-      </div>
-      <div class="card">
-         <div class="content">
-            <h4 class="title">Refferal</h4>
-            <div class="toolbar">
-               <!--        Here you can write extra buttons/actions for the toolbar              -->
-            </div>
+      <div class="card-body">
+         <div class="">
             <div class="material-datatables">
-               <table id="datatables" class="table table-striped table-no-bordered table-hover" style="width:100%;cellspacing:0">
+              
+               <table id="datatables_referrals" class="table table-bordered" style="width:100%;cellspacing:0">
                   <thead>
                      <tr>
-                        <th>Active Code</th>
+                        <th>No.</th>
                         <th>Username</th>
-                        
-                        <th>Date</th>
+                        <th>Join Date</th>
                         <th>Email</th>
-                        <th>Name</th>
-                        <th>Phone</th>
                         <th>Country</th>
-                        
+                        <th>Package</th>
                      </tr>
                   </thead>
                   <tbody>
                      {% if data.refferal %}
                      {% for item in data.refferal %}
                      <tr>
-                        {% if item.roi == 0 %}
-                          <td><span style="cursor: pointer;" data-username="{{ item.username }}" data-id="{{item.customer_id}}" class="active_account_id label label-danger">Active Account</span></td>
-                        {% endif %}
-                        <td>{{ item.username }}</td>
-                        
-                        {% if item.roi == 1 %}
                         <td></td>
-                        {% endif %}
+                        <td>{{ item.username }}</td>
                         <td>{{ item.creation | format_date }}</td>
                         <td>{{ item.email }}</td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.telephone }}</td>
                         <td>{{ item.country }}</td>
-                        
+                        <td>${{ item.investment | format_usd }}</td>
                      </tr>
                      {% endfor %}
                      {% endif %}
                   </tbody>
                </table>
             </div>
+
+            
+            </div>
          </div>
-         <!-- end content-->
       </div>
-      <!--  end card  -->
-   </div>
-   <!-- end col-md-12 -->
 </div>
 
-                    <div class="row">
-   <div class="col-sm-12">
-      
-   
-    <div class="card">
-         <div class="content">
-            <h4 class="title">Sytem Tree</h4>
-            <div class="toolbar">
-               <!--        Here you can write extra buttons/actions for the toolbar              -->
-            </div>
+
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">Sytem Tree</strong>
+      </div>
+      <div class="card-body">
+         <div class="">
             <div id="TreeSystem" class="demo"></div>
          </div>
-         <!-- end content-->
       </div>
-   <!-- end col-md-12 -->
    </div>
 </div>
 

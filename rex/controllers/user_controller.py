@@ -542,7 +542,7 @@ def login():
 @user_ctrl.route('/register/<user_id>', methods=['GET', 'POST'])
 def signup(user_id):
     
-    sponser = db.User.find_one({'customer_id': user_id})
+    sponser = db.users.find_one({'customer_id': user_id})
     if sponser is None:
         return redirect('/account/dashboard')
 

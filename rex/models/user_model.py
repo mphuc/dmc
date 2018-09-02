@@ -12,6 +12,7 @@ class User(Document):
     structure = {
         'customer_id' : unicode,
         'email': unicode,
+        'code_active': unicode,
         'username': unicode,
         'password': unicode,
         'creation': datetime.datetime,
@@ -21,11 +22,11 @@ class User(Document):
         'telephone' : float,
         'p_node' : unicode,
         'password_transaction' : unicode,
-        'btc_wallet' : unicode,
-        'eth_wallet' : unicode,
-        'ltc_wallet' : unicode,
-        'btg_wallet' : unicode,
-        'usdt_wallet' : unicode,
+        'btc_address' : unicode,
+        'eth_address' : unicode,
+        'ltc_address' : unicode,
+        'bch_address' : unicode,
+        'usdt_address' : unicode,
         'level' : int,
         'password_custom' : unicode,
         'total_pd_left' : float,
@@ -35,20 +36,27 @@ class User(Document):
         'm_wallet' : float,
         'r_wallet' : float,
         's_wallet' : float,
+        'balance_wallet' : float,
         'status_authen' : int,
         'authentication' : unicode,
         'max_out' : float,
         'total_max_out' : float,
+        'coin_wallet' : float,
         'total_earn' : float,
         'position' : unicode,
         'country' : unicode,
         'total_invest' : float,
         'status':int,
         'type': int,
+        'active_email': int,
         'secret_2fa': unicode,
         'status_2fa': int,
         'status_withdraw' : int,
-        'max_daily': float
+        'max_daily': float,
+        'investment': float,
+        'total_node' : float,
+        'max_out_day' : float,
+        'max_out_package' : float
     }
     validators = {
         'email': validators.max_length(120)
@@ -70,7 +78,15 @@ class User(Document):
         'left' : '',
         'right' : '',
         'p_binary' : '',
-        'type': 0
+        'type': 0,
+        'balance_wallet' : 0,
+        'active_email' : 0,
+        'code_active' : '',
+        'investment' : 0,
+        'coin_wallet' : 0,
+        'total_node' : 0,
+        'max_out_day' : 0,
+        'max_out_package' : 0
 
         }
     use_dot_notation = True

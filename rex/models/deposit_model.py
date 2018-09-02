@@ -10,26 +10,20 @@ class Deposit(Document):
     __collection__ = 'deposit'
 
     structure = {
-        'uid' : unicode,
+        'confirmations': int,
         'user_id': unicode,
-        'username' : unicode,
-        'amount_usd' : float,
-        'amount_sva' : float,
-        'status' : int,
+        'uid': unicode,
+        'username': unicode,
+        'tx':  unicode,
+        'amount': float,
+        'type': unicode,
         'date_added' : datetime.datetime,
-        'num_frofit' : float,
-        'types' : int,
-        'percent' :  float,
-        'total_day': float,
-        'total_day_earn': float,
-        'amount_daily' : float,
-        'num_profit' : float,
-        'lock_profit': float
+        'status': int,
+        'address': unicode,
+        'txn_id' : unicode,
+        'amount_usd': float,
+        'price' : float
     }
-    default_values = {
-        'date_added': datetime.datetime.utcnow(),
-        'num_frofit' : 0.0
-        }
     use_dot_notation = True
 
 db.register([Deposit])

@@ -4,11 +4,11 @@
             $('.Network_Left').html(data.total_binary_left);
             $('.Network_Right').html(data.total_binary_right);
     });
-    setTimeout(function(){ 
+    /*setTimeout(function(){ 
         $.getJSON("/account/calculatorBinary", function(data) {
                return true;
         });
-    }, 3000);
+    }, 3000);*/
     
 
     jQuery.fn.show_tree = function(node) {
@@ -22,20 +22,20 @@
         var html = '<div class=\'' + line_class + '\'></div>';
 
         x_p = "<div  class='customer_toolip " + positon[1] + "'>";
-        x_p += "<table class='table table-bordered'><tbody><tr>";
+        x_p += "<table class='table table-bordered'><tbody><tr class='username'>";
         x_p += "<td colspan='2'> <div align='center'>" + node.username + "</div> </td></tr>";
         x_p += "<tr><td> <div align='center'>Sponsor</div> </td> <td> <div align='center'>" + node.sponsor + "</div> </td></tr>";
         
-        x_p += "<tr><td> <div align='center'>Trade & Mining</div> </td> <td> <div align='center'>" + node.totalPD + " USD</div> </td></tr>";
-        x_p += "<tr><td> <div align='center'>Team Left</div> </td> <td> <div align='center'>" + node.leftPD + " USD</div> </td></tr>";
-        x_p += "<tr><td> <div align='center'>Team Right</div> </td> <td> <div align='center'>" + node.rightPD + " USD</div> </td></tr>";
+        x_p += "<tr><td> <div align='center'>Investment</div> </td> <td> <div align='center'>$" + node.totalPD + "</div> </td></tr>";
+        x_p += "<tr><td> <div align='center'>Team Left</div> </td> <td> <div align='center'>$" + node.leftPD + "</div> </td></tr>";
+        x_p += "<tr><td> <div align='center'>Team Right</div> </td> <td> <div align='center'>$" + node.rightPD + "</div> </td></tr>";
         x_p += "<tr><td> <div align='center'>Creation</div> </td> <td> <div align='center'>" + node.date_added + " </div> </td></tr>";
         x_p += "";
         x_p += "</tr>";
 
         html += !node.empty ?
             '<div class=\'' + node_class + ' ' + level_active + '\'><a data-html="true" data-toggle="tooltip" rel="tooltip" data-placement="top" data-title="<p>' + x_p + '</p>" class="binaryTree" style="display:block;"   \'><i class="fa fa- type-' + node.level + ' package-111" onclick=\'click_node("' + node.id + '")\' value=\'' + node.id + '\' aria-hidden="true"></i></a><span class="name_node">' + node.username + '</span>' :
-            '<div class=\'' + node_class + '\'><a data-toggle="tooltip" data-placement="bottom" style="display:block" onclick=\'click_node_add("' + node.p_binary + '", "' + positon[1] + '")\' value=\'' + node.p_binary + '\' title="Add new user"><i class="fa fa-plus-square type-add"></i></a><span class="name_node">Add new user</span>';
+            '<div class=\'' + node_class + '\'><a data-toggle="tooltip" data-placement="bottom" style="display:block" onclick=\'click_node_add("' + node.p_binary + '", "' + positon[1] + '")\' value=\'' + node.p_binary + '\' ><i class="fa fa-plus-square type-add"></i></a><span class="name_node">ADD TREE</span>';
         // : '<div class=\''+node_class+'\'><a data-toggle="tooltip" data-placement="bottom" style="display:block"  title=""><i class="fa fa-plus-square type-add"></i></a>';
 
         html += '<div id=\'' + node.id + '\' ></div>';
@@ -66,7 +66,7 @@
         });*/
 
 
-        $('.personal-tree').html('<img src="/static/assets/img/recycle-spinner.gif"  />');
+        //$('.personal-tree').html('<img src="/static/assets/img/recycle-spinner.gif"  />');
         $.ajax({
             url: "/account/json_tree",
             dataType: 'json',
@@ -78,16 +78,18 @@
                 var rootnode = json_data[0];
                 $('.personal-tree').html('');
                 $('.personal-tree').show_tree(rootnode);
-                $('.personal_contain').show_infomation(rootnode.id);
-                $('#current_top').html("Goto " + rootnode.name + "\'s");
+                /*$('.personal_contain').show_infomation(rootnode.id);
+                $('#current_top').html("Goto " + rootnode.name + "\'s");*/
             }
         });
     };
 })(jQuery);
 
 function click_node_add(p_binary, positon) {
+    var link = '/account/add-tree/'+p_binary+'/'+positon;
+    location.href = link;
 
-    var link = '/user/new';
+    /*var link = '/user/new';
     if (positon == "left")
         positon = 1;
     else
@@ -122,10 +124,9 @@ function click_node_add(p_binary, positon) {
         keyboard: false
     });
     $('#personal').attr('style','position : absolute; width: 100%');
-    chooseNode();
+    chooseNode();*/
 
-    // link += '/'+positon+'/'+ p_binary+'/'+p_node;
-    // location.href = link;
+    
 };
 
 

@@ -385,9 +385,9 @@ def home_page():
     from datetime import datetime
     from dateutil.relativedelta import relativedelta
 
-    print 'Today: ',datetime.now().strftime('%d/%m/%Y %H:%M:%S') 
-    date_after_month = datetime.now()+ relativedelta(days=1)
-    print 'After 5 Days:', date_after_month.strftime('%d/%m/%Y %H:%M:%S')
+    # print 'Today: ',datetime.now().strftime('%d/%m/%Y %H:%M:%S') 
+    # date_after_month = datetime.now()+ relativedelta(days=1)
+    # print 'After 5 Days:', date_after_month.strftime('%d/%m/%Y %H:%M:%S')
     data ={
     'menu' : 'home'
     }

@@ -49,6 +49,10 @@
                                           {% if data.val_login == 'not' %}
                                           <p><i class="fa fa-star"></i> Incorrect login information. Please check again.</p>
                                           {% endif %}
+                                          {% if data.val_login == 'not-active' %}
+                                          <p><i class="fa fa-star"></i> Your account has not been activated. Please check again.</p>
+                                          {% endif %}
+                                          
                                        </div>
                                     {% endif %}
 
@@ -74,7 +78,7 @@
                                        <div class="text-center">
                                           <span id="submitLogin" class="btn btn-warning btn-wd btn-fill">Sign In</span> 
                                           <hr>
-                                          <p>Don't you have account?<a href="/auth/register" style="color: #DDAF3F"> Sign Up Here </a> </p>
+                                          <p>Don't you have account?<a href="/auth/register/0" style="color: #DDAF3F"> Sign Up Here </a> </p>
                                        </div>
                                     </div>
                                  </div>

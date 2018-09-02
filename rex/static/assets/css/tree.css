@@ -163,7 +163,7 @@
     position: absolute
 }
 .leftline.linefloor2 {
-    background: url(../img/icons/left1.png) no-repeat;
+    background: url(../../img/package/left1.png) no-repeat;
     height: 37px;
     position: absolute;
     width: 210px;
@@ -171,7 +171,7 @@
     top: 59px;
 }
 .rightline.linefloor2 {
-    background: url(../img/icons/right1.png) no-repeat;
+    background: url(../../img/package/right1.png) no-repeat;
     height: 37px;
     position: absolute;
     width: 223px;
@@ -179,7 +179,7 @@
     top: 59px;
 }
 .leftline.linefloor3 {
-    background: url(../img/icons/left2.png) no-repeat;
+    background: url(../../img/package/left2.png) no-repeat;
     height: 35px;
     left: -81px;
     position: absolute;
@@ -187,7 +187,7 @@
     width: 80px
 }
 .rightline.linefloor3 {
-    background: url(../img/icons/right2.png) no-repeat;
+    background: url(../../img/package/right2.png) no-repeat;
         height: 35px;
     position: absolute;
     width: 85px;
@@ -195,7 +195,7 @@
     top: 58px;
 }
 .leftline.linefloor4 {
-    background: url(../img/icons/left3.png) no-repeat;
+    background: url(../../img/package/left3.png) no-repeat;
         height: 57px;
     left: -35px;
     position: absolute;
@@ -203,7 +203,7 @@
     width: 37px;
 }
 .rightline.linefloor4 {
-    background: url(../img/icons/right3.png) no-repeat;
+    background: url(../../img/package/right3.png) no-repeat;
       height: 56px;
     position: absolute;
     width: 41px;
@@ -218,19 +218,19 @@
     position: absolute
 }
 .leftline.linefloor5 {
-    background: url(../img/icons/left4.png) no-repeat;
+    background: url(../../img/package/package-left4.png) no-repeat;
     width: 20px;
     left: -11px;
     top: 11px
 }
 .rightline.linefloor5 {
-    background: url(../img/icons/right4.png) no-repeat;
+    background: url(../../img/package/package-right4.png) no-repeat;
     width: 20px;
     right: -11px;
     top: 10px
 }
 .leftline.linefloor6 {
-    background: url(../img/icons/left5.png) no-repeat;
+    background: url(../../img/package/package-left5.png) no-repeat;
     width: 15px;
     left: -8px;
     top: 24px
@@ -293,17 +293,17 @@
     font-size: 45px
 }
 .level2 {
-    background: url(../img/icons/B2.png) center center no-repeat!important
+    background: url(../../img/package/package-B2.png) center center no-repeat!important
 }
 .personal-tree .type-1 {
-    background: url(../img/icons/6.png) center center no-repeat;
+    background: url(../../img/package/package-6.png) center center no-repeat;
     background-size: 35px;
     color: transparent!important;
     position: relative;
     top: -30px
 }
 .personal-tree .type-2 {
-    background: url(../img/icons/200.png) center center no-repeat;
+    background: url(../../img/package/package-200.png) center center no-repeat;
     background-size: 35px;
     color: transparent!important;
     position: relative;
@@ -316,55 +316,55 @@
     position: relative
 }
 .personal-tree .package-0 {
-    background: url(../img/icons/0.png) center center no-repeat;
+    background: url(../../img/package/package-0.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-100 {
-    background: url(../img/icons/100.png) center center no-repeat;
+    background: url(../../img/package/package-100.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-200 {
-    background: url(../img/icons/200.png) center center no-repeat;
+    background: url(../../img/package/package-200.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-500 {
-    background: url(../img/icons/500.png) center center no-repeat;
+    background: url(../../img/package/package-500.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-1000 {
-    background: url(../img/icons/3000.png) center center no-repeat;
+    background: url(../../img/package/package-3000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-2000 {
-    background: url(../img/icons/2000.png) center center no-repeat;
+    background: url(../../img/package/package-2000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-10000 {
-    background: url(../img/icons/10000.png) center center no-repeat;
+    background: url(../../img/package/package-10000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-20000 {
-    background: url(../img/icons/20000.png) center center no-repeat;
+    background: url(../../img/package/package-20000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-3000 {
-    background: url(../img/icons/1000.png) center center no-repeat;
+    background: url(../../img/package/package-1000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-100000 {
-    background: url(../img/icons/100000.png) center center no-repeat;
+    background: url(../../img/package/package-100000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-5000 {
-    background: url(../img/icons/10000.png) center center no-repeat;
+    background: url(../../img/package/package-10000.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .package-7 {
-    background: url(../img/icons/10.png) center center no-repeat;
+    background: url(../../img/package/package-10.png) center center no-repeat;
     background-size: 35px
 }
 .personal-tree .type-add {
-    background: url(../img/icons/3.png) center center no-repeat;
+    background: url(../../img/package/package-3.png) center center no-repeat;
     background-size: 35px
 }
 span.btn.btn-default.btn-tree {
@@ -664,8 +664,8 @@ span.btn.btn-default.btn-tree {
 }
 .undefined_node {
     left: 47%;
-    position: absolute;
-    top: 150px;
+    /*position: absolute;
+    top: 150px;*/
 }
 
 .leftline.linefloor5,
@@ -690,7 +690,7 @@ span.btn.btn-default.btn-tree {
         font-size: 10px;
     text-align: center;
     padding: 0 7px;
-        color: #f98a05;
+        color: #5FC8F3;
 }
 .right_node.nodefloor2 {
     right: -210px;
@@ -743,72 +743,80 @@ span.btn.btn-default.btn-tree {
 }
 
 .personal-tree .type-1 {
-    background: url(../img/icons/0.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-1.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-2 {
-    background: url(../img/icons/100.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-2.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-3 {
-    background: url(../img/icons/500.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-3.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-4 {
-    background: url(../img/icons/1000.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-4.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-5 {
-    background: url(../img/icons/2000.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-5.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-6 {
-    background: url(../img/icons/5000.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-6.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-7 {
-    background: url(../img/icons/10000.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-7.png) center center no-repeat;
+    background-size: 40px;
     color: transparent!important;
     position: relative;
     top: -5px;
     left: 0px;
 }
 .personal-tree .type-8 {
-    background: url(../img/icons/20000.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-8.png) center center no-repeat;
+    background-size: 40px;
 }
 .personal-tree .type-9 {
-    background: url(../img/icons/50000.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-9.png) center center no-repeat;
+    background-size: 40px;
+}
+.personal-tree .type-10 {
+    background: url(../../img/package/package-10.png) center center no-repeat;
+    background-size: 40px;
+}
+.personal-tree .type-11 {
+    background: url(../../img/package/package-11.png) center center no-repeat;
+    background-size: 40px;
 }
 .personal-tree .type-none {
-    background: url(../img/icons/none.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-none.png) center center no-repeat;
+    background-size: 40px;
 }
 
 .personal-tree .type-2,
@@ -824,8 +832,8 @@ a.adduser {
     
 }
 .personal-tree .type-add {
-    background: url(../img/icons/3.png) center center no-repeat;
-    background-size: 60px
+    background: url(../../img/package/package-0.png) center center no-repeat;
+    background-size: 40px
 }
 .personal-tree .none_tresss div{
     display: none;
@@ -942,8 +950,8 @@ a.adduser {
     top: 42px;
 }
 .personal-tree .type-0 {
-    background: url(../img/icons/0.png) center center no-repeat;
-    background-size: 60px;
+    background: url(../../img/package/package-0.png) center center no-repeat;
+    background-size: 40px;
 }
 .right_node.nodefloor3 .customer_toolip.left,.right_node.nodefloor3 .customer_toolip.right{
     left: -203px;
@@ -1069,3 +1077,10 @@ a.adduser {
 .customer_toolip .table > tbody > tr > td{
     padding: 5px 11px;
 } 
+.customer_toolip .username{
+    background: #403e42;
+    border-radius: 5px 5px 0 0 ;
+    color: #fff;
+    padding: 20px;
+    height: 45px;
+}

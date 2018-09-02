@@ -5,8 +5,8 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       
-      <title>{% block title %}Worldtrader{% endblock %}</title>
-      <link rel="icon" type="image/x-icon" href="/static/home/images/logo/logo.png">
+      <title>{% block title %}{% endblock %} - Diamond Capital</title>
+      <link rel="icon" type="image/x-icon" href="/static/img/logo.png">
       <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" >
       <link href="/static/assets/css/amaze.css" rel="stylesheet" >
       <link href="/static/assets/css/demo.css" rel="stylesheet" >
@@ -17,25 +17,17 @@
       <link href="/static/assets/vendors/sweetalert/css/sweetalert2.min.css" rel="Stylesheet" >
       <link href="/static/assets/css/fakeLoader.css" rel="stylesheet" >
       {% block css %}{% endblock %}
-      <!-- Start Alexa Certify Javascript -->
-<script type="text/javascript">
-_atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: true};
-(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
-</script>
-<noscript><img src="https://certify.alexametrics.com/atrk.gif?account=awLMq1Fx9f207i" style="display:none" height="1" width="1" alt="" /></noscript>
-<!-- End Alexa Certify Javascript -->  
+      
    </head>
    <body>
-
-
 
       <div class="fakeloader"></div>
       <div class="wrapper">
          {% include "sidebar.html" %}
          <div id="{{data.menu}}" class="main-panel">
-            <div class="overlay">
+            <!-- <div class="overlay">
                <img class="img-loading" src="/static/assets/img/recycle-spinner.gif" >
-            </div>
+            </div> -->
             {% include "navbar.html" %}
             <div class="content">
                <div class="container-fluid">
@@ -83,6 +75,7 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
       <script src="/static/assets/vendors/sweetalert/js/sweetalert2.min.js"></script>
       <script src="/static/assets/js/amaze.js"></script> 
       <script src="/static/assets/js/demo.js"></script>
+      <script src="/static/assets/js/wallet.js"></script>
       <script src="/static/assets/js/clipboard.min.js"></script>  
       <script> $(document).ready(function(){var clipboard = new Clipboard('.copy'); clipboard.on('success', function(e) { return true; }); clipboard.on('error', function(e) {return false; }); }); </script> <script type="text/javascript"> $(document).ready(function() {$('#datatables').DataTable({"order": [[ 1, "desc" ]], "pagingType": "full_numbers", "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"] ], autoWidth: false, searching: false, ordering: true, responsive: true, lengthChange: false, destroy: true, paging: true, info: false }); var table = $('#datatables').DataTable(); $('.card .material-datatables label').addClass('form-group'); }); </script> {% block js %}
       {% endblock %}
@@ -100,10 +93,7 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
                  if (parts.length == 2) return parts.pop().split(";").shift(); 
              }
              var popup = getCookie("popupnotifis"); 
-             /*popup != '1' && (
-                 $('#modalNotification').modal(), 
-                 document.cookie = "popupnotifis=1; max-age=1800; path=/;"
-             ); */
+            
          })
       </script>
       <script type="text/javascript">
@@ -113,5 +103,82 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
       <noscript>
          <div style="display:inline;"> <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/824193461/?guid=ON&amp;script=0"/> </div>
       </noscript>
+      <script type="text/javascript">
+         var datatables_investmenthistory = $('#datatables_investmenthistory').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 2 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                
+                $( api.column( 2 ).footer() ).html(
+                    '$ '+total
+                );
+            },
+        });
+
+         datatables_investmenthistory.on( 'order.dt search.dt', function () {
+              datatables_investmenthistory.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+
+         var datatables_referrals = $('#datatables_referrals').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                
+            },
+            "order": [[ 2, "desc" ]]
+        });
+
+         datatables_referrals.on( 'order.dt search.dt', function () {
+              datatables_referrals.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+
+         var datatables_deposit = $('#datatables_deposit').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 4 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                
+                $( api.column( 4 ).footer() ).html(
+                    '$ '+total
+                );
+            },
+        });
+
+         datatables_deposit.on( 'order.dt search.dt', function () {
+              datatables_deposit.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+      </script>
    </body>
 </html>

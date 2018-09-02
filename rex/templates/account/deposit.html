@@ -1,330 +1,242 @@
 {% extends "layout.html" %}
-{% block title %}Trade & Mining | World Trade{% endblock %}
-{% block js %}
-<script src="/static/assets/js/script.js"></script>
-<script src="/static/assets/js/getinfo.js"></script>
-<script src="/static/assets/js/lending.js"></script>
-<script src="/static/assets/js/main.js"></script>
+{% block title %}Deposit{% endblock %}
+{% block css %}
+<link href="/static/assets/css/jstree.css" rel="stylesheet" >
 {% endblock %}
+{% block js %}
+<script src="/static/assets/js/getinfo.js"></script>
+<script type="text/javascript" src="/static/assets/js/jstree.min.js"> </script>
+<script type="text/javascript">
+    $('#TreeSystem').jstree({
+            'core' : {
+               'data' : {
+                  "url" : "/account/json_tree_ico/{{data.uid}}",
+                  "dataType" : "json",
+         'data' : function (node) {
+                  return { 'id' : node.id };
+              }
+               }
+            }
+         });
+</script>
+{% endblock %}
+	
+
 {% block main %}
-
-<div class="modal fade" id="modalExchange" tabindex="-1" role="dialog" aria-labelledby="modalExchangeLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
-            <h4 class="modal-title" id="ModalTransfer-label">Exchange USD to XVG</h4>
-         </div>
-         <form role="form" class="form-horizontal" id="frmTransfer" novalidate="novalidate">
-            <div class="modal-body">
-               <div class="well">
-                  <div class="text-black"> Exchange rate : <strong>1 XVG</strong> = <strong> <span class="sva_usd">0</span> USD</strong> </div>
-               </div>
-               <div class="well">
-                  <div class="text-black"> USD Wallet : <strong class="usd_balance">{{ (data.float(data.user.usd_balance)) | format_usd}} USD</strong> </div>
-               </div>
-               <div class="well">
-                  <div class="text-black"> XVG Wallet : <strong class="sva_balance">{{ (data.float(data.user.sva_balance)) | format_usd}} XVG</strong> </div>
-               </div>
-               <div class="form-group">
-                  <label class="col-md-12">Amount <small class="text-danger">(Min 10 USD)</small></label> 
-                  <div class="col-sm-6">
-                     <div class="input-group"> <input type="text" placeholder="Amount" class="form-control amount_usd" name="amount" id="amount_transfer"> <span class="input-group-addon">USD</span> </div>
-                  </div>
-                  <div class="col-sm-6">
-                     <div class="input-group"> <input type="text" class="form-control amount_coin" readonly="" id="amount_coin_transfer" name="amount_coin"> <span class="input-group-addon">XVG</span> </div>
-                  </div>
-               </div>
-            </div>
-            <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" id="btn-transfer" class="btn btn-primary btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Transfer USD To XVG Wallet</button> </div>
-         </form>
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">HOW TO DEPOSIT </strong>
       </div>
-   </div>
-</div>
-<div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-6">
-      <div class="card card-wallet" data-color="mediumaquamarine" style="background: linear-gradient(to right, #525a61 0%, #969696 100%);">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>BTC Wallet</p>
-                     <span class="btc_balance">{{ (data.float(data.user.btc_balance)) | format_round}}</span>
-                      BTC
-
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               <i class="ti-wallet text-warning"></i> 
-            </div>
-         </div>
-      </div>
-   </div>
-    
-   
-   <div class="col-lg-4 col-md-6 col-sm-6">
-      <div class="card card-wallet" data-color="orange" style="background: linear-gradient(to right, #525a61 0%, #969696 100%);">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>Cash Wallet</p>
-                     <span class="usd_balance">{{ (data.float(data.user.usd_balance)) | format_usd}}</span> USD 
-                  </div>
-               </div>
-            </div>
-         </div>
-        
-      </div>
-   </div>
-   <div class="col-lg-4 col-md-6 col-sm-6">
-      <div class="card card-wallet" data-color="lightseagreen">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>Total Trade & Mining</p>
-                     <span class="total_invest">{{ (data.float(data.user.total_invest)) | format_usds}} </span> USD
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               <i class="ti-wallet text-warning"></i> 
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <div class="col-lg-4 col-md-6 col-sm-6">
-      <div class="card card-wallet" data-color="yellowgreen">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>DAILY PROFIT</p>
-                     $<span class="m_wallet">{{ (data.float(data.user.m_wallet)) | format_usd}}</span> 
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               <i class="ti-wallet text-warning"></i> 
-            </div>
-         </div>
-      </div>
-   </div>
-   
- 
-  <div class="col-lg-4 col-md-6 col-sm-6 ">
-      <div class="card card-wallet" data-color="navy">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>SYSTEM COMMISSIONS</p>
-                     $<span class="s_wallet">{{ (data.float(data.user.s_wallet)) | format_usd}}</span> 
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               <i class="ti-wallet text-warning"></i> 
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="col-lg-4 col-md-6 col-sm-6 ">
-      <div class="card card-wallet" data-color="navy">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>DIRECT COMMISSIONS</p>
-                     $<span class="r_wallet">{{ (data.float(data.user.r_wallet)) | format_usd}}</span> 
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               <i class="ti-wallet text-warning"></i> 
-            </div>
-         </div>
-      </div>
-   </div>
-
-</div>
-<div class="row" style="margin-top: 20px;margin-bottom: 20px;">
-  <div class="col-md-12 col-xs-12">
-      <div class="well" style="overflow-x:auto;">
-         <table class="table table-responsive" id="table-invests">
-            <thead>
-               <th>TRADING & MINING</th>
-               <th  class="text-center">Daily Profit</th>
-               <th class="text-center">System Commissions</th>
-               <th class="text-center">Direct Commissions</th>
-               <th>Day</th>
-            </thead>
-            <tbody>
-               <tr class="100">
-                  <td>100 USD</td>
-                  <td class="text-center">0.4%</td>
-                  <td class="text-center">6%</td>
-                  <td class="text-center">8%</td>
-                  <td>300</td>
-               </tr>
-               <tr  class="500">
-                  <td>500 USD</td>
-                  <td class="text-center">0.4%</td>
-                  <td class="text-center">6%</td>
-                  <td class="text-center">8%</td>
-                  <td>300</td>
-               </tr>
-               <tr class="1000">
-                  <td>1,000 USD</td>
-                  <td class="text-center">0.5%</td>
-                  <td class="text-center">8%</td>
-                  <td class="text-center">10%</td>
-                  <td>260</td>   
-               </tr>
-               <tr class="2000">
-                  <td>2,000 USD</td>
-                  <td class="text-center">0.5%</td>
-                  <td class="text-center">8%</td>
-                  <td class="text-center">10%</td>
-                  <td>260</td>
-               </tr>
-               <tr class="5000">
-                  <td>5,000 USD</td>
-                  <td class="text-center">0.6%</td>
-                  <td class="text-center">10%</td>
-                  <td class="text-center">11%</td>
-                  <td>225</td>
-               </tr>
-               <tr class="10000">
-                  <td>10,000 USD</td>
-                  <td  class="text-center">0.6%</td>
-                  <td  class="text-center">10%</td>
-                  <td  class="text-center">11%</td>
-                  <td>225</td>
-               </tr>
-               <tr class="20000">
-                  <td>20,000 USD</td>
-                  <td class="text-center">0.65%</td>
-                  <td class="text-center">12%</td>
-                  <td class="text-center">12%</td>
-                  <td>200</td>
-               </tr>
-               <tr class="50000">
-                  <td>50,000 USD</td>
-                  <td class="text-center">0.7%</td>
-                  <td class="text-center">12%</td>
-                  <td class="text-center">12%</td>
-                  <td>200</td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-   </div>
-</div>
-<div class="row" id="invests_trade">
-    <div class="col-md-12">
-        <div class="card">
-              <div class="content" style=" width: 100%; height: 100%; position: relative; ">
-               <h4 class="title">TRADING & MINING</h4>
-               
-                <fieldset>
-                    <div class="form-group">
-                        <input type="hidden" name="" id="price_usd_btc" value="{{data.btc_usd}}">
-                        <div class="input-group">
-                           <select class="form-control" name="usd_amount" id="usd_amount">
-                              <option value="">---Trade & Mining---</option>
-                              <option value="100">100 USD</option>
-                              <option value="500">500 USD</option>
-                              <option value="1000">1,000 USD</option>
-                              <option value="2000">2,000 USD</option>
-                              <option value="5000">5,000 USD</option>
-                              <option value="10000">10,000 USD</option>
-                              <option value="20000">20,000 USD</option>
-                              <option value="50000">50,000 USD</option>
-                           </select>
-                           
-                           <span class="input-group-addon">USD</span>
+      <div class="card-body">
+         <div class="div-wallet-container table-responsive">
+            <table class="table" id="table--list--coin" data-bind="with: Wallet">
+               <thead>
+                  <tr style="border-top:0px solid #DADEE7;border-bottom:1px solid #DADEE7">
+                     <th style="border-top:0px">Coin</th>
+                     <th style="border-top:0px">Name</th>
+                     <th style="border-top:0px; text-align:center" width="200px">Actions</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>
+                     <img src="/static/img/BTC.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">BTC</span></td>
+                     <td> Bitcoin</td>
+                     <td style="text-align:center">
+                        <button class="btn btn-default btn-deposit button--deposit" data-coin="BTC" data-content="btc-action">Deposit</button>                                
+                     </td>
+                  </tr>
+                  <tr class="content-show-BTC hiddensss">
+                     <td colspan="3">
+                        <div style="padding:10px 0px 10px;">
+                           <h4 style="color: #333333; font-size: 18px">Your Address Bitcoin Deposit</h4>
+                           <div style="background: #dff1ef;padding: 15px;text-align: center;font-weight: 600;border-radius: 3px;" class="content-all-BTC">
+                              <div class="form-group text-center">
+                                 <img style="max-width:300px;" class="address-new-img-BTC" alt="" src="">
+                              </div>
+                              <span style="color: #000;" class="address-new-BTC"></span>
+                           </div>
+                           <div style="color: #fb4f53;">
+                              
+                              <div>IMPORTANT: Send only BTC to this deposit address.            
+                              </div>
+                           </div>
+                           <div>Sending tokens or any other currency to this address will result in the permanent loss of your deposit.</div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input readonly="true" type="text" id="btc_amount" class="form-control" placeholder="Amount BTC" name="btc_amount">
-                            <span class="input-group-addon">BTC</span>
-                    </div>
-                    
-                    <div class="col-sm-12 text-center">
-                        <button type="button" id="btnLending"  class="btn btn-fill btn-wd btnConfirm" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order">Confirm</button>
-                    </div>
-                </div>
-                </fieldset>
-                
-            </div>
-        </div>
-    </div>
+                     </td>
+                  </tr>
+                  
+                  <tr>
+                     <td>
+                     <img src="/static/img/ETH.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">ETH</span></td>
+                     <td> Ethereum</td>
+                     <td style="text-align:center">
+                        <button class="btn btn-default btn-deposit button--deposit" data-coin="ETH" data-content="btc-action">Deposit</button>                                
+                     </td>
+                  </tr>
+                  <tr class="content-show-ETH hiddensss">
+                     <td colspan="3">
+                        <div style="padding:10px 0px 10px;">
+                           <h4 style="color: #333333; font-size: 18px">Your Address Ethereum Deposit</h4>
+                           <div style="background: #dff1ef;padding: 15px;text-align: center;font-weight: 600;border-radius: 3px;" class="content-all-ETH">
+                              <div class="form-group text-center">
+                                 <img style="max-width:300px;" class="address-new-img-ETH" alt="" src="">
+                              </div>
+                              <span style="color: #000;" class="address-new-ETH"></span>
+                           </div>
+                           <div style="color: #fb4f53;">
+                              
+                              <div>IMPORTANT: Send only ETH to this deposit address.            
+                              </div>
+                           </div>
+                           <div>Sending tokens or any other currency to this address will result in the permanent loss of your deposit.</div>
+                        </div>
+                     </td>
+                  </tr>
+
+                  <tr>
+                     <td>
+                     <img src="/static/img/LTC.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">LTC</span></td>
+                     <td> Litecoin</td>
+                     <td style="text-align:center">
+                        <button class="btn btn-default btn-deposit button--deposit" data-coin="LTC" data-content="btc-action">Deposit</button>                                
+                     </td>
+                  </tr>
+                  <tr class="content-show-LTC hiddensss">
+                     <td colspan="3">
+                        <div style="padding:10px 0px 10px;">
+                           <h4 style="color: #333333; font-size: 18px">Your Litecoin Deposit</h4>
+                           <div style="background: #dff1ef;padding: 15px;text-align: center;font-weight: 600;border-radius: 3px;" class="content-all-LTC">
+                              <div class="form-group text-center">
+                                 <img style="max-width:300px;" class="address-new-img-LTC" alt="" src="">
+                              </div>
+                              <span style="color: #000;" class="address-new-LTC"></span>
+                           </div>
+                           <div style="color: #fb4f53;">
+                              
+                              <div>IMPORTANT: Send only LTC to this deposit address.            
+                              </div>
+                           </div>
+                           <div>Sending tokens or any other currency to this address will result in the permanent loss of your deposit.</div>
+                        </div>
+                     </td>
+                  </tr>
+
+                  <tr>
+                     <td>
+                     <img src="/static/img/BCH.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">BCH</span></td>
+                     <td> Bitcoin Cash</td>
+                     <td style="text-align:center">
+                        <button class="btn btn-default btn-deposit button--deposit" data-coin="BCH" data-content="btc-action">Deposit</button>                                
+                     </td>
+                  </tr>
+                  <tr class="content-show-BCH hiddensss">
+                     <td colspan="3">
+                        <div style="padding:10px 0px 10px;">
+                           <h4 style="color: #333333; font-size: 18px">Your Bitcoin Cash Deposit</h4>
+                           <div style="background: #dff1ef;padding: 15px;text-align: center;font-weight: 600;border-radius: 3px;" class="content-all-BCH">
+                              <div class="form-group text-center">
+                                 <img style="max-width:300px;" class="address-new-img-BCH" alt="" src="">
+                              </div>
+                              <span style="color: #000;" class="address-new-BCH"></span>
+                           </div>
+                           <div style="color: #fb4f53;">
+                              
+                              <div>IMPORTANT: Send only BCH to this deposit address.            
+                              </div>
+                           </div>
+                           <div>Sending tokens or any other currency to this address will result in the permanent loss of your deposit.</div>
+                        </div>
+                     </td>
+                  </tr>
+
+                  <tr>
+                     <td>
+                     <img src="/static/img/USDT.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">USDT</span></td>
+                     <td> Tether</td>
+                     <td style="text-align:center">
+                        <button class="btn btn-default btn-deposit button--deposit" data-coin="USDT" data-content="btc-action">Deposit</button>                                
+                     </td>
+                  </tr>
+                  <tr class="content-show-USDT hiddensss">
+                     <td colspan="3">
+                        <div style="padding:10px 0px 10px;">
+                           <h4 style="color: #333333; font-size: 18px">Your Tether Deposit</h4>
+                           <div style="background: #dff1ef;padding: 15px;text-align: center;font-weight: 600;border-radius: 3px;" class="content-all-USDT">
+                              <div class="form-group text-center">
+                                 <img style="max-width:300px;" class="address-new-img-USDT" alt="" src="">
+                              </div>
+                              <span style="color: #000;" class="address-new-USDT"></span>
+                           </div>
+                           <div style="color: #fb4f53;">
+                              
+                              <div>IMPORTANT: Send only USDT to this deposit address.            
+                              </div>
+                           </div>
+                           <div>Sending tokens or any other currency to this address will result in the permanent loss of your deposit.</div>
+                        </div>
+                     </td>
+                  </tr>
+
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
 </div>
-<div class="row">
-   <div class="col-md-12">
-      <div class="card">
-         <div class="content">
-            <h4 class="title">List Deposit</h4>
-            <div class="toolbar">
-               <!--        Here you can write extra buttons/actions for the toolbar              -->
-            </div>
+
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">DEPOSIT HISTORY </strong>
+      </div>
+      <div class="card-body">
+         <div class="">
             <div class="material-datatables">
-               <table id="datatables" class="table table-striped table-no-bordered table-hover" style="width:100%;cellspacing:0">
+              
+               <table id="datatables_deposit" class="table table-bordered" style="width:100%;cellspacing:0">
                   <thead>
                      <tr>
+                        <th>No.</th>
+                        <th>Datetime</th>
                         <th>Amount</th>
-                        <th>Date Add</th>
-                        <th>Total Profit</th>
-                        <th>Percent/Days</th>
-                        <th>Days</th>
+                        
+                        <th>Currency</th>
+                        <th>Amount USD</th>
+                        <th>Txid</th>
                      </tr>
                   </thead>
                   <tbody>
                      {% if data.deposit %}
                      {% for item in data.deposit %}
                      <tr>
-                        <td>{{ item.amount_usd | format_usd}} USD</td>
+                        <td></td>
                         <td>{{ item.date_added | format_date }}</td>
-                        <td>{{ item.num_profit | format_usd}} USD</td>
-                        <td>{{ item.percent }}%</td>
-                        <td><b class="text-success">{{ data.int(item.total_day_earn) }}</b>/<b class="text-danger">{{ data.int(item.total_day) }}</b></td>
+                        <td>{{ item.amount }}</td>
+                        
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.amount_usd }}</td>
+                        <td>{{ item.tx }}</td>
                      </tr>
                      {% endfor %}
                      {% endif %}
                   </tbody>
                   <tfoot>
-                     <tr>
-                        <th>Amount</th>
-                        <th>Date Add</th>
-                        <th>Profit</th>
-                        <th>Percent/Days</th>
-                        <th>Status</th>
-                     </tr>
-                  </tfoot>
+                  <th colspan="4" class="text-right">Total</th>
+                  <th colspan="2" class="text-left"></th>
+                  <tfoot>
                </table>
             </div>
+
+            
+            </div>
          </div>
-         <!-- end content-->
       </div>
-      <!--  end card  -->
-   </div>
-   <!-- end col-md-12 -->
 </div>
 
 
+
+
 {% endblock %}
+

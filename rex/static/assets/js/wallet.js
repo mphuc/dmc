@@ -1,158 +1,59 @@
 $(function() {
-    FnWithdraw();
-    FnWithdrawBTC();
-    $('#btnDepositSVA').click(function(evt) {
-        var sva_amount = $('#sva_amount_deposit').val();
-        var sva_address = $('#sva_address').val();
-        if (isNaN(sva_amount) || parseFloat(sva_amount) >= 0.01) {
-            $('#qrSva').html('<img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=sva:'+sva_address+'?amount='+sva_amount+'?message=SVA" alt="">')
-        }
-        
-    });
-    $('#btnDepositBTC').click(function(evt) {
-        var btc_amount = $('#btc_amount_deposit').val();
-        var btc_address = $('#btc_address').val();
-        if (isNaN(btc_amount) || parseFloat(btc_amount) >= 0.01) {
-            $('#qrBTC').html('<img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:'+btc_address+'?amount='+btc_amount+'" alt="Deposit bitcoin">')
-        }
-        
-    });
-    function FnWithdraw(){
-       
-        $('#btnSvaWithdraw').click(function(evt) {
-        	swal({
-                title: 'Are you sure?',
-                text: '',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                confirmButtonClass: "btn btn-success",
-                cancelButtonClass: "btn btn-danger",
-                buttonsStyling: false
-            }).then(function() {
-               $.ajax({
-                    url: "/account/withdrawSVC",
-                    data: {
-                        sva_amount: $('#amount_sva').val(),
-                        sva_address: $('#address_sva').val(),
-                        password: $('#password').val(),
-                        one_time_password: $('#onetime_sva').val()
-                    },
-                    type: "POST",
-                    beforeSend: function() {
-                        $('.btnConfirm').button('loading');
-                    },
-                    error: function(data) {
-                        $('.btnConfirm').button('reset');
-                    },
-                    success: function(data) {
-                        $('.btnConfirm').button('reset');
-                        var data = $.parseJSON(data);
-                       
-                        data.status == 'error' ? (
-                            showNotification('top', 'right', data.message, 'danger')
-                        ) : (
-                            showNotification('top', 'right', data.message, 'success'),
-                            $('.sva_balance').html(data.new_sva_balance),
-                            $('#amount_sva').val(''),
-                            $('#address_sva').val(''),
-                            $('#password').val('')
-                            // $('#Alert').show()
-                        )
-                    }
-                });
-              
-            }, function(dismiss) {
-              // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-              if (dismiss === 'cancel') {
-                swal({
-                  title: 'Cancelled',
-                  text: '',
-                  type: 'error',
-                  confirmButtonClass: "btn btn-info",
-                  buttonsStyling: false
-                }).catch(swal.noop);
-              }
-            })
-        });
-    }
-    function FnWithdrawBTC(){
-
-        $('#btnBTCWithdraw').click(function(evt) {
-            swal({
-                title: 'Are you sure?',
-                text: '',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                confirmButtonClass: "btn btn-success",
-                cancelButtonClass: "btn btn-danger",
-                buttonsStyling: false
-            }).then(function() {
-               $.ajax({
-                    url: "/account/withdrawBTC",
-                    data: {
-                        btc_amount: $('#amount_btc').val(),
-                        btc_address: $('#address_btc').val(),
-                        password: $('#password_btc').val(),
-                        one_time_password: $('#onetime_btc').val()
-                    },
-                    type: "POST",
-                    beforeSend: function() {
-                        $('.btnConfirm').button('loading');
-                    },
-                    error: function(data) {
-                        $('.btnConfirm').button('reset');
-                    },
-                    success: function(data) {
-                        $('.btnConfirm').button('reset');
-                        var data = $.parseJSON(data);
-                       
-                        data.status == 'error' ? (
-                            showNotification('top', 'right', data.message, 'danger')
-                        ) : (
-                            showNotification('top', 'right', data.message, 'success'),
-                            $('.btc_balance').html(data.new_btc_balance),
-                            $('#amount_btc').val(''),
-                            $('#address_btc').val(''),
-                            $('#password').val('')
-                            // $('#Alert').show()
-                        )
-                    }
-                });
-              
-            }, function(dismiss) {
-              // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-              if (dismiss === 'cancel') {
-                swal({
-                  title: 'Cancelled',
-                  text: '',
-                  type: 'error',
-                  confirmButtonClass: "btn btn-info",
-                  buttonsStyling: false
-                }).catch(swal.noop);
-              }
-            })
-        });
-    }
-
-    function showNotification(from, align, msg, type) {
-        /* type = ['','info','success','warning','danger','rose','primary'];*/
-        var color = Math.floor((Math.random() * 6) + 1);
-        $.notify({
-            icon: "notifications",
-            message: msg
-        }, {
-            type: type,
-            timer: 3000,
-            placement: {
-                from: from,
-                align: align
+    $('.button--deposit').on('click',function(){
+        var coin = $(this).data('coin');
+        $.ajax({
+            url: "/account/get-new-address",
+            data: {
+                type: coin
+            },
+            type: "POST",
+            beforeSend: function() {
+                $('.content-show-'+coin).show(300);
+                $('.content-all-'+coin).html('<img src="/static/img/ajax-loader.gif" width="120">');
+            },
+            error: function(data) {
+                
+            },
+            success: function(data) {
+                var data = $.parseJSON(data);
+                var html = '<div class="form-group text-center"><img style="max-width:300px;" class="address-new-img" alt="" src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:'+data.address+'?amount=0"></div><span style="color: #000;" class="address-new">'+data.address+'</span>'
+                $('.content-all-'+coin).html(html);
+                
             }
         });
-    }
+        
+    })
 
 
+    /*$.ajax({
+        url: "http://0.0.0.0:58056/account/jskfkjsfhkjsdhfqwtryqweqeweqeqwe",
+        data: { 'ipn_version': '1.0',
+          'ipn_id': 'c569cb685cbd3513a50dee72207a5231',
+          'ipn_mode': 'hmac',
+          'merchant': '6694453efdf2c71ec8686962d37d8cc5',
+          'ipn_type': 'deposit',
+          'address': '369TiAscyjKv6huHoEgWispbapE4xCjEwm',
+          'txn_id': '0xcc2e3dc3992s7044c7c534s1626f01ca6ss04c6fe87f38843231851342a5e156',
+          'status': '100',
+          'status_text': 'Deposit confirmed',
+          'currency': 'BTC',
+          'amount': '0.00150000',
+          'amounti': '150000',
+          'fee': '0.00000750',
+          'feei': '750',
+          'confirms': '11' 
+        },
+        type: "POST",
+        beforeSend: function() {        
+        },
+        error: function(data) {
+         
+        },
+        success: function(data) {
+           
+        }
+    });*/
 })
+
+
+

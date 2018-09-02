@@ -15,7 +15,8 @@ import time
 import requests
 import string
 import random
-from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
+
+import collections
 version = 2 # API version
 block_io = BlockIo('9fd3-ec01-722e-fd89', 'SECRET PIN', version)
 # BTC TEST
@@ -32,64 +33,275 @@ def is_number(s):
     except ValueError:
         return False
     return True
-@deposit_ctrl.route('/deposit', methods=['GET', 'POST'])
+
+def check_active_investment(uid):
+    investment = db.investments.find_one( {'$and' :  [{'status' : 1},{'uid': uid}]})
+    if investment is None:
+        data = {
+            'status' : True,
+            'package' : 0
+        }
+        return data
+    else:
+        if float(investment['package']) > 100:
+            data = {
+                'status' : False,
+                'package' : investment['package']
+            }
+        else:
+            data = {
+                'status' : True,
+                'package' : investment['package']
+            }
+        return data
+
+@deposit_ctrl.route('/investment-lists', methods=['GET', 'POST'])
 def deposit():
     
     if session.get(u'logged_in') is None:
         return redirect('/user/login')
     uid = session.get('uid')
-    query = db.Deposit.find({'uid': uid})
+    user = db.users.find_one({'customer_id': uid})
+
+    package_active = 0
+    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
+    if investment is not None:
+        package_active = float(investment['package'])
+    data ={
+        'title' : 'Deposit',
+        'menu' : 'investment',
+        'float' : float,
+        'int': int,
+        'user': user,
+        'package_active' : package_active
+        
+    }
+
+    return render_template('account/investment-lists.html', data=data)
+
+@deposit_ctrl.route('/investment-history', methods=['GET', 'POST'])
+def deposithistory():
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    investment = db.investments.find( {'uid': uid})
+    data ={
+        'title' : 'Deposit',
+        'menu' : 'investment',
+        'float' : float,
+        'int': int,
+        'user': user,
+        'investment' : investment
+        
+    }
+    return render_template('account/investment-history.html', data=data)
+
+@deposit_ctrl.route('/active-investment/<package>', methods=['GET', 'POST'])
+def ActiveInvestment(package):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    if int(package) == 1:
+        name_package = 'STARTED'
+        amount_package = 110
+    if int(package) == 2:
+        name_package = 'EXCUTIVE'
+        amount_package = 510
+    if int(package) == 3:
+        name_package = 'SILVER'
+        amount_package = 1010
+    if int(package) == 4:
+        name_package = 'GOLD'
+        amount_package = 3010
+    if int(package) == 5:
+        name_package = 'SAPPHIRE'
+        amount_package = 5010
+    if int(package) == 6:
+        name_package = 'RUBY'
+        amount_package = 10010
+    if int(package) == 7:
+        name_package = 'PLATINUM'
+        amount_package = 30010
+    if int(package) == 8:
+        name_package = 'DIAMOND'
+        amount_package = 50010
+    if int(package) == 9:
+        name_package = 'BLUE DIAMOND'
+        amount_package = 100010
+    if int(package) == 10:
+        name_package = 'BLACK DIAMOND'
+        amount_package = 500010
+    if int(package) == 11:
+        name_package = 'CROWN DIAMOND'
+        amount_package = 1000010
+
+    check_balance = True
+    if float(user['balance_wallet']) < float(amount_package):
+        check_balance = False
+
+    check_investment = False
+    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
+    if investment is None or (float(investment['package']) == 100 and int(package) != 1):
+        check_investment = True
+    data ={
+        'title' : 'Deposit',
+        'menu' : 'investment',
+        'name_package' : name_package,
+        'amount_package' : amount_package,
+        'package' : package,
+        'float' : float,
+        'int': int,
+        'user': user,
+        'check_balance' : check_balance,
+        'check_investment' :check_investment
+    }
+    return render_template('account/investment-active.html', data=data)
+
+@deposit_ctrl.route('/active-investment-submit/<package>', methods=['GET', 'POST'])
+def ActiveInvestmentSumit(package):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
     uid = session.get('uid')
     user = db.User.find_one({'customer_id': uid})
-    dataDeposit = db.deposits.find({'uid': uid})
-    data_ticker = db.tickers.find_one({})
-    data ={
-    'deposit' : query,
-    'title' : 'Deposit',
-    'menu' : 'deposit',
-    'float' : float,
-    'int': int,
-    'user': user,
-    'deposit': dataDeposit,
-    'btc_usd':data_ticker['btc_usd'],
-    'sva_btc':data_ticker['sva_btc'],
-    'sva_usd':data_ticker['sva_usd']
-    }
-    return render_template('account/deposit.html', data=data)
-def binaryAmount(user_id, amount_invest):
-    customer_ml = db.User.find_one({"customer_id" : user_id })
-    if customer_ml.p_binary != '':  #and float(customer_ml.type) == 0
+
+    coin_amount = 0
+
+    if int(package) == 1:
+        name_package = 'STARTED'
+        amount_package = 110
+    if int(package) == 2:
+        name_package = 'EXCUTIVE'
+        amount_package = 510
+    if int(package) == 3:
+        name_package = 'SILVER'
+        amount_package = 1010
+    if int(package) == 4:
+        name_package = 'GOLD'
+        amount_package = 3010
+    if int(package) == 5:
+        name_package = 'SAPPHIRE'
+        amount_package = 5010
+    if int(package) == 6:
+        name_package = 'RUBY'
+        amount_package = 10010
+        coin_amount = 2500
+    if int(package) == 7:
+        name_package = 'PLATINUM'
+        amount_package = 30010
+        coin_amount = 7500
+    if int(package) == 8:
+        name_package = 'DIAMOND'
+        amount_package = 50010
+        coin_amount = 12500
+    if int(package) == 9:
+        name_package = 'BLUE DIAMOND'
+        amount_package = 100010
+        coin_amount = 25000
+    if int(package) == 10:
+        name_package = 'BLACK DIAMOND'
+        amount_package = 500010
+        coin_amount = 125000
+    if int(package) == 11:
+        name_package = 'CROWN DIAMOND'
+        amount_package = 1000010
+        coin_amount = 250000
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+
+    check_investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
+    if check_investment is None or (float(check_investment['package']) == 100 and int(package) != 1):
+        
+    #check balance
+        if float(user['balance_wallet']) >= float(amount_package):
+            #check package 100
+            check_package_100  = db.investments.find_one( {'$and' :  [{'status' : 1},{'uid': uid}]},{'package' : 100})
+            if check_package_100 is not None:
+                db.investments.update({'_id': ObjectId(check_package_100['_id'])},{'$set' : {'status' : 0}})
+
+                new_balance_wallets = float(user['balance_wallet']) + float(check_package_100['package'])
+                db.users.update({ "customer_id" : uid }, { '$set': { "balance_wallet": float(new_balance_wallets) } })
+
+                if user['p_binary'] != '':
+                    #chay hai nhanh
+                    binaryAmount(uid, float(amount_package) - 10)
+                    #chay p_node
+                    TotalnodeAmount(uid, float(amount_package) - 10)
+                    #hoa hong truc tiep
+                    FnRefferalProgram(uid, float(amount_package) - 10)                
+
+    #update balance
+            user = db.users.find_one({'customer_id': uid})
+            new_balance_wallet = float(user['balance_wallet'])- float(amount_package)
+            new_coin_wallet = float(user['coin_wallet']) + float(coin_amount)
+            db.users.update({ "customer_id" : uid }, { '$set': { "coin_wallet" : new_coin_wallet, "balance_wallet": float(new_balance_wallet) ,"level" : int(package),"investment" : float(amount_package) - 10} })
+    #create investment
+            data_investment = {
+                'uid' : uid,
+                'user_id': user['_id'],
+                'username' : user['username'],
+                'amount_usd' : float(amount_package),
+                'package': float(amount_package) - 10,
+                'status' : 1,
+                'date_added' : datetime.utcnow(),
+                'amount_frofit' : 0
+            }
+            db.investments.insert(data_investment)
+
+            
+            return redirect('/account/active-investment/'+package)
+        else:
+            return redirect('/account/active-investment/'+package)
+    else:
+        return redirect('/account/active-investment/'+package)
+
+
+
+def TotalnodeAmount(user_id, amount_invest):
+    customer_ml = db.users.find_one({"customer_id" : user_id })
+    if customer_ml['p_node'] != '':
         while (True):
-            customer_ml_p_binary = db.User.find_one({"customer_id" : customer_ml.p_binary })
+            customer_ml_p_node = db.users.find_one({"customer_id" : customer_ml['p_node'] })
+            if customer_ml_p_node is None:
+                break
+            else:
+                customers = db.users.find_one({"customer_id" : customer_ml_p_node['customer_id'] })
+                customers['total_node'] = float(customers['total_node']) + float(amount_invest)
+                db.users.save(customers)
+                
+            customer_ml = db.users.find_one({"customer_id" : customer_ml_p_node['customer_id'] })
+            if customer_ml is None:
+                break
+    return True
+
+def binaryAmount(user_id, amount_invest):
+    customer_ml = db.users.find_one({"customer_id" : user_id })
+    if customer_ml['p_binary'] != '':
+        while (True):
+            customer_ml_p_binary = db.users.find_one({"customer_id" : customer_ml['p_binary'] })
             if customer_ml_p_binary is None:
                 break
             else:
-                if customer_ml_p_binary.left == customer_ml.customer_id:
-                    #left
-                    # count_f1 = db.User.find({"$and" :[{'p_node': customer_ml_p_binary.customer_id}, {'level': 2}] }).count()
-                    if customer_ml_p_binary.level >= 2:
-                    # if count_f1 >= 2 and customer_ml_p_binary.level == 2:
-                        customers = db.User.find_one({"customer_id" : customer_ml_p_binary.customer_id })
-                        customers.total_pd_left = float(customers.total_pd_left) + float(amount_invest)
-                        customers.total_amount_left = float(customers.total_amount_left) + float(amount_invest)
-                        db.users.save(customers)
+                if customer_ml_p_binary['left'] == customer_ml['customer_id']:
+                    
+                    customers = db.users.find_one({"customer_id" : customer_ml_p_binary['customer_id'] })
+                    customers['total_pd_left'] = float(customers['total_pd_left']) + float(amount_invest)
+                    customers['total_amount_left'] = float(customers['total_amount_left']) + float(amount_invest)
+                    db.users.save(customers)
                     print("left binary")
                 else:
-                    # count_f1 = db.User.find({"$and" :[{'p_node': customer_ml_p_binary.customer_id}, {'level': 2}] }).count()
-                    if customer_ml_p_binary.level >= 2:
-                    # if count_f1 >= 2 and customer_ml_p_binary.level == 2:
-                        customers = db.User.find_one({"customer_id" : customer_ml_p_binary.customer_id })
-                        customers.total_pd_right = float(customers.total_pd_right) + float(amount_invest)
-                        customers.total_amount_right = float(customers.total_amount_right) + float(amount_invest)
-                        db.users.save(customers)
+                    
+                    customers = db.users.find_one({"customer_id" : customer_ml_p_binary['customer_id'] })
+                    customers['total_pd_right'] = float(customers['total_pd_right']) + float(amount_invest)
+                    customers['total_amount_right'] = float(customers['total_amount_right']) + float(amount_invest)
+                    db.users.save(customers)
                     print("right binary")
-                    #binary
-
-                # checkNode = db.users.find({"customer_id" : customer_ml_p_binary.customer_id })
-                # if checkNode.count() == 0 or customer_ml_p_binary.customer_id == '11201729184651':
-                #     break
-
-            customer_ml = db.User.find_one({"customer_id" : customer_ml_p_binary.customer_id })
+                    
+            customer_ml = db.users.find_one({"customer_id" : customer_ml_p_binary['customer_id'] })
             if customer_ml is None:
                 break
     return True
@@ -112,105 +324,263 @@ def SaveHistory(uid, user_id, username, amount, types, wallet, detail, rate, txt
     db.historys.insert(data_history)
     return True
 
-def get_receive_program(user_id,amount):
+def get_receive_program_package(user_id,amount):
     customer = db.users.find_one({"customer_id" : user_id })
+    
     if customer['level'] == 2:
-       max_receive = 200 
+       max_receive = 1250 
+    if customer['level'] == 3:
+       max_receive = 2500 
+    if customer['level'] == 4:
+       max_receive = 7500 
+    if customer['level'] == 5:
+       max_receive = 12500 
+    if customer['level'] == 6:
+       max_receive = 25000 
+    if customer['level'] == 7:
+       max_receive = 75000 
+    if customer['level'] == 8:
+       max_receive = 125000 
+    if customer['level'] == 9:
+       max_receive = 250000 
+    if customer['level'] == 10:
+       max_receive = 1250000 
+    if customer['level'] == 11:
+       max_receive = 2500000 
+
+    if float(amount) > max_receive - float(customer['max_out_package']):
+        amount_receve = max_receive - float(customer['max_out_package'])
+        db.investments.update({'uid': user_id},{'$set' : {'status' : 0}})
+    else:
+        amount_receve = amount
+    customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])
+    db.users.save(customer)
+    return amount_receve
+
+def get_receive_program_day(user_id,amount):
+    customer = db.users.find_one({"customer_id" : user_id })
+    
+    if customer['level'] == 2:
+       max_receive = 500 
     if customer['level'] == 3:
        max_receive = 1000 
     if customer['level'] == 4:
-       max_receive = 2000 
+       max_receive = 3000 
     if customer['level'] == 5:
-       max_receive = 4000 
+       max_receive = 5000 
     if customer['level'] == 6:
        max_receive = 10000 
     if customer['level'] == 7:
-       max_receive = 20000 
+       max_receive = 30000 
     if customer['level'] == 8:
-       max_receive = 40000 
+       max_receive = 50000 
     if customer['level'] == 9:
        max_receive = 100000 
+    if customer['level'] == 10:
+       max_receive = 500000 
+    if customer['level'] == 11:
+       max_receive = 1000000 
 
-    if float(amount) > float(max_receive):
-        amount_receve = max_receive
+    if float(amount) > max_receive - float(customer['max_out_day']):
+        amount_receve = max_receive - float(customer['max_out_day'])
     else:
         amount_receve = amount
+    customer['max_out_day'] = float(amount_receve) + float(customer['max_out_day'])
+    db.users.save(customer)
+
     return amount_receve
 
-def FnRefferalProgram(user_id, amount_invest,amount_xvg_promotion):
-    customer = db.users.find_one({"customer_id" : user_id })
-    username_invest = customer['username']
-    if customer['p_node'] != '0' or customer['p_node'] != '':
-        customer_p_node = db.users.find_one({"customer_id" : customer['p_node'] })
-        if customer_p_node is None:
-            return True
+def get_id_tree(ids):
+    listId = ''
+
+    query = db.users.find({'p_binary': ids})
+    for x in query:
+        listId += ', %s'%(x['customer_id'])
+        listId += get_id_tree(x['customer_id'])
+    return listId
+
+def binary_left(customer_id):
+    check_f1 = db.users.find({'$and' : [{'p_node' : customer_id},{'level':{'$gt': 0 }} ]})
+    
+    if check_f1.count() > 0:
+        listId = ''
+        for x in check_f1:
+            listId += ',%s'%(x['customer_id'])
+        arrId = listId[1:]
+
+        count = db.users.find_one({'customer_id': customer_id})
+        if count['left'] == '':
+            customer_binary = ',0'
         else:
-            if customer_p_node['level'] >= 2:
-                if customer_p_node['level'] == 2 or customer_p_node['level'] == 3:
-                    percent_daily  = 8
-                if customer_p_node['level'] == 4 or customer_p_node['level'] == 5:
-                    percent_daily  = 10
-                if customer_p_node['level'] == 6 or customer_p_node['level'] == 7:
-                    percent_daily  = 11
-                if customer_p_node['level'] == 8 or customer_p_node['level'] == 9:
-                    percent_daily  = 12
+            ids = count['left']
 
-                print(customer_p_node['username'],percent_daily,'reffral')
-                commission = float(amount_invest)*percent_daily/100
-                commission = round(commission,2)
+            count = get_id_tree(count['left'])
 
-                amount_max_out_p_node = get_receive_program(customer['p_node'],commission)
+            if count:
+                customer_binary = '%s , %s'%(count, ids)
 
-                if float(amount_max_out_p_node) > 0:
+            else:
+                customer_binary = ',%s'%(ids)
 
-                    commission = amount_max_out_p_node
+        customer_binary = customer_binary[1:]
 
-                    data_ticker = db.tickers.find_one({})
+        array = '%s, %s'%(arrId, customer_binary)
+        customers = array.split(',')
+        customers = map(int, customers)
 
-                    amount_btc_recive = round(float(commission)/float(data_ticker['btc_usd']),8)
-                    print(amount_btc_recive)
-                    rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
-                    dataSend = rpc_connection.sendtoaddress(customer_p_node['wallet'],amount_btc_recive)
-                    
-                    r_wallet = float(customer_p_node['r_wallet'])
-                    new_r_wallet = float(r_wallet) + float(commission)
-                    new_r_wallet = float(new_r_wallet)
+        check_in_left = [item for item, count in collections.Counter(customers).items() if count > 1]
 
-                    total_earn = float(customer_p_node['total_earn'])
-                    new_total_earn = float(total_earn) + float(commission)
-                    new_total_earn = float(new_total_earn)
+        if len(check_in_left) != 0:
+            check_in_left = 1
+        else:
+            check_in_left = -1
+    else:
+        check_in_left = -1
+    return check_in_left
+    
 
-                    new_sva_balance = float(amount_xvg_promotion) + float(customer_p_node['sva_balance'])
+def binary_right(customer_id):
+    check_f1 = db.users.find({'$and' : [{'p_node' : customer_id},{'level':{'$gt': 0 }} ]})
 
-                    print(new_sva_balance,"new_sva_balance")
+    if check_f1.count() > 0:
+        listId = ''
+        for x in check_f1:
+            listId += ', %s'%(x['customer_id'])
+        arrId = listId[1:]
+        count = db.users.find_one({'customer_id': customer_id})
+        if count['right'] == '':
+            customer_binary = ',0'
+        else:
+            ids = count['right']
+            count = get_id_tree(count['right'])
+            if count:
+                customer_binary = '%s , %s'%(count, ids)
+            else:
+                customer_binary = ',%s'%(ids)
+            
+        customer_binary = customer_binary[1:]
+        array = '%s, %s'%(arrId, customer_binary)
+        customers = array.split(',')
+        customers = map(int, customers)
 
-                    db.users.update({ "_id" : ObjectId(customer_p_node['_id']) }, { '$set': {'total_earn': new_total_earn, 'r_wallet' :new_r_wallet, 'sva_balance' : new_sva_balance } })
-                    detail = 'Get '+str(percent_daily)+' '+"""%"""+' referral bonus from member %s trade & mining %s USD' %(username_invest, amount_invest)
-                    SaveHistory(customer_p_node['customer_id'],customer_p_node['_id'],customer_p_node['username'], commission, 'receive', 'USD', detail, '', '')
+        check_in_right = [item for item, count in collections.Counter(customers).items() if count > 1]
+        if len(check_in_right) != 0:
+            check_in_right = 1
+        else:
+            check_in_right = -1
+    else:
+        check_in_right = -1
+    return check_in_right
 
-
-
-                    # usd_balance = float(customer_p_node['usd_balance'])
-                    # new_usd_balance = float(commission) + float(usd_balance)
-
-                    # total_earn = float(customer_p_node['total_earn'])
-                    # new_total_earn = float(total_earn) + float(commission)
-                    # new_total_earn = float(new_total_earn)
-                   
-                    # r_wallet = float(customer_p_node['r_wallet'])
-                    # new_r_wallet = float(r_wallet) + float(commission)
-                    # new_r_wallet = float(new_r_wallet)
-
-                    # max_out = float(customer_p_node['max_out'])
-                    # new_max_out = float(max_out) + float(commission)
-                    # new_max_out = float(new_max_out)
-                    
-                    # db.users.update({ "_id" : ObjectId(customer_p_node['_id']) }, { '$set': { "usd_balance": new_usd_balance, 'total_earn': new_total_earn, 'r_wallet' :new_r_wallet,'max_out' :new_max_out } })
-                    # detail = 'Get '+str(percent_daily)+' '+"""%"""+' referral bonus from member %s trade & mining %s USD' %(username_invest, amount_invest)
-                    # SaveHistory(customer_p_node['customer_id'],customer_p_node['_id'],customer_p_node['username'], commission, 'receive', 'USD', detail, '', '')
+def FnRefferalProgram(user_id, amount_invest):
+    customers = db.users.find_one({"customer_id" : user_id })
+    username_invest = customers['username']
+    i = 0
+    while i < 10:
         
+        i += 1 
+        if customers['p_node'] != '0' or customers['p_node'] != '':
+            customers = db.users.find_one({"customer_id" : customers['p_node'] })
+            if customers is None:
+                return True
+            else:
+                if int(i) == 1:
+                    percent = 5
+                if  int(i) == 2:   
+                    percent = 3
+                if  int(i) == 3:   
+                    percent = 2
+                if  int(i) == 4:   
+                    percent = 1
+                if  int(i) > 4:   
+                    percent = 0.5
+                if int(customers['level']) > 0:
+                    commission = float(amount_invest)*percent/100
+                    commission = round(commission,2)
+                    
+                    check_max_out_day = get_receive_program_day(customers['customer_id'],commission)
+
+                    check_max_out_package = get_receive_program_package(customers['customer_id'],commission)
+                    
+                    if float(check_max_out_day) > 0  and float(check_max_out_package) > 0:
+                        if int(i) == 1:
+                            r_wallet = float(customers['r_wallet'])
+                            new_r_wallet = float(r_wallet) + float(commission)
+                            new_r_wallet = float(new_r_wallet)
+
+                            total_earn = float(customers['total_earn'])
+                            new_total_earn = float(total_earn) + float(commission)
+                            new_total_earn = float(new_total_earn)
+
+                            balance_wallet = float(customers['balance_wallet'])
+                            new_balance_wallet = float(balance_wallet) + float(commission)
+                            new_balance_wallet = float(new_balance_wallet)
+
+                            
+
+                            db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 'r_wallet' :new_r_wallet } })
+                            detail = 'Get '+str(percent)+' '+"""%"""+' referral bonus from member %s investment $%s' %(username_invest, amount_invest)
+                            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'referral', 'USD', detail, '', '')
+                        else:
+
+                            if binary_left(customers['customer_id']) == 1 and binary_right(customers['customer_id']) == 1:
+                                s_wallet = float(customers['s_wallet'])
+                                new_s_wallet = float(s_wallet) + float(commission)
+                                new_s_wallet = float(new_s_wallet)
+
+                                total_earn = float(customers['total_earn'])
+                                new_total_earn = float(total_earn) + float(commission)
+                                new_total_earn = float(new_total_earn)
+
+                                balance_wallet = float(customers['balance_wallet'])
+                                new_balance_wallet = float(balance_wallet) + float(commission)
+                                new_balance_wallet = float(new_balance_wallet)
+
+                                db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 's_wallet' :new_s_wallet } })
+                                detail = 'Get '+str(percent)+' '+"""%"""+' from F%s floor generations bonus from member %s investment $%s' %(i,username_invest, amount_invest)
+                                SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'generations', 'USD', detail, '', '')
+        else:
+            break
+  
     return True
 
+
+@deposit_ctrl.route('/add-tree-submit/<p_binary>/<position>', methods=['GET', 'POST'])
+def AddTreeSubmit(p_binary,position):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    
+
+    
+    if request.form.has_key('id_user') is True:
+        id_user = request.form['id_user']
+        check_binary = db.users.find_one({'customer_id': p_binary})
+        check_id_user = db.users.find_one({'customer_id': id_user})
+
+        if position == 'left':
+            if check_binary['left'] == '':
+                db.users.update({ "customer_id" : p_binary }, { '$set': { 'left': id_user} })
+                db.users.update({ "customer_id" : id_user }, { '$set': { 'p_binary': p_binary} })
+        else:
+            if check_binary['right'] == '':
+                db.users.update({ "customer_id" : p_binary }, { '$set': { 'right': id_user} })
+                db.users.update({ "customer_id" : id_user }, { '$set': { 'p_binary': p_binary} })
+        
+        if check_id_user['p_binary'] == '' and float(check_id_user['investment']) > 100:
+            #chay hai nhanh
+            binaryAmount(id_user, float(check_id_user['investment']))
+            #chay p_node
+            TotalnodeAmount(id_user, float(check_id_user['investment']))
+            #hoa hong truc tiep
+            FnRefferalProgram(id_user, float(check_id_user['investment']))
+            
+
+        return redirect('/account/network-tree')
+        
+    else:
+        return redirect('/account/add-tree/'+p_binary+'/'+position)
 def send_mail_active_package(email,usernames,amount):
     
     html = """\

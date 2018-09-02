@@ -1,6 +1,5 @@
 $(function(){
-    getInfo();
-    getPrice();
+    
     // Socket();
    
     function getInfo() {

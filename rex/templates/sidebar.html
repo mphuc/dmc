@@ -3,49 +3,191 @@
 <div class="sidebar" data-background-color="brown" data-active-color="danger">
    <div class="logo">
       <a href="/account/dashboard" class="simple-text">
-      <img src="/static/home/images/logo/logo.png" alt="" style="    width: 130px; margin-top: 10px">
+      <img src="/static/img/logo_right.png" alt="" style="    width: 225px;margin-top: 2px;">
       </a>
    </div>
    <div class="logo logo-mini">
       <a href="#" class="simple-text">
-      <img src="/static/home/images/logo/logo.png" alt="" style=" width: 70px; ">
+      <img src="/static/img/logo_mini.png" alt="" style="    width: 70px;">
       </a>
    </div>
    <div class="sidebar-wrapper">
     <div class="overlay">
     <img class="img-loading" src="/static/assets/img/recycle-spinner.gif">
   </div>
-      
+      <div class="text-center">
+        <img src="/static/img/icon_level/1.png" alt="" style=" width: 95px; margin: 5px auto">
+      </div>
       <ul class="nav">
       
       {% if data.menu == 'dashboard' %}
         <li class="active">
             <a href="/account/dashboard">
-               <i class="ti-home"></i>
+               <i class="fa fa-tachometer"></i>
                <p>Dashboard</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/account/dashboard">
-               <i class="ti-home"></i>
+               <i class="fa fa-tachometer"></i>
                <p>Dashboard</p>
             </a>
          </li>
      {% endif %}
      <!-- =========================== -->
-      {% if data.menu == 'code' %}
+
+     {% if data.menu == 'my-profile' %}
         <li class="active">
-            <a href="/account/code">
-               <i class="fa fa-address-card"></i>
-               <p>Code</p>
+            <a href="/account/account-update-info">
+               <i class="fa fa-file-text"></i>
+               <p>My Profile</p>
             </a>
          </li>
      {% else %}
        <li>
-            <a href="/account/code">
-               <i class="fa fa-address-card"></i>
-               <p>Code</p>
+            <a href="/account/account-update-info">
+               <i class="fa fa-file-text"></i>
+               <p>My Profile</p>
+            </a>
+         </li>
+     {% endif %}
+     <!-- =========================== -->
+
+
+     {% if data.menu == 'investment' %}
+      <li class="dropdown active">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-database"></i>
+         <p>Investment</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="/account/investment-lists"><p>Investment Lists</p></a></li>
+          <li><a href="/account/investment-history"><p>Investment History</p></a></li>
+        </ul>
+      </li>
+     {% else %}
+       <li class="dropdown ">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-database"></i>
+         <p>Investment</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="/account/investment-lists"><p>Investment Lists</p></a></li>
+          <li><a href="/account/investment-history"><p>Investment History</p></a></li>
+        </ul>
+      </li>
+     {% endif %}
+     <!-- =========================== -->
+
+      
+      {% if data.menu == 'my-network' %}
+      <li class="dropdown active">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-sitemap"></i>
+         <p>My Network</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="/account/referrals"><p>Referrals</p></a></li>
+          <li><a href="/account/network-tree"><p>Network Tree</p></a></li>
+        </ul>
+      </li>
+     {% else %}
+       <li class="dropdown ">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-sitemap"></i>
+         <p>My Network</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="/account/referrals"><p>Referrals</p></a></li>
+          <li><a href="/account/network-tree"><p>Network Tree</p></a></li>
+        </ul>
+      </li>
+     {% endif %}
+     <!-- =========================== -->
+
+     {% if data.menu == 'wallet' %}
+      <li class="dropdown active">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-briefcase"></i>
+         <p>Wallet</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="/account/withdraw"><p>Withdraw</p></a></li>
+          <li><a href="/account/deposit"><p>Deposit</p></a></li>
+          <li><a href="/account/transfer"><p>Transfer</p></a></li>
+        </ul>
+      </li>
+     {% else %}
+       <li class="dropdown ">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-briefcase"></i>
+         <p>Wallet</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="/account/withdraw"><p>Withdraw</p></a></li>
+          <li><a href="/account/deposit"><p>Deposit</p></a></li>
+          <li><a href="/account/transfer"><p>Transfer</p></a></li>
+        </ul>
+      </li>
+     {% endif %}
+     <!-- =========================== -->
+
+
+     {% if data.menu == 'setting' %}
+      <li class="dropdown active">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-cog"></i>
+         <p>Setting</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="#"><p>Change password</p></a></li>
+          <li><a href="#"><p>Verify account</p></a></li>
+        </ul>
+      </li>
+     {% else %}
+       <li class="dropdown ">  
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <i class="fa fa-cog"></i>
+         <p>Setting</p>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu" >
+          <li><a href="#"><p>Change password</p></a></li>
+          <li><a href="#"><p>Verify account</p></a></li>
+        </ul>
+      </li>
+     {% endif %}
+     <!-- =========================== -->
+
+      {% if data.menu == 'information-center' %}
+        <li class="active">
+            <a href="/account/information-center">
+               <i class="fa fa-newspaper-o"></i>
+               <p>Information Center</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/account/information-center">
+               <i class="fa fa-newspaper-o"></i>
+               <p>Information Center</p>
+            </a>
+         </li>
+     {% endif %}
+     <!-- =========================== -->
+
+     {% if data.menu == 'support' %}
+        <li class="active">
+            <a href="/account/information-center">
+               <i class="fa fa-life-ring  "></i>
+               <p>Support</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/account/information-center">
+               <i class="fa fa-life-ring  "></i>
+               <p>Support</p>
             </a>
          </li>
      {% endif %}

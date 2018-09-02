@@ -21,12 +21,7 @@ dashboard_ctrl = Blueprint('dashboard', __name__, static_folder='static', templa
 def finduser_by_id(ids):
 	user = db.User.find_one({'_id': ObjectId(ids)})
 	return user
-# @dashboard_ctrl.route('/update_password', methods=['GET', 'POST'])
-# def dashboarupdate_password():
-# 	List = db.users.find().skip(0).limit(220)
-# 	for x in List:
-# 		db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { 'password': 'password'} })
-# 	return json.dumps({'afa':'asd'})
+
 digits58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 def id_generator_code():
@@ -51,9 +46,9 @@ def dashboard():
 		uid = session.get('uid')
 		user = db.User.find_one({'customer_id': uid})
 		username = user['username']
-		refferal_link = 'https://worldtrader.info/user/register/%s' % (user['customer_id'])
+		refferal_link = 'http://0.0.0.0:58056/auth/register/%s' % (user['customer_id'])
 		received = float(user.m_wallet/1000000)
-		roi = float(user.roi)
+		
 		profit_daily_pending = db.profits.find_one({'status': 0})
 		# profit_daily = db.profits.find({'status': 1}).limit(5)
 		profit_daily = db.profits.find({'status':1}).sort([("date_added", -1)]).limit(5)
@@ -62,10 +57,7 @@ def dashboard():
 		print uid
 		refferal = db.users.find({'p_node': uid, 'type': 1})
 
-		if roi > 0:
-			percent = received/roi
-		else:
-			percent = 0		
+		
 
 		max_out = float(user.max_out)
 		total_max_out = int(user.total_max_out)
@@ -79,8 +71,7 @@ def dashboard():
 		    'user': user,
 		    'menu' : 'dashboard',
 		    'float' : float,
-		    'percent' : round(percent*100, 2),
-		    'percent_max' : round(percent_max*100, 2),
+		    
 		    'total_refferal': total_refferal,
 		    'refferal': refferal,
 		    'profit_daily': profit_daily,
@@ -125,14 +116,14 @@ def getNewRefferal():
 	else:
 		user_id = session.get('user_id')
 		uid = session.get('uid')
-		total_refferal = db.users.find({'p_node': uid, 'type': 1}).count()
+		total_refferal = db.users.find({'p_node': uid}).count()
 		print total_refferal
-		datarefferal = db.users.find({'p_node': uid, 'type': 1})
+		datarefferal = db.users.find({'p_node': uid})
 		if total_refferal > 0:
 			html = ""
 			for x in datarefferal:
 				html = html + """<tr>
-	                <td>"""+x['name']+"""</td>
+	                <td>"""+x['username']+"""</td>
 	                <td>"""+x['username']+"""</td>
 	                <td>
 	                   <input type="radio" name="choose" value='"""+x['customer_id']+"""'>

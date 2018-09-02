@@ -14,13 +14,16 @@ class Withdrawal(Document):
         'user_id': unicode,
         'username': unicode,
         'amount' :  float,
+        'amount_curency' :  float,
         'tx':  unicode,
         'status': int,
         'date_added' : datetime.datetime,
         'wallet' : unicode,
-        'type': int,
+        'type': unicode,
         'code_active': unicode,
-        'active_email': int
+        'active_email': int,
+        'id_withdraw' : unicode,
+        'price' : float
     }
     use_dot_notation = True
 

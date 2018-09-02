@@ -29,13 +29,18 @@ import os
 import base64
 import onetimepass
 import requests
+import sys
+from rex.coinpayments import CoinPaymentsAPI
 
 __author__ = 'carlozamagni'
 
 wallet_ctrl = Blueprint('wallet', __name__, static_folder='static', template_folder='templates')
 
-rpc_connection = AuthServiceProxy("http://smartfvarpc:5vMddNTNZiwRrbEkgtS4DcVZSppjwq6CzSGxoTqL2w7Y@bblrpcccqoierzxcxbx.co")
-rpc_connection_btc = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
+#api = CoinPaymentsAPI(public_key='1ca6e12847914246762ce4a03890bbc77d59002abcc0fe1c279a4041d0977918',
+ #                     private_key='9294a6f6145f014B4d9594A3336E598b63d973375418A6238c4b326D6AC4cF06')
+
+ApiCoinpayment = CoinPaymentsAPI(public_key='54b5aef2fb3118abad728aa296d058083c9930e8e2f86f1be59bbd8234c751b4',
+                          private_key='E8F61EFbd1e75cB62012a5C29B9c7Bec4Ecb2A6b8C1a0C1036F56DB350ac9978')
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -46,115 +51,365 @@ def get_totp_uri(otp_secret):
 def verify_totp(token, otp_secret):
     return onetimepass.valid_totp(token, otp_secret)
 
-@wallet_ctrl.route('/wallet', methods=['GET', 'POST'])
-def homewallet():
+@wallet_ctrl.route('/deposit', methods=['GET', 'POST'])
+def homedeposit():
 	if session.get(u'logged_in') is None:
 		return redirect('/user/login')
 	else:
 		uid = session.get('uid')
 		user_id = session.get('user_id')
-		user = db.User.find_one({'customer_id': uid})
-		sva_address = user['sva_address'];
-		# if sva_address == '':
+		user = db.users.find_one({'customer_id': uid})
 			
-		# 	rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
-		# 	sva_address = rpc_connection.getnewaddress()
-		# 	print sva_address
-		# 	db.users.update({ "_id" : ObjectId(user_id) }, { '$set': { "sva_address": sva_address } })
-		# else:
-		# 	sva_address = user['sva_address']
-		
-		btc_address = user['btc_address'];
-		if btc_address == '':
-			# name = 'BICO_%s' %user['email']
-			# url_api = 'http://192.254.72.34:38058/apibtc/getnewaddress/%s' %(name)
-			# r = requests.get(url_api)
-			# response_dict = r.json()
-			# btc_address = response_dict['wallet']
-			rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
-			btc_address = rpc_connection.getnewaddress()
-			print btc_address
-			db.users.update({ "_id" : ObjectId(user_id) }, { '$set': { "btc_address": btc_address } })
-		else:
-			btc_address = user['btc_address']
-		
-		dataTxUser = db.txdeposits.find({'uid': uid, 'status': 1})
-		dataWithdraw = db.withdrawas.find({'user_id': user_id})
-		data_ticker = db.tickers.find_one({})
+		deposit = db.deposits.find({'uid': uid})
+				
 		data ={
 			'user': user,
 			'menu' : 'wallet',
 			'float' : float,
-			'tx' : dataTxUser,
-			'sva_address': sva_address,
-			'btc_address': btc_address,
-			'withdraw': dataWithdraw,
-			'btc_usd':data_ticker['btc_usd'],
-	        'sva_btc':data_ticker['sva_btc'],
-	        'sva_usd':data_ticker['sva_usd']
+			'deposit' : deposit
 		}
-		return render_template('account/wallet.html', data=data)
+		return render_template('account/deposit.html', data=data)
 
-@wallet_ctrl.route('/walletnotifybtc/<txid>', methods=['GET', 'POST'])
-def Notify(txid):
-	#rpc_connection = AuthServiceProxy("http://bitbeelinerpc:ApYJmRwZ2ZCE7cCNv8CJ94RVwPCMTpd94hefyoqdriXv@127.0.0.1:19668")
-	rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
-	transaction = rpc_connection.gettransaction(txid)
-	
-	# url_api = 'http://192.254.72.34:38058/apisva/waletnotifySVA/%s' %(txid)
-	# r = requests.get(url_api)
-	# response_dict = r.json()
-	# return json.dumps({'txid': 'transaction SVA'})
-	# transaction = rpc_connection.gettransaction(txid)
-	#print transaction
-	confirmations = transaction['confirmations']
-	dataTx = db.txs.find_one({ '$and' : [{'tx': txid},{'type' : 'BTC'}]})
-	print dataTx
-	if dataTx:
-		return json.dumps({'txid': 'Not None'})
+@wallet_ctrl.route('/withdraw', methods=['GET', 'POST'])
+def homewithdraw():
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
 	else:
-		# if transaction['confirmations'] == 1:
-		details = transaction['details']
-		print(details)
+		uid = session.get('uid')
+		user_id = session.get('user_id')
+		user = db.users.find_one({'customer_id': uid})
+			
+
+		val_withdraw = ''
+		val_amount_usd = ''
+		val_wallet = ''
+		val_authen = ''
+		val_balance = ''
+		if request.method == 'POST':
+			
+			if request.form['token_crt'] == session['token_crt']:
+				currency = request.form['currency']
+				quantity = request.form['quantity']
+				address = request.form['address']
+				authen = request.form['authen']
+				if is_number(quantity) == False  or quantity == '' or float(quantity) < 10:
+					val_amount_usd = 'empty'
+
+				if address == '':
+					val_wallet = 'empty'
+
+				if int(user['status_2fa']) == 1:
+
+					if authen == '':
+						val_authen = 'empty'
+
+					else:
+						if verify_totp(authen, user['secret_2fa']) == False:
+							val_authen = 'not'
+				if val_amount_usd == '' and val_wallet =='' and val_authen == '':
+					#check balance
+					if float(user['balance_wallet']) >= float(quantity):
+						new_balance_wallets = float(user['balance_wallet']) - float(quantity)
+						db.users.update({ "customer_id" : uid }, { '$set': { "balance_wallet": float(new_balance_wallets) } })
+
+						ticker = db.tickers.find_one({})
+
+						if currency == 'BTC':
+							
+							price = ticker['btc_usd']
+						if currency == 'ETH':
+							
+							price = ticker['eth_usd']
+						if currency == 'LTC':
+							
+							price = ticker['ltc_usd']
+						if currency == 'BCH':
+							
+							price = ticker['bch_usd']
+						if currency == 'USDT':
+							
+							price = 1
+
+						amount_curency = round(float(quantity)/float(price),8)*0.7
+						data_investment = {
+							'uid' : uid,
+							'user_id': user['_id'],
+							'username' : user['username'],
+							'amount' : quantity,
+							'amount_curency' : amount_curency,
+							'tx': '',
+							'status' : 0,
+							'date_added' : datetime.utcnow(),
+							'wallet' : address,
+							'type' : currency,
+							'code_active': id_generator(15),
+							'active_email' :0,
+							'id_withdraw' : '',
+							'price' : price
+						}
+						db.withdrawas.insert(data_investment)
+						val_withdraw = 'complete'
+					else:
+						val_balance = 'not'
+				
+			else:
+				val_withdraw = 'not'
+
+		withdrawa = db.withdrawas.find({'uid': uid})
 		
-		for x in details:
-			if x['category'] == 'receive':
-				address = x['address']
-				print(x,"1123123123")
-				amount_deposit = float(x['amount'])
-				customer = db.User.find_one({'btc_address': address})
+		token_crt = id_generator(15) 
+		session['token_crt'] = token_crt
+		user = db.users.find_one({'customer_id': uid})
+
+		now_day = datetime.now().day
+		statrus_withdraw = True
+		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
+			statrus_withdraw = True
+		data ={
+			'user': user,
+			'menu' : 'wallet',
+			'float' : float,
+			'withdrawa' : withdrawa,
+			'token_crt' : token_crt,
+			'val_withdraw' : val_withdraw,
+			'val_amount_usd' : val_amount_usd,
+			'val_wallet' : val_wallet,
+			'val_authen' : val_authen,
+			'val_balance' : val_balance,
+			'statrus_withdraw' : statrus_withdraw
+		}
+		
+		return render_template('account/withdraw.html', data=data)
+
+@wallet_ctrl.route('/transfer', methods=['GET', 'POST'])
+def hometransfer():
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
+	else:
+		uid = session.get('uid')
+		user_id = session.get('user_id')
+		user = db.users.find_one({'customer_id': uid})
+			
+
+		val_transfer = ''
+		val_user_id = ''
+		val_quantity = ''
+		val_authen = ''
+		val_balance = ''
+		if request.method == 'POST':
+			if request.form['token_crt'] == session['token_crt']:
+				quantity = request.form['quantity']
+				user_id = request.form['user_id']
+				authen = request.form['authen']
+
+				if user_id == '':
+					val_user_id = 'empty'
+				else:
+					check_id_user = db.users.find_one({'customer_id': user_id})
+					if check_id_user is None:
+						val_user_id = 'not'
+
+				if is_number(quantity) == False  or quantity == '' or float(quantity) < 10:
+					val_quantity = 'empty'
+
+				if int(user['status_2fa']) == 1:
+					if authen == '':
+						val_authen = 'empty'
+					else:
+						if verify_totp(authen, user['secret_2fa']) == False:
+							val_authen = 'not'
+				if val_quantity == '' and val_user_id =='' and val_authen == '':
+					#check balance
+					if float(user['balance_wallet']) >= float(quantity):
+						new_balance_wallets = float(user['balance_wallet']) - float(quantity)
+						db.users.update({ "customer_id" : uid }, { '$set': { "balance_wallet": float(new_balance_wallets) } })
+
+						data_transfer = {
+							'uid' : uid,
+							'user_id': user['_id'],
+							'username' : user['username'],
+							'amount' : quantity,
+							'status' : 1,
+							'date_added' : datetime.utcnow(),
+							'type' : 'send',
+							'from' :  str(uid)+'-'+user['username'],
+							'to' : str(user_id)+'-'+str(check_id_user['username'])
+						}
+						db.transfers.insert(data_transfer)
+
+
+						user_receive = db.users.find_one({'customer_id': user_id})
+						new_balance_wallet_recevie = float(user_receive['balance_wallet']) + float(quantity)
+						db.users.update({ "customer_id" : user_id }, { '$set': { "balance_wallet": float(new_balance_wallet_recevie) } })
+
+						data_transfers = {
+							'uid' : user_id,
+							'user_id': user_receive['_id'],
+							'username' : user_receive['username'],
+							'amount' : quantity,
+							'status' : 1,
+							'date_added' : datetime.utcnow(),
+							'type' : 'receive',
+							'from' :  str(user_id)+'-'+str(check_id_user['username']),
+							'to' : str(uid)+'-'+user['username']
+						}
+						db.transfers.insert(data_transfers)
+						val_transfer = 'complete'
+					else:
+						val_balance = 'not'
+				
+			else:
+				val_transfer = 'not'
+
+		transfer = db.transfers.find({'uid': uid})
+		
+		token_crt = id_generator(15) 
+		session['token_crt'] = token_crt
+		user = db.users.find_one({'customer_id': uid})
+
+		now_day = datetime.now().day
+		statrus_withdraw = True
+		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
+			statrus_withdraw = True
+		data ={
+			'user': user,
+			'menu' : 'wallet',
+			'float' : float,
+			'transfer' : transfer,
+			'token_crt' : token_crt,
+			'val_transfer' : val_transfer,
+			'val_quantity' : val_quantity,
+			'val_user_id' : val_user_id,
+			'val_authen' : val_authen,
+			'val_balance' : val_balance,
+			'statrus_withdraw' : statrus_withdraw
+		}
+		
+		return render_template('account/transfer.html', data=data)
+@wallet_ctrl.route('/get-new-address', methods=['GET', 'POST'])
+def get_new_address():
+	
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
+	else:
+		uid = session.get('uid')
+		user_id = session.get('user_id')
+		user = db.users.find_one({'customer_id': uid})
+			
+		url_callback = 'https://mail.google.com'
+
+		if request.form['type'] == 'BTC':
+			if user['btc_address'] == '':
+				respon_wallet_btc = ApiCoinpayment.get_callback_address(currency='BTC', ipn_url=url_callback)
+				if respon_wallet_btc['error'] == 'ok':
+					new_wallet =  respon_wallet_btc['result']['address']
+					db.users.update({ "customer_id" : uid }, { '$set': { "btc_address": new_wallet } })
+				else:
+					new_wallet = ''
+			else:
+				new_wallet = user['btc_address']
+
+		if request.form['type'] == 'ETH':
+			if user['eth_address'] == '':
+				respon_wallet_btc = ApiCoinpayment.get_callback_address(currency='ETH', ipn_url=url_callback)
+				if respon_wallet_btc['error'] == 'ok':
+					new_wallet =  respon_wallet_btc['result']['address']
+					db.users.update({ "customer_id" : uid }, { '$set': { "eth_address": new_wallet } })
+				else:
+					new_wallet = ''
+			else:
+				new_wallet = user['eth_address']
+
+		if request.form['type'] == 'LTC':
+			if user['ltc_address'] == '':
+				respon_wallet_btc = ApiCoinpayment.get_callback_address(currency='LTC', ipn_url=url_callback)
+				if respon_wallet_btc['error'] == 'ok':
+					new_wallet =  respon_wallet_btc['result']['address']
+					db.users.update({ "customer_id" : uid }, { '$set': { "ltc_address": new_wallet } })
+				else:
+					new_wallet = ''
+			else:
+				new_wallet = user['ltc_address']
+
+		if request.form['type'] == 'USDT':
+			if user['usdt_address'] == '':
+				respon_wallet_btc = ApiCoinpayment.get_callback_address(currency='USDT', ipn_url=url_callback)
+				if respon_wallet_btc['error'] == 'ok':
+					new_wallet =  respon_wallet_btc['result']['address']
+					db.users.update({ "customer_id" : uid }, { '$set': { "usdt_address": new_wallet } })
+				else:
+					new_wallet = ''
+			else:
+				new_wallet = user['usdt_address']
+
+		if request.form['type'] == 'BCH':
+			if user['bch_address'] == '':
+
+				respon_wallet_btc = ApiCoinpayment.get_callback_address(currency='BCH', ipn_url=url_callback)
+				if respon_wallet_btc['error'] == 'ok':
+					new_wallet =  respon_wallet_btc['result']['address']
+					print new_wallet
+					db.users.update({ "customer_id" : uid }, { '$set': { "bch_address": new_wallet } })
+				else:
+					new_wallet = ''
+			else:
+				new_wallet = user['bch_address']
+				
+		return json.dumps({'address': new_wallet})
 
 
 
-				if customer:
-					data = {
-						'status': 0,
-						'tx': txid,
-						'date_added' : datetime.utcnow(),
-						'type':'BTC',
-						'amount' : amount_deposit,
-						'confirm' : 0,
-						'user_id' : customer['customer_id']
-					}
-					db.txs.insert(data)
+@wallet_ctrl.route('/jskfkjsfhkjsdhfqwtryqweqeweqeqwe', methods=['GET', 'POST'])
+def CallbackCoinPayment():
+	print "callback"
+	if request.method == 'POST':
+		tx = request.form['txn_id'];
+		address = request.form['address'];
+		amount = request.form['amount'];
+		currency = request.form['currency'];
 
-					data = {
-						'confirmations': transaction['confirmations'],
-						'user_id': customer['_id'],
-						'uid': customer['customer_id'],
-						'username': customer['username'],
-						'amount': amount_deposit,
-						'type': 'BTC',
-						'tx': txid,
-						'date_added' : datetime.utcnow(),
-						'status': 1,
-						'address': address
-					}
-					db.txdeposits.insert(data)
+		ticker = db.tickers.find_one({})
+		
+		if currency == 'BTC':
+			query_search = {'btc_address' : address}
+			price = ticker['btc_usd']
+		if currency == 'ETH':
+			query_search = {'ethaddress' : address}
+			price = ticker['eth_usd']
+		if currency == 'LTC':
+			query_search = {'ltc_address' : address}
+			price = ticker['ltc_usd']
+		if currency == 'BCH':
+			query_search = {'bch_address' : address}
+			price = ticker['bch_usd']
+		if currency == 'USDT':
+			query_search = {'usdt_address' : address}
+			price = 1
 
-					return json.dumps({'txid': 'Insert Success'})
 
-	return json.dumps({'txid': 'transaction'})
+		check_deposit = db.deposits.find_one({'tx': tx})
+		customer = db.users.find_one(query_search)
+
+		if check_deposit is None and customer is not None:
+			data = {
+				'user_id': customer['_id'],
+				'uid': customer['customer_id'],
+				'username': customer['username'],
+				'amount': amount,
+				'type': currency,
+				'tx': tx,
+				'date_added' : datetime.utcnow(),
+				'status': 1,
+				'address': address,
+				'price' : price,
+				'amount_usd' : float(amount)*float(price)
+			}
+			db.deposits.insert(data)
+
+			new_balance_wallets = float(customer['balance_wallet']) + (float(amount)*float(price))
+			db.users.update(query_search, { '$set': { "balance_wallet": float(new_balance_wallets) } })
+
+	return json.dumps({'txid': 'complete'})
 
 @wallet_ctrl.route('/cron_deposit_btc', methods=['GET', 'POST'])
 def CronDepositBTC():

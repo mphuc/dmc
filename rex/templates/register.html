@@ -26,7 +26,7 @@
                      <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
                         <div class="login-content">
                         
-                           <form id="frmLogin" name="login" action="/auth/register" method="POST">
+                           <form id="frmLogin" name="login" action="/auth/register/{{data.id_sponsor}}" method="POST">
                               <div class="card card-login card-hidden">
                                  <div class="header-text text-center">
                                     <a href="/"> <img class="logo" src="/static/img/logo.png" alt="" > </a> 
@@ -87,7 +87,7 @@
                                        <div style="font-size: 15px;line-height: 18px;font-weight: 600;text-transform: uppercase;color: #2db4db; margin: 0px; padding: 0px; border: 0px solid rgb(107, 113, 122); border-radius: 4px 4px 0px 0px; margin-bottom:10px;">Security information<br><span style="font-size: 11px;font-weight: 400;line-height: 13px;text-transform: none;color: #b2b3b3;">Please write down your Username, Password as a reminder before creating account. They are required to access your account.</span></div>
                                     </div>
                                     <div class="form-group"> <label>Sponsor <span class="text-danger">*</span></label> 
-                                    <input autofocus placeholder="Sponsor" type="text" name="sponsor" class="form-control input-no-border au-input" required="required" aria-required="true" value="{% if data.form%}{{data.form['sponsor']}}{% endif %}"> 
+                                    <input autofocus placeholder="Sponsor" type="text" name="sponsor" class="form-control input-no-border au-input" required="required" aria-required="true" value="{% if data.form%}{{data.form['sponsor']}}{%else%}{{data.username_sponsor}}{% endif %}"> 
                                     </div>
                                     <div class="form-group"> <label>Username <span class="text-danger">*</span></label> 
                                     <input autofocus placeholder="Username" type="text" name="username" class="form-control input-no-border au-input" required="required" aria-required="true" value="{% if data.form%}{{data.form['username']}}{% endif %}"> 
@@ -99,8 +99,8 @@
                                              <select class="form-control au-input" name="country" required="required" aria-required="true">
                                                 {% for item in data.country %} 
                                                 <option  {% if data.form%}
-                                                   {% if item.country_code == data.form['country']%}selected="selected"{% endif %}
-                                                {% endif %} data-id="{{item.dialling_code}}" value="{{item.country_code}}">{{item.country_name}}</option>
+                                                   {% if item.country_name == data.form['country']%}selected="selected"{% endif %}
+                                                {% endif %} data-id="{{item.dialling_code}}" value="{{item.country_name}}">{{item.country_name}}</option>
                                                 {% endfor %} 
                                              </select>
                                           </div>
