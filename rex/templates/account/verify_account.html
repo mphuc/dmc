@@ -1,0 +1,232 @@
+{% extends "layout.html" %}
+{% block title %}Verify account{% endblock %}
+{% block js %}
+<script src="/static/assets/js/script.js"></script>
+<script src="/static/assets/js/getinfo.js"></script>
+{% endblock %}
+{% block main %}
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">VERIFY ACCOUNT</strong>
+      </div>
+      <div class="card-body">
+         <div class="">
+            <div class="">
+               <form  action="/user/updateaccount" enctype="multipart/form-data" method="post">
+                  <div class="content">
+                     <div class="col-md-4">
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Select document   
+                              <star>*</star>
+                           </label>
+                           <select  name="document" class="form-control" required="true">
+                                <option {% if data.user['personal_info']['document'] == 'Passport' %} selected="selected" {% endif %} value="Passport">Passport</option>
+                                <option {% if data.user['personal_info']['document'] == 'ID' %} selected="selected" {% endif %} value="ID">ID</option>
+                           </select>
+                        </div>
+                        <div class="clearfix"></div>
+                         <div class="row">
+                           <div class="col-md-6">
+                              <div class="form-group ">
+                                 <label class="control-label">
+                                    Country 
+                                    <star>*</star>
+                                 </label>
+                                 <select class="form-control" name="country" required="required" >
+                                       {% for item in data.data_country %} 
+                                       <option {% if data.user['personal_info']['country'] == item.country_name %} selected="selected" {% endif %}
+                                           data-id="{{item.dialling_code}}" value="{{item.country_name}}">{{item.country_name}}</option>
+                                       {% endfor %} 
+                                    </select>
+                                 
+                              </div>
+                           </div>
+                           <div class="col-md-6">
+                              <div class="form-group ">
+                                 <label class="control-label">
+                                    Gender 
+                                    <star>*</star>
+                                 </label>
+                                 <select name="gender" class="form-control" required="true">
+                                      <option {% if data.user['personal_info']['gender'] == 'Male' %} selected="selected" {% endif %} value="Male">Male</option>
+                                      <option {% if data.user['personal_info']['gender'] == 'Female' %} selected="selected" {% endif %} value="Female">Female</option>
+                                 </select>
+                              </div>
+                           </div>
+                         </div>
+
+                        <div class="form-group ">
+                           <label class="control-label">
+                              ZipCode  
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['zipcode']}}" required="true" name="zipcode" type="text" >
+                        </div>
+                           
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Passport/ID/DL image (Fontside)   
+                              <star>*</star>
+                           </label>
+                           {% if data.user['status_verify'] == 0 %}
+                           <input name="img_passport_fontside" accept="image/x-png,image/gif,image/jpeg" required="true" type="file">
+                           {%else%}
+                           <div class="text-center">
+                              <img width="80" src="{{data.user['personal_info']['img_passport_fontside']}}">
+                           </div>
+                           {% endif %}
+                        </div>
+
+                     </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Passport/ID/DL number
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['passport']}}" required="true" name="passport" type="text" >
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Address 
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['address']}}" required="true" name="address" type="text" >
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              State/Region  
+                              <star>*</star>
+                           </label>
+                           <input class="form-control"  value="{{data.user['personal_info']['state']}}" required="true" name="state" type="text" >
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Passport/ID/DL image (Backside)  
+                              <star>*</star>
+                           </label>
+                           {% if data.user['status_verify'] == 0 %}
+                           <input name="img_passport_backside" accept="image/x-png,image/gif,image/jpeg" required="true" type="file">
+                           {%else%}
+                           <div class="text-center">
+                              <img width="80" src="{{data.user['personal_info']['img_passport_backside']}}">
+                           </div>
+                           {% endif %}
+                        </div>
+                     </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label class="control-label">
+                              Id Date
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['date_passport']}}"  name="date_passport" type="date"  required="true">
+                        </div>
+
+                        <div class="form-group">
+                           <label class="control-label">
+                              City/Town
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['city']}}"  name="city" type="text" required="true">
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Phone 
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['phone']}}"  required="true" name="phone" type="text">
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Proof of Addresses *
+                              <star>*</star>
+                           </label>
+                           {% if data.user['status_verify'] == 0 %}
+                           <input name="img_address" accept="image/x-png,image/gif,image/jpeg" required="true" type="file">
+                           {%else%}
+                           <div class="text-center">
+                              <img width="80" src="{{data.user['personal_info']['img_address']}}">
+                           </div>
+                           {% endif %}
+                           
+                           
+                        </div>
+                     </div>
+                     
+                     <!-- <div class="col-md-12">
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Two-factor Auth
+                              
+                           </label>
+                           <input name="authen"  class="form-control" type="text">
+                           
+                        </div>
+                     </div> -->
+                     <input type="hidden" name="token_crt" value="{{data.token_crt}}">
+                     {% if data.user['status_verify'] == 0 %}
+                     <div class="text-center">
+                        <button type="submit" class="btn btn-rose btn-fill btn-wd">Update</button>
+                     </div>
+                     {% endif %}
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">VERIFY ACCOUNT STATUS</strong>
+      </div>
+      <div class="card-body">
+         <table class="table table-bordered " >
+            <thead>
+               <tr>
+                  <th>Images</th>
+                  <th>ID Number</th>
+                  <th>Admin Note</th>
+                  <th>Create Date</th>                         
+                  <th>Status</th>
+               </tr>
+            </thead>
+            <tbody>
+                 <tr>
+                 
+                  {% for  item in data.verify %}
+                  <tr>
+                     <td class="text-center">
+                        <img src="{{ item.img1 }}" style="width: 50px">
+                        <img src="{{ item.img2 }}" style="width: 50px">
+                        <img src="{{ item.img2 }}" style="width: 50px">
+                     </td>
+                     <td class="text-center">{{ item.id_number }}</td>
+                     <td class="text-center">{{ item.admin_note }}</td>
+                     <td class="text-center">{{ item.date_added | format_date }}</td>
+                     
+                     <td class="text-center">
+                        {% if item.status == 1 %}
+                           <span class="label label-info">Active</span>
+                        {% endif %}
+                        {% if item.status == 0 %}
+                           <span class="label label-warning">Waiting</span>
+                        {% endif %}
+                     </td>
+                  </tr>
+                  {% endfor %}
+                                
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -61,12 +61,15 @@ def homedeposit():
 		user = db.users.find_one({'customer_id': uid})
 			
 		deposit = db.deposits.find({'uid': uid})
-				
+		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		number_notifications = list_notifications.count()			
 		data ={
 			'user': user,
 			'menu' : 'wallet',
 			'float' : float,
-			'deposit' : deposit
+			'deposit' : deposit,
+			'number_notifications' : number_notifications,
+        	'list_notifications' : list_notifications
 		}
 		return render_template('account/deposit.html', data=data)
 
@@ -165,6 +168,9 @@ def homewithdraw():
 		statrus_withdraw = True
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
+
+		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		number_notifications = list_notifications.count()	
 		data ={
 			'user': user,
 			'menu' : 'wallet',
@@ -176,7 +182,9 @@ def homewithdraw():
 			'val_wallet' : val_wallet,
 			'val_authen' : val_authen,
 			'val_balance' : val_balance,
-			'statrus_withdraw' : statrus_withdraw
+			'statrus_withdraw' : statrus_withdraw,
+			'number_notifications' : number_notifications,
+        	'list_notifications' : list_notifications
 		}
 		
 		return render_template('account/withdraw.html', data=data)
@@ -202,7 +210,7 @@ def hometransfer():
 				user_id = request.form['user_id']
 				authen = request.form['authen']
 
-				if user_id == '':
+				if user_id == '' or user_id == uid:
 					val_user_id = 'empty'
 				else:
 					check_id_user = db.users.find_one({'customer_id': user_id})
@@ -271,6 +279,9 @@ def hometransfer():
 		statrus_withdraw = True
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
+
+		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		number_notifications = list_notifications.count()	
 		data ={
 			'user': user,
 			'menu' : 'wallet',
@@ -282,7 +293,9 @@ def hometransfer():
 			'val_user_id' : val_user_id,
 			'val_authen' : val_authen,
 			'val_balance' : val_balance,
-			'statrus_withdraw' : statrus_withdraw
+			'statrus_withdraw' : statrus_withdraw,
+			'number_notifications' : number_notifications,
+        	'list_notifications' : list_notifications
 		}
 		
 		return render_template('account/transfer.html', data=data)
@@ -358,7 +371,20 @@ def get_new_address():
 		return json.dumps({'address': new_wallet})
 
 
-
+@wallet_ctrl.route('/get-username-buy-id', methods=['GET', 'POST'])
+def get_username_buy_id():
+	
+	if session.get(u'logged_in') is None:
+		username = ''
+	else:
+		uid = session.get('uid')
+		
+		user = db.users.find_one({'customer_id': request.form['id_user']})
+		if user is None:
+			username = ''
+		else:
+			username = user['username']
+	return json.dumps({'username': username})
 @wallet_ctrl.route('/jskfkjsfhkjsdhfqwtryqweqeweqeqwe', methods=['GET', 'POST'])
 def CallbackCoinPayment():
 	print "callback"

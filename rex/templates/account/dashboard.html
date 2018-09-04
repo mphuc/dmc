@@ -3,29 +3,9 @@
 
 {% block js %}
 
-<script src="/static/assets/js/getinfo.js"></script>
 <script src="/static/assets/js/main.js"></script>
 <link rel="stylesheet" href="/static/assets/css/jquery.bxslider.css">
 <script src="/static/assets/js/jquery.bxslider.min.js"></script>
-<script type="text/javascript">
-   $('#datatables_history').DataTable({
-            "order": [[ 1, "desc" ]],
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
-            autoWidth: false, 
-              searching: false,
-              ordering: true, 
-              responsive: true, 
-              lengthChange: false, 
-              destroy: true,
-              paging: true, 
-              info: false
-
-        });
-</script>
 <script>
    $(document).ready(function () {
       $('.slider').bxSlider({
@@ -108,7 +88,7 @@
 
 <div class="row panel-body">
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/history-investment.aspx'">
+      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/account/investment-history'">
          <div class="card-header" style="border-bottom:0px">
             Total Investment        
          </div>
@@ -117,7 +97,7 @@
                <!-- BOX -->
                <div class="box blue-1">
                   <p></p>
-                  <span style="font-size:26px;">$10,000</span>
+                  <span style="font-size:26px;">${{data.user['investment'] | format_usd}}</span>
                   <p></p>
                </div>
                <!-- /BOX -->
@@ -127,14 +107,14 @@
    </div>
    <!-- End item !-->
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/daily_income_history.aspx'">
+      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/account/daily-income-history'">
          <div class="card-header" style="border-bottom:0px">
             Principal &amp; Interest
          </div>
          <div class="card-body">
             <div class="box blue-1">
                   <p></p>
-                  <span style="font-size:26px;">$10,000</span>
+                  <span style="font-size:26px;">${{data.user['d_wallet'] | format_usd}}</span>
                   <p></p>
                </div>
          </div>
@@ -142,14 +122,14 @@
    </div>
    <!-- End item !-->      
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/withdraw.aspx'">
+      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/account/direct-sales-onus'">
          <div class="card-header" style="border-bottom:0px">
-            Wallet      
+            Direct sales Bonus      
          </div>
          <div class="card-body">
             <div class="box blue-1">
                <p></p>
-               <span style="font-size:26px;">$10,000</span>
+               <span style="font-size:26px;">${{data.user['r_wallet'] | format_usd}}</span>
                <p></p>
             </div>
          </div>
@@ -163,74 +143,26 @@
          </div>
          <div class="card-body">
             <div class="box blue-2 p-10-20">
-               <p><span style="font-size:26px;">2,500</span></p>
+               <p></p>
+               <span style="font-size:26px;">{{data.user['coin_wallet'] | format_usds}}</span>
+               <p></p>
+               
             </div>
          </div>
       </div>
       <!-- End item !-->
    </div>
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; cursor: pointer;min-height:176px" onclick="window.location.href='/bonus_history.aspx'">
+      <div class="card" style="margin-bottom:0px; background:none; cursor: pointer;min-height:176px" onclick="window.location.href='/account/withdraw'">
          <div class="card-header" style="border-bottom:0px;">
-            Total Bonus       
-         </div>
-         <div class="card-body">
-            <div class="half pull-left l-s-t-30">
-               <!-- BOX -->
-               <div class="box blue-1">
-                  <p><span style="font-size:26px;">$1,200</span></p>
-               </div>
-               <!-- /BOX -->
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- End item !-->
-   <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
-         <div class="card-header" style="border-bottom:0px">
-            Leadership Bonus     
-         </div>
-         <div class="card-body">
-            <div class="half pull-left l-s-t-30">
-               <!-- BOX -->
-               <div class="box blue-1">
-                  <p><span style="font-size:26px;">$0</span></p>
-               </div>
-               <!-- /BOX -->
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- End item !-->
-   <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
-         <div class="card-header" style="border-bottom:0px">
-            Total Income         
-         </div>
-         <div class="card-body">
-            <div class="half pull-left l-s-t-30">
-               <!-- BOX -->
-               <div class="box blue-1">
-                  <p><span style="font-size:26px;"><span> $1,700<br><span style="font-size:18px">Profit Statitics 17<sup>%</sup> No. 1 </span></span></span></p>
-               </div>
-               <!-- /BOX -->
-            </div>
-         </div>
-      </div>
-   </div>
-   <!-- End item !-->
-   <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
-         <div class="card-header" style="border-bottom:0px">
-            &nbsp;   
+            Wallet     
          </div>
          <div class="card-body">
             <div class="half pull-left l-s-t-30">
                <!-- BOX -->
                <div class="box blue-1">
                   <p></p>
-                  <span style="font-size:26px;"><strong>coming soon</strong></span>
+                  <span style="font-size:26px;">{{data.user['balance_wallet'] | format_usd}}</span>
                   <p></p>
                </div>
                <!-- /BOX -->
@@ -238,7 +170,190 @@
          </div>
       </div>
    </div>
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:176px" >
+         <div class="card-header" style="border-bottom:0px;">
+            Total Income      
+         </div>
+         <div class="card-body">
+            <div class="half pull-left l-s-t-30">
+               <!-- BOX -->
+               <div class="box blue-1">
+                  <p></p>
+                  <span style="font-size:26px;">{{data.user['total_earn'] | format_usd}}</span>
+                  <p style="font-size:20px;color: #fff">Profit Statitics {{data.Profit_Statitics}}%</p>
+                  
+               </div>
+               <!-- /BOX -->
+            </div>
+         </div>
+      </div>
+   </div>
    <!-- End item !-->
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none; cursor: pointer; min-height:176px"  onclick="window.location.href='/account/network-bonus'">
+         <div class="card-header" style="border-bottom:0px">
+            Network Bonus 
+         </div>
+         <div class="card-body">
+            <div class="half pull-left l-s-t-30">
+               <!-- BOX -->
+               <div class="box blue-1">
+                  <p></p>
+                  <span style="font-size:26px;">{{data.user['s_wallet'] | format_usd}}</span>
+                  
+               </div>
+               <!-- /BOX -->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- End item !-->
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer; min-height:176px" onclick="window.location.href='/account/generations-bonus'">
+         <div class="card-header" style="border-bottom:0px">
+            Generations Bonus     
+         </div>
+         <div class="card-body">
+            <div class="half pull-left l-s-t-30">
+               <div class="box blue-1">
+                  <p></p>
+                  <span style="font-size:26px;">{{data.user['g_wallet'] | format_usd}}</span>
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- End item !-->
+   
+   <!-- End item !-->
+   
+   <!-- End item !-->
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+         <div class="card-header" style="border-bottom:0px">
+            System
+         </div>
+         <div class="card-body" style="padding: 0">
+            <div class="">
+               <!-- BOX -->
+               <div class="box blue-1" >
+                  <p></p>
+                  <div class="pull-left" style="width: 50%">
+
+                     <p class="text-center" style="font-size:15px; color: #fff;
+                     padding: 0; font-weight: bold;">LEFT</p>
+                     <p class="text-center" style="font-size:20px; color: #fff;
+                     padding: 0">${{data.user['total_pd_left'] | format_usd}} </p>
+                     
+                  </div>
+                  <div class="pull-right" style="width: 50%">
+                     <p class="text-center" class="text-center" style="font-size:15px; color: #fff;
+                     padding: 0;font-weight: bold;">RIGHT</p>
+                     <p class="text-center" style="font-size:20px; color: #fff;
+                     padding: 0">${{data.user['total_pd_right'] | format_usd}} </p>
+                     
+                  </div>
+                  
+                  <p></p>
+               </div>
+               <!-- /BOX -->
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+         <div class="card-header" style="border-bottom:0px">
+            System All
+         </div>
+         <div class="card-body" style="padding: 0">
+            <div class="">
+               <!-- BOX -->
+               <div class="box blue-1" >
+                  <p></p>
+                  <div class="pull-left" style="width: 50%">
+                     <p class="text-center" style="font-size:15px; color: #fff;
+                     padding: 0; font-weight: bold;">LEFT</p>
+                     
+                     <p class="text-center" style="font-size:20px; color: #fff;
+                     padding: 0">${{data.user['total_amount_left'] | format_usd}}</p>
+                  </div>
+                  <div class="pull-right" style="width: 50%">
+                     <p class="text-center" class="text-center" style="font-size:15px; color: #fff;
+                     padding: 0;font-weight: bold;">RIGHT</p>
+                     
+                     <p class="text-center" style="font-size:20px; color: #fff;
+                     padding: 0">${{data.user['total_amount_right'] | format_usd}}</p>
+                  </div>
+                  
+                  <p></p>
+               </div>
+               <!-- /BOX -->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- End item !-->
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+         <div class="card-header" style="border-bottom:0px">
+            F1 
+         </div>
+         <div class="card-body" style="padding: 0">
+            <div class="">
+               <div class="box blue-1" >
+                  <p></p>
+                  <div class="pull-left" style="width: 50%">
+                     <p class="text-center" style="font-size:15px; color: #fff;
+                     padding: 0; font-weight: bold;">LEFT</p>
+                     <p class="text-center" style="font-size:20px;; color: #fff;
+                     padding: 0">{{data.total_node_lefts}} </p>
+                     
+                  </div>
+                  <div class="pull-right" style="width: 50%">
+                     <p class="text-center" class="text-center" style="font-size:15px;; color: #fff;
+                     padding: 0;font-weight: bold;">RIGHT</p>
+                     <p class="text-center" style="font-size:20px;; color: #fff;
+                     padding: 0">{{data.total_node_rights}} </p>
+                     
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-3 nopadding">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+         <div class="card-header" style="border-bottom:0px">
+            Member 
+         </div>
+         <div class="card-body" style="padding: 0">
+            <div class="">
+               <div class="box blue-1" >
+                  <p></p>
+                  <div class="pull-left" style="width: 50%">
+                     <p class="text-center" style="font-size:15px; color: #fff;
+                     padding: 0; font-weight: bold;">LEFT</p>
+                     <p class="text-center" style="font-size:20px;; color: #fff;
+                     padding: 0">{{data.total_binary_left}} </p>
+                     
+                  </div>
+                  <div class="pull-right" style="width: 50%">
+                     <p class="text-center" class="text-center" style="font-size:15px;; color: #fff;
+                     padding: 0;font-weight: bold;">RIGHT</p>
+                     <p class="text-center" style="font-size:20px;; color: #fff;
+                     padding: 0">{{data.total_binary_right}} </p>
+                     
+                  </div>
+               </div>
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   
 </div>
 
 <div class="row">

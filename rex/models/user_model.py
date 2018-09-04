@@ -36,12 +36,14 @@ class User(Document):
         'm_wallet' : float,
         'r_wallet' : float,
         's_wallet' : float,
+        'd_wallet' : float,
+        'g_wallet' : float,
+        'coin_wallet' : float,
         'balance_wallet' : float,
         'status_authen' : int,
         'authentication' : unicode,
         'max_out' : float,
         'total_max_out' : float,
-        'coin_wallet' : float,
         'total_earn' : float,
         'position' : unicode,
         'country' : unicode,
@@ -56,7 +58,23 @@ class User(Document):
         'investment': float,
         'total_node' : float,
         'max_out_day' : float,
-        'max_out_package' : float
+        'max_out_package' : float,
+        'status_verify': int,
+        'personal_info': {
+            'document' : unicode,
+            'passport' : unicode,
+            'date_passport' :unicode,
+            'country' :unicode,
+            'gender' : unicode,
+            'address' : unicode,
+            'city' : unicode,
+            'zipcode' : unicode,
+            'state'  : unicode,
+            'phone' : unicode,
+            'img_passport_fontside' : unicode,
+            'img_passport_backside' : unicode,
+            'img_address' : unicode
+        }
     }
     validators = {
         'email': validators.max_length(120)
@@ -86,7 +104,8 @@ class User(Document):
         'coin_wallet' : 0,
         'total_node' : 0,
         'max_out_day' : 0,
-        'max_out_package' : 0
+        'max_out_package' : 0,
+        'status_verify' : 0
 
         }
     use_dot_notation = True

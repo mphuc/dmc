@@ -37,6 +37,74 @@ def is_number(s):
         return False
     return True
 
+def total_binary_left(customer_id):
+    customer = db.users.find_one({'customer_id': customer_id})
+    count_left = 0
+    if customer['left'] == '':
+        count_left = 0
+    else:
+        id_left_all = str(customer['left'])+get_id_tree(customer['left'])
+        id_left_all = id_left_all.split(',')
+        if (len(id_left_all) > 0):
+            for yy in id_left_all:
+                count_left = count_left + 1
+    return count_left
+
+
+def total_node_left(customer_id):
+    customer = db.users.find_one({'customer_id': customer_id})
+    count_left = 0
+    if customer['left'] == '':
+        count_left = 0
+    else:
+    	if customer['left'] == customer_id:
+        	id_left_all = str(customer['left'])+get_id_tree(customer['left'])
+        else: 
+        	id_left_all = get_id_tree(customer['left'])
+        id_left_all = id_left_all.split(',')
+        if (len(id_left_all) > 0):
+            for yy in id_left_all:
+                count_left = count_left + 1
+    return count_left
+
+def get_id_tree(ids):
+    listId = ''
+
+    query = db.users.find({'p_binary': ids})
+    for x in query:
+        listId += ', %s'%(x['customer_id'])
+        listId += get_id_tree(x['customer_id'])
+    return listId
+def total_binary_right(customer_id):
+    customer = db.users.find_one({'customer_id': customer_id})
+    count_right = 0
+    if customer['right'] == '':
+        count_right = 0
+    else:
+        id_right_all = str(customer['right'])+get_id_tree(customer['right'])
+        id_right_all = id_right_all.split(',')
+        if (len(id_right_all) > 0):
+            for yy in id_right_all:
+                count_right = count_right + 1
+    return count_right
+
+
+def total_node_right(customer_id):
+    customer = db.users.find_one({'customer_id': customer_id})
+    count_right = 0
+    if customer['right'] == '':
+        count_right = 0
+    else:
+    	if customer['right'] == customer_id:
+        	id_right_all = str(customer['right'])+get_id_tree(customer['right'])
+        else:
+        	id_right_all = get_id_tree(customer['right'])
+        id_right_all = id_right_all.split(',')
+        if (len(id_right_all) > 0):
+            for yy in id_right_all:
+                count_right = count_right + 1
+    return count_right    
+
 @dashboard_ctrl.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
 
@@ -44,46 +112,88 @@ def dashboard():
 		return redirect('/user/login')
 	else:
 		uid = session.get('uid')
-		user = db.User.find_one({'customer_id': uid})
+		user = db.users.find_one({'customer_id': uid})
+
 		username = user['username']
 		refferal_link = 'http://0.0.0.0:58056/auth/register/%s' % (user['customer_id'])
-		received = float(user.m_wallet/1000000)
-		
-		profit_daily_pending = db.profits.find_one({'status': 0})
-		# profit_daily = db.profits.find({'status': 1}).limit(5)
-		profit_daily = db.profits.find({'status':1}).sort([("date_added", -1)]).limit(5)
-
-		total_refferal = db.users.find({'p_node': uid, 'type': 1}).count()
-		print uid
-		refferal = db.users.find({'p_node': uid, 'type': 1})
-
+		Profit_Statitics = 0
+		if float(user['total_earn']) > 0:
+			Profit_Statitics = round(float(user['total_earn'])/(float(user['investment'])*2.5),2)
+		total_binary_lefts = total_binary_left(uid)
+		total_binary_rights = total_binary_right(uid)
+		total_node_lefts = total_node_left(uid)
+		total_node_rights = total_node_right(uid)
 		
 
-		max_out = float(user.max_out)
-		total_max_out = int(user.total_max_out)
-		if max_out > 0:
-			percent_max = total_max_out/max_out
-		else:
-			percent_max = 0
-		data_ticker = db.tickers.find_one({})
+		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		number_notifications = list_notifications.count()
 		data ={
 			'refferal_link' : refferal_link,
 		    'user': user,
 		    'menu' : 'dashboard',
 		    'float' : float,
-		    
-		    'total_refferal': total_refferal,
-		    'refferal': refferal,
-		    'profit_daily': profit_daily,
-		    'profit_daily_pending': profit_daily_pending,
-		    'btc_usd':data_ticker['btc_usd'],
-	        'sva_btc':data_ticker['sva_btc'],
-	        'sva_usd':data_ticker['sva_usd'],
-	        'xvg_usd':data_ticker['xvg_usd'],
-	        'xvg_btc':round(0.8/float(data_ticker['btc_usd']),8)
+		    'number_notifications' : number_notifications,
+		    'list_notifications' : list_notifications,
+		    'Profit_Statitics' : Profit_Statitics,
+		    'total_binary_left' : total_binary_lefts,
+		    'total_binary_right' :total_binary_rights,
+		    'total_node_lefts' : total_node_lefts,
+		    'total_node_rights' : total_node_rights
 		}
 		
 		return render_template('account/dashboard.html', data=data)
+@dashboard_ctrl.route('/information-center', methods=['GET', 'POST'])
+def informationcenter():
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
+	else:
+		uid = session.get('uid')
+		user = db.users.find_one({'customer_id': uid})
+		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		number_notifications = list_notifications.count()
+		data ={
+		    'user': user,
+		    'menu' : 'information-center',
+		    'float' : float,
+		    'number_notifications' : number_notifications,
+		    'list_notifications' : list_notifications,
+		}
+		return render_template('account/information_center.html', data=data)
+@dashboard_ctrl.route('/list-notifications', methods=['GET', 'POST'])
+def list_notifications():
+
+	if session.get('logged_in') is None:
+		return redirect('/user/login')
+	else:
+		uid = session.get('uid')
+		user = db.users.find_one({'customer_id': uid})
+
+		
+
+		data ={
+		    'user': user,
+		    'menu' : 'notifications',
+		    'float' : float
+		}
+		return render_template('account/list_notifications.html', data=data)
+
+
+@dashboard_ctrl.route('/notifications/<id_notification>', methods=['GET', 'POST'])
+def notifications(id_notification):
+
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
+	else:
+		uid = session.get('uid')
+		user = db.users.find_one({'customer_id': uid})
+		notifications = db.notifications.find_one({'_id' : ObjectId(id_notification)})
+		data ={
+		    'user': user,
+		    'menu' : 'notifications',
+		    'float' : float,
+		    'notifications' : notifications
+		}
+		return render_template('account/notifications.html', data=data)
 
 @dashboard_ctrl.route('/code', methods=['GET', 'POST'])
 def code():

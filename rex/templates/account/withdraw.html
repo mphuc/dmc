@@ -4,21 +4,7 @@
 <link href="/static/assets/css/jstree.css" rel="stylesheet" >
 {% endblock %}
 {% block js %}
-<script src="/static/assets/js/getinfo.js"></script>
-<script type="text/javascript" src="/static/assets/js/jstree.min.js"> </script>
-<script type="text/javascript">
-   $('#TreeSystem').jstree({
-           'core' : {
-              'data' : {
-                 "url" : "/account/json_tree_ico/{{data.uid}}",
-                 "dataType" : "json",
-        'data' : function (node) {
-                 return { 'id' : node.id };
-             }
-              }
-           }
-        });
-</script>
+
 {% endblock %}
 {% block main %}
 <div class="section__content section__content--p30">

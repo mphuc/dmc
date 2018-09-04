@@ -20,16 +20,16 @@ def support():
 	user_id = session.get('user_id')
 	query = db.supports.find({'user_id': user_id})
 	user = db.User.find_one({'customer_id': uid})
-	data_ticker = db.tickers.find_one({})
+	list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+	number_notifications = list_notifications.count()
 	data ={
 	'support' : query,
 	'title': 'Support',
 	'menu' : 'support',
 	'user': user,
 	'uid': uid,
-	'btc_usd':data_ticker['btc_usd'],
-    'sva_btc':data_ticker['sva_btc'],
-    'sva_usd':data_ticker['sva_usd']
+	'number_notifications' : number_notifications,
+    'list_notifications' : list_notifications,
 	}
 	return render_template('account/support.html', data=data)
 @support_ctrl.route('/support/<ids>', methods=['GET', 'POST'])

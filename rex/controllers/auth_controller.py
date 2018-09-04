@@ -170,7 +170,6 @@ def login():
 
 @auth_ctrl.route('/register/<id_sponsor>', methods=['GET', 'POST'])
 def signup(id_sponsor):
-
     val_sponsor = ''
     val_country = ''
     val_email = ''
@@ -294,6 +293,8 @@ def create_user(sponsor,username,country,email,password):
     'm_wallet' : 0,
     'r_wallet' : 0,
     's_wallet' : 0,
+    'd_wallet' : 0,
+    'g_wallet' : 0,
     'max_out' : 0,
     'total_earn' : 0,
     'img_profile' :'',
@@ -316,7 +317,22 @@ def create_user(sponsor,username,country,email,password):
     'coin_wallet' : 0,
     'total_node' : 0,
     'max_out_day' : 0,
-    'max_out_package' : 0
+    'max_out_package' : 0,
+    'status_verify' : 0,
+    'personal_info' : { 'document' : '',
+                        'passport' : '',
+                        'date_passport' :'',
+                        'country' : '',
+                        'address' : '',
+                        'city' : '',
+                        'gender' : '',
+                        'zipcode' : '',
+                        'state'  : '',
+                        'phone' : '',
+                        'img_passport_fontside' : '',
+                        'img_passport_backside' : '',
+                        'img_address' : ''
+                        } 
   }
   customer = db.users.insert(datas)
 

@@ -1,7 +1,7 @@
 
 
 <div class="sidebar" data-background-color="brown" data-active-color="danger">
-   <div class="logo">
+   <div class="logo hidden-xs hidden-sm">
       <a href="/account/dashboard" class="simple-text">
       <img src="/static/img/logo_right.png" alt="" style="    width: 225px;margin-top: 2px;">
       </a>
@@ -13,11 +13,13 @@
    </div>
    <div class="sidebar-wrapper">
     <div class="overlay">
-    <img class="img-loading" src="/static/assets/img/recycle-spinner.gif">
+
   </div>
+    {% if data.user['level'] > 0 %}
       <div class="text-center">
-        <img src="/static/img/icon_level/1.png" alt="" style=" width: 95px; margin: 5px auto">
+        <img src="/static/img/level/{{data.user['level']}}.png" alt="" style=" width: 95px; margin: 5px auto">
       </div>
+    {% endif %}
       <ul class="nav">
       
       {% if data.menu == 'dashboard' %}
@@ -39,14 +41,14 @@
 
      {% if data.menu == 'my-profile' %}
         <li class="active">
-            <a href="/account/account-update-info">
+            <a href="/user/my-profile">
                <i class="fa fa-file-text"></i>
                <p>My Profile</p>
             </a>
          </li>
      {% else %}
        <li>
-            <a href="/account/account-update-info">
+            <a href="/user/my-profile">
                <i class="fa fa-file-text"></i>
                <p>My Profile</p>
             </a>
@@ -141,8 +143,9 @@
          <p>Setting</p>
         <span class="caret"></span></a>
         <ul class="dropdown-menu" >
-          <li><a href="#"><p>Change password</p></a></li>
-          <li><a href="#"><p>Verify account</p></a></li>
+          <li><a href="/user/change-password"><p>Change password</p></a></li>
+          <li><a href="/user/verify-account"><p>Verify account</p></a></li>
+          <li><a href="/user/two-factor-auth"><p>Two-factor Auth</p></a></li>
         </ul>
       </li>
      {% else %}
@@ -152,8 +155,9 @@
          <p>Setting</p>
         <span class="caret"></span></a>
         <ul class="dropdown-menu" >
-          <li><a href="#"><p>Change password</p></a></li>
-          <li><a href="#"><p>Verify account</p></a></li>
+          <li><a href="/user/change-password"><p>Change password</p></a></li>
+          <li><a href="/user/verify-account"><p>Verify account</p></a></li>
+          <li><a href="/user/two-factor-auth"><p>Two-factor Auth</p></a></li>
         </ul>
       </li>
      {% endif %}
@@ -178,130 +182,20 @@
 
      {% if data.menu == 'support' %}
         <li class="active">
-            <a href="/account/information-center">
+            <a href="/account/support">
                <i class="fa fa-life-ring  "></i>
                <p>Support</p>
             </a>
          </li>
      {% else %}
        <li>
-            <a href="/account/information-center">
+            <a href="/account/support">
                <i class="fa fa-life-ring  "></i>
                <p>Support</p>
             </a>
          </li>
      {% endif %}
-     <!-- =========================== -->
-      {% if data.menu == 'wallet' %}
-        <li class="active">
-            <a href="/account/wallet">
-               <i class="ti-wallet"></i>
-               <p>Wallet</p>
-            </a>
-         </li>
-     {% else %}
-       <li>
-            <a href="/account/wallet">
-               <i class="ti-wallet"></i>
-               <p>Wallet</p>
-            </a>
-         </li>
-     {% endif %}
-      <!-- =========================== -->
-      
-      {% if data.menu == 'deposit' %}
-        <li class="active">
-            <a href="/account/deposit">
-               <i class="ti-hand-point-right"></i>
-               <p>Trade & Mining</p>
-            </a>
-         </li>
-     {% else %}
-       <li>
-            <a href="/account/deposit">
-               <i class="ti-hand-point-right"></i>
-               <p>Trade & Mining</p>
-            </a>
-         </li>
-     {% endif %}
-
-   
-      {% if data.menu == 'refferal' %}
-     <li  class="active">
-        <a  href="/account/refferal" >
-          <i class="ti-anchor"></i>
-          <p>Refferal
-            
-          </p>
-        </a>
-        
-      </li>
-      {% else %}
-      <li  class="">
-        <a  href="/account/refferal" >
-          <i class="ti-anchor"></i>
-          <p>Refferal
-          </p>
-        </a>
-        
-      </li>
-      {% endif %}
-     <!-- =========================== -->
-      {% if data.menu == 'personal' or data.menu == 'teamnetworksummary' %}
-       <li class="active"><a href="/account/personal"><i class="ti-id-badge"></i> System Tree</a>
-                  </li>
-     {% else %}
-       <li><a href="/account/personal"><i class="ti-id-badge"></i> System Tree</a>
-                  </li>
-     {% endif %}
-
-        <!-- =========================== -->
-      {% if data.menu == 'history' %}
-        <li class="active">
-            <a href="/account/history">
-               <i class="ti-view-list"></i>
-               <p>Transaction History</p>
-            </a>
-         </li>
-     {% else %}
-       <li class="">
-            <a href="/account/history">
-               <i class="ti-view-list"></i>
-               <p>Transaction History</p>
-            </a>
-         </li>
-     {% endif %}
-        <!-- =========================== -->
-      {% if data.menu == 'setting' %}
-       <li class="active">
-            <a href="/user/setting">
-               <i class="ti-settings"></i>
-               <p>Profile & Security</p>
-            </a>
-         </li>
-     {% else %}
-       <li class="">
-            <a href="/user/setting">
-               <i class="ti-settings"></i>
-               <p>Profile & Security</p>
-            </a>
-         </li>
-     {% endif %}
-    {% if data.menu == 'support' %}
-       <li class="active">
-            <a href="/account/support">
-               <i class="ti-support"></i>
-               <p>Support</p>
-            </a>
-         </li>
-     {% else %}
-       <li class="">
-            <a href="/account/support">
-               <i class="ti-support"></i>
-               <p>Support</p>
-            </a>
-         </li>
-     {% endif %}
+     
         
          <li>
             <a href="/auth/logout">

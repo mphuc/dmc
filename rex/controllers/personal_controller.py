@@ -219,6 +219,10 @@ def personal():
 
     count_f1 = db.User.find({'$and' :[{'p_node': uid},{"level": { "$gt": 0 }}]}).count()
 
+
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
+
     values = {
         'uid' : uid,
         'user' : user,
@@ -226,7 +230,9 @@ def personal():
         'menu':'network-tree',
         'total_binary_left' : total_binary_lefts,
         'total_binary_right' : total_binary_rights,
-        'count_f1' : count_f1
+        'count_f1' : count_f1,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
     }
     return render_template('account/personal.html', data=values)
 @personal_ctrl.route('/count-binary', methods=['GET', 'POST'])
@@ -450,7 +456,7 @@ def children_tree_ico(json):
     if customer:
         for x in customer:
             checkF1 = db.users.find({'p_node': str(x['customer_id'])}).count()
-            print x['username']
+            
             if int(checkF1) > 0:
                 dataChild = True
             else:
@@ -494,7 +500,8 @@ def personaladdtree(p_binary,position):
     
     query = db.User.find({'$and' :[{'p_node': uid},{'p_binary' : ''},{"level": { "$gt": 0 }}]})
     checkF1 = True
-
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
     if query.count() == 0:
         checkF1 = False
     values = {
@@ -506,6 +513,8 @@ def personaladdtree(p_binary,position):
         'refferal' : query,
         'p_binary' : p_binary,
         'position' : position,
-        'checkF1' : checkF1
+        'checkF1' : checkF1,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
     }
     return render_template('account/add-tree.html', data=values)

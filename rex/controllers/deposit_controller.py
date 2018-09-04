@@ -67,13 +67,19 @@ def deposit():
     investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
     if investment is not None:
         package_active = float(investment['package'])
+
+
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
         'menu' : 'investment',
         'float' : float,
         'int': int,
         'user': user,
-        'package_active' : package_active
+        'package_active' : package_active,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
         
     }
 
@@ -87,13 +93,18 @@ def deposithistory():
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
     investment = db.investments.find( {'uid': uid})
+
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
         'menu' : 'investment',
         'float' : float,
         'int': int,
         'user': user,
-        'investment' : investment
+        'investment' : investment,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
         
     }
     return render_template('account/investment-history.html', data=data)
@@ -147,6 +158,9 @@ def ActiveInvestment(package):
     investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
     if investment is None or (float(investment['package']) == 100 and int(package) != 1):
         check_investment = True
+
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
         'menu' : 'investment',
@@ -157,7 +171,9 @@ def ActiveInvestment(package):
         'int': int,
         'user': user,
         'check_balance' : check_balance,
-        'check_investment' :check_investment
+        'check_investment' :check_investment,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
     }
     return render_template('account/investment-active.html', data=data)
 
@@ -503,6 +519,12 @@ def FnRefferalProgram(user_id, amount_invest):
                     check_max_out_package = get_receive_program_package(customers['customer_id'],commission)
                     
                     if float(check_max_out_day) > 0  and float(check_max_out_package) > 0:
+
+                        if float(check_max_out_day) > float(check_max_out_package):
+                            commission = float(check_max_out_package)
+                        else:
+                            commission = float(check_max_out_day)
+
                         if int(i) == 1:
                             r_wallet = float(customers['r_wallet'])
                             new_r_wallet = float(r_wallet) + float(commission)

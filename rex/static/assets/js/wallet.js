@@ -25,6 +25,36 @@ $(function() {
     })
 
 
+  $('#input_user_id').on('input propertychange',function(){
+    var id_user = $('#input_user_id').val();
+    $.ajax({
+        url: "/account/get-username-buy-id",
+        data: {
+            id_user: id_user
+        },
+        type: "POST",
+        beforeSend: function() {
+            $('#input_user_name').attr('placeholder','Loading...');
+        },
+        error: function(data) {
+            
+        },
+        success: function(data) {
+          var data = $.parseJSON(data);
+          if (data.username == '')
+          {
+            $('#input_user_name').attr('placeholder','Account does not exist');
+          }
+          else
+          {
+            $('#input_user_name').val(data.username);
+          }
+          
+          
+        }
+    });
+  })
+
     /*$.ajax({
         url: "http://0.0.0.0:58056/account/jskfkjsfhkjsdhfqwtryqweqeweqeqwe",
         data: { 'ipn_version': '1.0',

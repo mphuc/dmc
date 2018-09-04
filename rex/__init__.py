@@ -382,6 +382,7 @@ def home_pagelogin():
 
 @app.route('/')
 def home_page():
+    return redirect('auth/login')
     from datetime import datetime
     from dateutil.relativedelta import relativedelta
 
@@ -470,83 +471,95 @@ def set_password(password):
 @app.route('/setup')
 def setup():
     inserted = []
-    return json.dumps({'status' : 'error'})
+    #return json.dumps({'status' : 'error'})
+    profit = [{"_id" : "5995a569587b3b15a14174e0",
+        '500': 0.1,
+        '1000':  0.2,
+        '3000' : 0.3,
+        '5000' : 0.4,
+        '10000' : 0.5,
+        '30000' : 0.6,
+        '50000': 0.7,
+        '100000':  0.8,
+        '500000' : 0.9,
+        '1000000' : 1
+    }]
+    db['profits'].drop()
+    db['profits'].insert(profit)
     
-    # db.users.update({'customer_id': '1010101001'}, {'$set': {'creation':datetime.utcnow()}})
-    # return json.dumps({'status' : 'error'})
-    users = [{"_id" : "5995a569587b3b15a14174e0",
-    "roi" : 100920,
-    "right" : "",
-    "p_binary" : "",
-    "m_wallet" : 600000000,
-    "creation" : datetime.utcnow(),
-    "telephone" : "000000000",
-    "password_transaction" : set_password('12345'),
-    "total_amount_right" : int("0"),
-    "total_pd_right" : int("0"),
-    "btc_wallet" : "19WpQavvcEcy4MmWk7szPoiY2cwvi8jt9E",
-    "p_node" : "",
-    "r_wallet" : 600000000,
-    "password_custom" : set_password('12345'),
-    "total_pd_left" : 9700,
-    "customer_id" : "1010101001",
-    "email" : "meccafunds@meccafund.org",
-    "total_amount_left" : 10500,
-    "username" : "root",
-    "s_wallet" : 1000000000,
-    "total_invest" : 100000,
-    "password" : set_password('12345'),
-    "img_profile" : "",
-    "max_out" : 500000,
-    "max_binary" : 500000,
-    "name" : "MECCAFUND",
-    "level" : int("3"),
-    "country" : "French Southern territories",
-    "wallet" : "",
-    "status" : 1,
-    "total_earn" : 10000,
-    "position" : "",
-    'sva_balance': 0,
-    'sva_address': '',
-    'btc_balance': 0,
-    'btc_address': '',
-    'usd_balance': 0,
-    'total_max_out': 0,
-    'total_capital_back': 0,
-    'total_commission': 0,
-    'secret_2fa':'',
-    'status_2fa': 0,
-    "left" : "",
-    's_left': 0,
-    's_right': 0,
-    's_p_node': 0,
-    's_p_binary': 0,
-    's_token': 0,
-    's_id': 0
-    }]
-    db['users'].drop()
-    db['users'].insert(users)
-    inserted.append(users)
+    # users = [{"_id" : "5995a569587b3b15a14174e0",
+    # "roi" : 100920,
+    # "right" : "",
+    # "p_binary" : "",
+    # "m_wallet" : 600000000,
+    # "creation" : datetime.utcnow(),
+    # "telephone" : "000000000",
+    # "password_transaction" : set_password('12345'),
+    # "total_amount_right" : int("0"),
+    # "total_pd_right" : int("0"),
+    # "btc_wallet" : "19WpQavvcEcy4MmWk7szPoiY2cwvi8jt9E",
+    # "p_node" : "",
+    # "r_wallet" : 600000000,
+    # "password_custom" : set_password('12345'),
+    # "total_pd_left" : 9700,
+    # "customer_id" : "1010101001",
+    # "email" : "meccafunds@meccafund.org",
+    # "total_amount_left" : 10500,
+    # "username" : "root",
+    # "s_wallet" : 1000000000,
+    # "total_invest" : 100000,
+    # "password" : set_password('12345'),
+    # "img_profile" : "",
+    # "max_out" : 500000,
+    # "max_binary" : 500000,
+    # "name" : "MECCAFUND",
+    # "level" : int("3"),
+    # "country" : "French Southern territories",
+    # "wallet" : "",
+    # "status" : 1,
+    # "total_earn" : 10000,
+    # "position" : "",
+    # 'sva_balance': 0,
+    # 'sva_address': '',
+    # 'btc_balance': 0,
+    # 'btc_address': '',
+    # 'usd_balance': 0,
+    # 'total_max_out': 0,
+    # 'total_capital_back': 0,
+    # 'total_commission': 0,
+    # 'secret_2fa':'',
+    # 'status_2fa': 0,
+    # "left" : "",
+    # 's_left': 0,
+    # 's_right': 0,
+    # 's_p_node': 0,
+    # 's_p_binary': 0,
+    # 's_token': 0,
+    # 's_id': 0
+    # }]
+    # db['users'].drop()
+    # db['users'].insert(users)
+    # inserted.append(users)
 
-    admin = [{
-        "_id" : "1175a9437u2b3b15a14174e0",
-        'username':  'admin',
-        'email' :  'admin@admin.com',
-        'password': set_password('12345'),
-        'sum_withdraw': 0,
-        'sum_invest' : 0
-    }]
-    db['admins'].drop()
-    db['admins'].insert(admin)
-    inserted.append(admin)
+    # admin = [{
+    #     "_id" : "1175a9437u2b3b15a14174e0",
+    #     'username':  'admin',
+    #     'email' :  'admin@admin.com',
+    #     'password': set_password('12345'),
+    #     'sum_withdraw': 0,
+    #     'sum_invest' : 0
+    # }]
+    # db['admins'].drop()
+    # db['admins'].insert(admin)
+    # inserted.append(admin)
 
-    ticker = [{
-        'btc_usd' : 7500,
-        'sva_btc' : 0.00013333,
-        'sva_usd' : 1
-    }]
-    db['tickers'].drop()
-    db['tickers'].insert(ticker)
+    # ticker = [{
+    #     'btc_usd' : 7500,
+    #     'sva_btc' : 0.00013333,
+    #     'sva_usd' : 1
+    # }]
+    # db['tickers'].drop()
+    # db['tickers'].insert(ticker)
 
     return json.dumps(inserted)
    

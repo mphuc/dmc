@@ -148,60 +148,71 @@ def binary_right(customer_id):
         check_in_right = -1
     return check_in_right
 
-def get_receive_program(user_id,amount):
+def get_receive_program_package(user_id,amount):
     customer = db.users.find_one({"customer_id" : user_id })
+    
     if customer['level'] == 2:
-       max_receive = 200 
+       max_receive = 1250 
+    if customer['level'] == 3:
+       max_receive = 2500 
+    if customer['level'] == 4:
+       max_receive = 7500 
+    if customer['level'] == 5:
+       max_receive = 12500 
+    if customer['level'] == 6:
+       max_receive = 25000 
+    if customer['level'] == 7:
+       max_receive = 75000 
+    if customer['level'] == 8:
+       max_receive = 125000 
+    if customer['level'] == 9:
+       max_receive = 250000 
+    if customer['level'] == 10:
+       max_receive = 1250000 
+    if customer['level'] == 11:
+       max_receive = 2500000 
+
+    if float(amount) > max_receive - float(customer['max_out_package']):
+        amount_receve = max_receive - float(customer['max_out_package'])
+        db.investments.update({'uid': user_id},{'$set' : {'status' : 0}})
+    else:
+        amount_receve = amount
+    customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])
+    db.users.save(customer)
+    return amount_receve
+
+def get_receive_program_day(user_id,amount):
+    customer = db.users.find_one({"customer_id" : user_id })
+    
+    if customer['level'] == 2:
+       max_receive = 500 
     if customer['level'] == 3:
        max_receive = 1000 
     if customer['level'] == 4:
-       max_receive = 2000 
+       max_receive = 3000 
     if customer['level'] == 5:
-       max_receive = 4000 
+       max_receive = 5000 
     if customer['level'] == 6:
        max_receive = 10000 
     if customer['level'] == 7:
-       max_receive = 20000 
+       max_receive = 30000 
     if customer['level'] == 8:
-       max_receive = 40000 
+       max_receive = 50000 
     if customer['level'] == 9:
        max_receive = 100000 
+    if customer['level'] == 10:
+       max_receive = 500000 
+    if customer['level'] == 11:
+       max_receive = 1000000 
 
-    if float(amount) > float(max_receive):
-        amount_receve = max_receive
+    if float(amount) > max_receive - float(customer['max_out_day']):
+        amount_receve = max_receive - float(customer['max_out_day'])
     else:
         amount_receve = amount
+    customer['max_out_day'] = float(amount_receve) + float(customer['max_out_day'])
+    db.users.save(customer)
+
     return amount_receve
-
-# def auto_return_xvg():
-#     customer = db.users.find({'sva_balance' : {'$gt': 0 }})
-#     for x in customer:
-#         amount_recieve = float(x['sva_balance'])*0.040992
-#         usd_balance = float(x['usd_balance'])
-#         new_usd_balance = float(amount_recieve) + float(usd_balance)
-#         db.users.update({ "_id" : ObjectId(x['_id']) }, { '$set': { "usd_balance": round(new_usd_balance,2),"sva_balance" : 0 } })
-#         detail = "Convert "+str(x['sva_balance'])+" XVG. Price 1 XVG = 0.040992 USD"
-#         SaveHistory(x['customer_id'],x['_id'],x['username'], amount_recieve, 'receive', 'USD', detail, '', '')
-
-# @auto_ctrl.route('/auto-return-xvg', methods=['GET', 'POST'])
-# def auto_return_xvgss():
-#     auto_return_xvg()
-#     return json.dumps({'status' : 'success'})
-
-
-# @auto_ctrl.route('/auto-add-wtx', methods=['GET', 'POST'])
-# def auto_add_wtx():
-#     get_invest = db.deposits.find({ "status": 1,"lock_profit": 0 });
-
-#     for x in get_invest:
-        
-#         customer = db.User.find_one({'_id': ObjectId(x['user_id'])})
-        
-#         if customer is not None:
-#             amount_recieve = float(customer['sva_balance']) + (float(x['amount_usd'])/0.8)
-#             db.users.update({ "_id" : ObjectId(x['user_id']) }, { '$set': { "sva_balance": amount_recieve} })
-#     return json.dumps({'status' : 'success'})
-
 
 @auto_ctrl.route('/auto-tickers', methods=['GET', 'POST'])
 def auto_tickers():
@@ -216,8 +227,62 @@ def auto_tickers():
     db.tickers.update({},{'$set': {'xvg_usd': response_xvg[0]['price_usd'],'xvg_btc': response_xvg[0]['price_btc'],'btc_usd' : response_btc[0]['price_usd']}})
     return json.dumps({'status' : 'success'})
 
+@auto_ctrl.route('/dailybonus/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
+def caculator_dailybonus(ids):
+    if ids =='RsaW3Kb1gDkdRUGDo':
+        investment = db.investments.find({'$and' :[{'package':{'$gt': 100 }},{'status' : 1}]} )
+        for x in investment:
+            #bang profit
+            profit = db.profits.find_one({})
+            if x['package'] == 500:
+                percent = profit['500']
+            if x['package'] == 1000:
+                percent = profit['1000']
+            if x['package'] == 3000:
+                percent = profit['3000']
+            if x['package'] == 5000:
+                percent = profit['5000']
+            if x['package'] == 10000:
+                percent = profit['10000']
+            if x['package'] == 30000:
+                percent = profit['30000']
+            if x['package'] == 50000:
+                percent = profit['50000']
+            if x['package'] == 100000:
+                percent = profit['100000']
+            if x['package'] == 500000:
+                percent = profit['500000']
+            if x['package'] == 1000000:
+                percent = profit['1000000']
+            #tinh commision
+            commission = float(percent)*float(x['package'])/100
+            
+            
+            #update balance
+            customers = db.users.find_one({'customer_id': x['uid']})
 
-@auto_ctrl.route('/binaryBonusOprHJhEp/4cLi4bO4ISCjVauHrkNa5oIc/<ids>', methods=['GET', 'POST'])
+            d_wallet = float(customers['d_wallet'])
+            new_d_wallet = float(d_wallet) + float(commission)
+            new_d_wallet = float(new_d_wallet)
+
+            total_earn = float(customers['total_earn'])
+            new_total_earn = float(total_earn) + float(commission)
+            new_total_earn = float(new_total_earn)
+
+            balance_wallet = float(customers['balance_wallet'])
+            new_balance_wallet = float(balance_wallet) + float(commission)
+            new_balance_wallet = float(new_balance_wallet)
+
+            
+
+            db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 'd_wallet' :new_d_wallet } })
+            #detail = 'Get '+str(percent)+' '+"""%"""+' Daily profit from the investment $%s' %(x['package'])
+            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'dailyprofit', 'USD', percent, x['package'], '')
+
+            #save history
+                
+        return json.dumps({'status' : 'success'})
+@auto_ctrl.route('/binaryBonusOprHJhEp/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
 def caculator_binary(ids):
     
     # return json.dumps({'status' : 'off'})
@@ -225,7 +290,7 @@ def caculator_binary(ids):
         countUser = db.users.find({'$and': [{'total_pd_left':{'$gt': 0 }}, {'total_pd_right':{'$gt': 0 }}]}).count()
         if countUser > 0:
             user = db.users.find({'$and': [{'total_pd_left':{'$gt': 0 }}, {'total_pd_right':{'$gt': 0 }}]})
-            # user = db.users.find({'username':'robertnguyen'})
+            
             for x in user:
                 if x['total_pd_left'] > x['total_pd_right']:
                     balanced = x['total_pd_right']
@@ -238,76 +303,62 @@ def caculator_binary(ids):
                     db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "total_pd_left": 0 } })
                     db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "total_pd_right": pd_right } })
                     
-
-                
                 if binary_left(x['customer_id']) == 1 and binary_right(x['customer_id']) == 1:
-                    percent = 0
+                    
                     level = float(x['level'])
                     if float(level) == 2 or float(level) == 3:
-                        percent = 6
+                        percent = 7
                     if float(level) == 4 or float(level) == 5:
                         percent = 8
                     if float(level) == 6 or float(level) == 7:
+                        percent = 9
+                    if float(level) == 8 :
                         percent = 10
-                    if float(level) == 8 or float(level) == 9:
+                    if float(level) == 9 :
+                        percent = 11
+                    if float(level) == 10 :
                         percent = 12
+                    if float(level) == 11 :
+                        percent = 13
 
-                    percent_commission = float(percent)/100
-                    amount_recieve = balanced*percent_commission
+
+                    #tinh commision
+                    commission = float(balanced)*float(percent)/100
+                    commission = round(commission,2)
+                    check_max_out_day = get_receive_program_day(x['customer_id'],commission)
+
+                    check_max_out_package = get_receive_program_package(x['customer_id'],commission)
                     
-                    amount_recieve = round(float(amount_recieve), 2)
-                    
-                    amount_recieve = get_receive_program(x['customer_id'],amount_recieve)
+                    if float(check_max_out_day) > 0  and float(check_max_out_package) > 0:
+                        if float(check_max_out_day) > float(check_max_out_package):
+                            commission = float(check_max_out_package)
+                        else:
+                            commission = float(check_max_out_day)
+
+
+                        #update balance
+                        customers = db.users.find_one({'customer_id': x['customer_id']})
+
+                        s_wallet = float(customers['s_wallet'])
+                        new_s_wallet = float(s_wallet) + float(commission)
+                        new_s_wallet = float(new_s_wallet)
+
+                        total_earn = float(customers['total_earn'])
+                        new_total_earn = float(total_earn) + float(commission)
+                        new_total_earn = float(new_total_earn)
+
+                        balance_wallet = float(customers['balance_wallet'])
+                        new_balance_wallet = float(balance_wallet) + float(commission)
+                        new_balance_wallet = float(new_balance_wallet)
+
+                        db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 's_wallet' :new_s_wallet } })
+                        detail = 'Get '+str(percent)+' '+"""%"""+' Binary bonus from weak branches $%s' %(balanced)
+                        SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'binarybonus', 'USD', detail, '', '')
+
+                    #save history
 
                     
-
-                    usd_balance = float(x['usd_balance'])
-                    new_usd_balance = float(amount_recieve) + float(usd_balance)
-                    total_earn = float(x['total_earn'])
-                    new_total_earn = float(total_earn) + float(amount_recieve)
-                    new_total_earn = float(new_total_earn)
-                    
-                    new_s_wallet = float(x['s_wallet']) + float(amount_recieve)
-
-                    print(x['username'], percent, balanced, amount_recieve)
-                    print "======================================="
-                    db.users.update({ "_id" : ObjectId(x['_id']) }, { '$set': { "usd_balance": round(new_usd_balance,2), 'total_earn': round(new_total_earn,0), 's_wallet': round(new_s_wallet,0) } })
-                    detail = 'Get '+str(percent)+' '+"""%"""+' System Commissions (small tree %s USD)' %(balanced)
-                    SaveHistory(x['customer_id'],x['_id'],x['username'], amount_recieve, 'receive', 'USD', detail, '', '')
-                   
         return json.dumps({'status' : 'success'})
     else:
         return json.dumps({'status' : 'error'})
 
-
-
-
-@auto_ctrl.route('/autoremovetree/4cLi4bO4ISCjVauHrkNa5oIc/<ids>', methods=['GET', 'POST'])
-def autoremovetree(ids):
-    
-    # return json.dumps({'status' : 'off'})
-    if ids =='RsaW3Kb1gDkdRUGDo':
-        users = db.users.find({'$and': [{'roi':0}, 
-            {
-                "creation": 
-                {
-                    "$lt": datetime.utcnow() + timedelta(days=1)
-                }
-            }
-        ]})
-        for x in users:
-            check_debosit = db.txs.find_one({'user_id' : x['customer_id']})
-
-            if check_debosit is None:
-                print(x['username'])
-                if x['p_binary'] != '':
-                    check_binary = users = db.users.find_one({"customer_id" : x['p_binary']})
-                    if check_binary['left'] ==  x['customer_id']:
-                        db.users.update({ "customer_id" : check_binary['customer_id'] }, { '$set': { "left": ''} })
-                    else:
-                        db.users.update({ "customer_id" : check_binary['customer_id'] }, { '$set': { "right": ''} })
-                db.users.remove({ "customer_id" : x['customer_id'] })
-        return json.dumps({'status' : 'success'})
-
-    else:
-        return json.dumps({'status' : 'error'})

@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block title %}UPDATE INFORMATION{% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block js %}
+
+{% endblock %}
+	
+
+{% block main %}
+
+
+<div class="section__content section__content--p30">
+   <div class="card">
+      <div class="card-header">
+         <strong class="card-title">UPDATE INFORMATION</strong>
+      </div>
+      <div class="card-body">
+         <form id="update_information" class="form-horizontal form-bordered" method="post" action="">
+   <div class="form-group">
+      <div class="row">
+         <label for="User_ID" class="col-md-3 control-label">ID</label>
+         <div class="col-md-6"> <input type="text" tabindex="-1" readonly="" placeholder="Automatically generated" value="{{data.user['customer_id']}}" class="form-control" name="User_ID" id="User_ID"> </div>
+      </div>
+   
+   </div>
+   <div class="form-group">
+      <div class="row">
+         <label for="User_Name" class="col-md-3 control-label">Username <span class="text-danger">*</span></label>
+         <div class="col-md-6"> <input readonly="true" type="text" value="{{data.user['username']}}" class="form-control" name="User_Name"> </div>
+      </div>
+   </div>
+   <div class="form-group">
+      <div class="row">
+         <label for="User_UserGroup" class="col-md-3 control-label">Packages</label>
+         <div class="col-md-6">
+            <select disabled="" class="form-control" name="User_UserGroup" id="User_UserGroup">
+               
+               
+               <option {% if data.user['level'] == 11 %} selected="selected" {% endif %} value="11">CROWN DIAMOND</option>
+               <option {% if data.user['level'] == 10 %} selected="selected" {% endif %}  value="10">BLACK DIAMOND</option>
+               <option {% if data.user['level'] == 9 %} selected="selected" {% endif %} value="9">BLUE DIAMOND</option>
+               <option {% if data.user['level'] == 8 %} selected="selected" {% endif %} value="8">DIAMOND</option>
+               
+               
+               <option {% if data.user['level'] == 7 %} selected="selected" {% endif %} value="7">PLATINUM</option>
+               <option {% if data.user['level'] == 6 %} selected="selected" {% endif %} value="6">RUBY</option>
+               <option {% if data.user['level'] == 5 %} selected="selected" {% endif %} value="5">SAPPHIRE</option>
+               <option {% if data.user['level'] == 4 %} selected="selected" {% endif %} value="4">GOLD</option>
+               <option {% if data.user['level'] == 3 %} selected="selected" {% endif %} value="3">SILVER</option>
+               <option {% if data.user['level'] == 2 %} selected="selected" {% endif %} value="2">EXCUTIVE</option>
+               <option {% if data.user['level'] == 1 %} selected="selected" {% endif %} value="1">STARTED</option>
+            </select>
+         </div>
+      </div>
+   </div>
+   
+   <div class="form-group">
+      
+      <div class="row">
+         <label for="User_Email" class="col-md-3 control-label">Email <span class="text-danger">*</span></label>
+         <div class="col-md-6"> <input type="email" readonly="true" value="{{data.user['email']}}" class="form-control" name="User_Email" id="User_Email" required=""> </div>
+      </div>
+      
+     
+   </div>
+   <!-- <div class="form-group">
+      <div class="row">
+         <label for="User_BankName" class="col-md-3 control-label">Ethereum Address</label>
+         <div class="col-md-6"> <input type="text" value="{{data.user['username']}}" class="form-control" name="ethereum_address"> </div>
+      </div>
+   </div>
+   <div class="form-group">
+      <div class="row">
+         <label for="User_BankName" class="col-md-3 control-label">Bitcoin address </label>
+         <div class="col-md-6"> <input type="text" value="" class="form-control" name="bitcoin_address" ></div>
+      </div>
+   </div>
+   <div class="form-group">
+      <div class="row">
+         <label for="User_BankName" class="col-md-3 control-label">Litecoin address </label>
+         <div class="col-md-6"> <input type="text" value="" class="form-control" name="litecoin_address"></div>
+      </div>
+   </div>
+   <div class="form-group">
+      <div class="row">
+         <label for="User_BankName" class="col-md-3 control-label">Bitcoin Cash address </label>
+         <div class="col-md-6"> <input type="text" value="" class="form-control" name="bitcoin_cash_address" ></div>
+      </div>
+   </div>
+   <div class="form-group">
+      <div class="row">
+         <label for="User_BankName" class="col-md-3 control-label">Tether address </label>
+         <div class="col-md-6"> <input type="text" value="" class="form-control" name="tether_address" ></div>
+      </div>
+   </div> -->
+   <div class="form-group">
+      <div class="row">
+         <label for="User_RegisteredDatetime" class="col-md-3 control-label">Registered datetime</label>
+         <div class="col-md-6"> <input type="text" disabled="" data-date-format="yyyy-mm-dd" value="{{data.user['creation'] | format_date }}" class="form-control input-datepicker" name="User_RegisteredDatetime" id="User_RegisteredDatetime"> </div>
+      </div>
+   </div>
+   
+</form>
+         
+      </div>
+   </div>
+</div>
+
+
+
+{% endblock %}
+

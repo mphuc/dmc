@@ -372,7 +372,7 @@ def home():
     return redirect('/auth/login')
 
 def get_totp_uri(otp_secret, user):
-  return 'otpauth://totp/World Trade:{0}?secret={1}&issuer=World Trade' \
+  return 'otpauth://totp/Diamondcapital:{0}?secret={1}&issuer=Diamondcapital' \
     .format(user['username'], otp_secret)
 def verify_totp(token, otp_secret):
     return onetimepass.valid_totp(token, otp_secret)
@@ -408,6 +408,103 @@ def setting():
     }
 
     return render_template('account/account.html', data=data)
+
+@user_ctrl.route('/change-password', methods=['GET', 'POST'])
+def change_password():
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
+    data ={
+    'user' : user,
+    'title': 'Account',
+    'menu' : 'setting',
+    'number_notifications' : number_notifications,
+    'list_notifications' : list_notifications
+    }
+    return render_template('account/change_password.html', data=data)
+
+@user_ctrl.route('/my-profile', methods=['GET', 'POST'])
+def my_profile():
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
+
+    data ={
+    'user' : user,
+    'title': 'Account',
+    'menu' : 'my_profile',
+    'list_notifications' : list_notifications,
+    'number_notifications' : number_notifications
+    }
+    return render_template('account/my_profile.html', data=data)
+
+@user_ctrl.route('/verify-account', methods=['GET', 'POST'])
+def verify_accountsss():
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
+    data_country = json.load(open(json_url))
+
+    token_crt = id_generator(15) 
+    session['token_crt'] = token_crt
+    
+    verify = db.verifys.find({'uid': uid})
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
+    data ={
+    'user' : user,
+    'title': 'Account',
+    'menu' : 'setting',
+    'data_country' : data_country,
+    'token_crt' : token_crt,
+    'verify' : verify,
+    'list_notifications' : list_notifications,
+    'number_notifications' : number_notifications
+    }
+    return render_template('account/verify_account.html', data=data)
+
+@user_ctrl.route('/two-factor-auth', methods=['GET', 'POST'])
+def two_factor_auth():
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.User.find_one({'customer_id': uid})
+    if user['secret_2fa'] == '':
+      otp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
+      db.users.update({"customer_id": uid}, { "$set": { "secret_2fa":otp_secret} })
+    else:
+      otp_secret = user['secret_2fa']
+
+    url_otp = get_totp_uri(otp_secret,user)
+
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
+    data_country = json.load(open(json_url))
+    data_ticker = db.tickers.find_one({})
+    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    number_notifications = list_notifications.count()
+    data ={
+    'user' : user,
+    'title': 'Account',
+    'menu' : 'setting',
+    'country' : data_country,
+    'url_otp' : url_otp,
+    'otp_secret': otp_secret,
+    'list_notifications' : list_notifications,
+    'number_notifications' : number_notifications
+    }
+
+    return render_template('account/two_factor_auth.html', data=data)
+
 @user_ctrl.route('/2FA', methods=['GET', 'POST'])
 def Check2FA():
   uid = session.get('uid')
@@ -428,28 +525,93 @@ def Check2FA():
       msg = 'Change status success'
       types = 'success'
     flash({'msg': msg, 'type':types})
-  return redirect('/user/setting')
+  return redirect('/user/two-factor-auth')
 @user_ctrl.route('/updateaccount', methods=['GET', 'POST'])
 def updateaccount():
     if session.get(u'logged_in') is None:
         return redirect('/user/login')
     uid = session.get('uid')
-    user = db.User.find_one({'customer_id': uid})
+    user = db.users.find_one({'customer_id': uid})
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    if request.method == 'POST' :#and request.form['token_crt'] == session['token_crt']
+        
+        document = request.form['document']
+        passport = request.form['passport']
+        date_passport = request.form['date_passport']
+        country = request.form['country']
+        address = request.form['address']
+        city = request.form['city']
+        gender = request.form['gender']
+        zipcode = request.form['zipcode']
+        state  = request.form['state']
+        phone = request.form['phone']
+        img_passport_fontside = request.files['img_passport_fontside']
+        img_passport_backside = request.files['img_passport_backside']
+        img_address = request.files['img_address']
 
-    if request.method == 'POST':
-        telephone = request.form['telephone']
-        check_phone = db.User.find_one({'telephone': telephone})
-        if check_phone is not None:
-            flash({'msg':'Invalid Phone number', 'type':'danger'})
-            return redirect('/user/setting')
-        else:
-            user.telephone = request.form['telephone']
-            user.country = request.form['country']
-            user.name = request.form['name']
-            db.users.save(user)
-            flash({'msg':'Update profile success', 'type':'success'})
-            return redirect('/user/setting')
-    return redirect('/user/setting')
+        user['personal_info']['document'] = document
+        user['personal_info']['passport'] = passport
+        user['personal_info']['date_passport'] = date_passport
+        user['personal_info']['country'] = country
+        user['personal_info']['address'] = address
+        user['personal_info']['city'] = city
+        user['personal_info']['gender'] = gender
+        user['personal_info']['zipcode'] = zipcode
+        user['personal_info']['state'] = state
+        user['personal_info']['document'] = document
+        user['personal_info']['phone'] = phone
+        
+
+        
+        upload_1     = request.files.get('img_passport_fontside')
+        upload_2     = request.files.get('img_passport_backside')
+        upload_3     = request.files.get('img_address')
+    
+        save_path = SITE_ROOT+'/../static/img/upload'.format(category='category')
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+
+
+        name_1 = id_generator(25)+upload_1.filename
+        file_path_1 = "{path}/{file}".format(path=save_path, file=name_1)
+        upload_1.save(file_path_1)
+
+        name_2 = id_generator(25)+upload_2.filename
+        file_path_2 = "{path}/{file}".format(path=save_path, file=name_2)
+        upload_2.save(file_path_2)
+
+        name_3 = id_generator(25)+upload_3.filename
+        file_path_3 = "{path}/{file}".format(path=save_path, file=name_3)
+        upload_3.save(file_path_3)
+
+
+        user['personal_info']['img_passport_fontside'] = '/static/img/upload/'+name_1
+        user['personal_info']['img_passport_backside'] = '/static/img/upload/'+name_2
+        user['personal_info']['img_address'] = '/static/img/upload/'+name_3
+        user['status_verify'] = 1
+
+        db.users.save(user)
+
+
+        data_verifys = {
+            'uid' : uid,
+            'user_id': user['_id'],
+            'username' : user['username'],
+            'img1' : '/static/img/upload/'+name_1,
+            'img2': '/static/img/upload/'+name_2,
+            'img3' : '/static/img/upload/'+name_3,
+            'date_added' : datetime.utcnow(),
+            'id_number' : id_generator(6),
+            'admin_note' : '',
+            'status' : 0
+        }
+        db.verifys.insert(data_verifys)
+
+        
+        session['token_crt'] = id_generator(15) 
+        flash({'msg':'Update profile success', 'type':'success'})
+        return redirect('/user/verify-account')
+    return redirect('/user/verify-account')
 
 @user_ctrl.route('/updatewallet', methods=['GET', 'POST'])
 def updatewallet():
@@ -480,6 +642,7 @@ def updatewallet():
             if check_wallet_eth is None and check_password(user.password_transaction, request.form['password']) == True:
                 db.users.update({ "customer_id" : uid }, { '$set': { "wallet": request.form['eth_wallet'] }})
     return redirect('/user/setting')
+
 @user_ctrl.route('/update-password', methods=['GET', 'POST'])
 def update_password():
     if session.get(u'logged_in') is None:
@@ -492,18 +655,19 @@ def update_password():
         repeat_new_password= request.form['repeat_new_password']
         if old_password == "" or new_password == "":
             flash({'msg':'Invalid password. Please try again!', 'type':'danger'})
-            return redirect('/user/setting')
+            return redirect('/user/change-password')
 
         if check_password(user.password, old_password) == False:
             flash({'msg':'Invalid old password. Please try again!', 'type':'danger'})
-            return redirect('/user/setting')
+            return redirect('/user/change-password')
         if new_password != repeat_new_password:
             flash({'msg':'Password repeat incorrectly. Please try again!', 'type':'danger'})
-            return redirect('/user/setting')
+            return redirect('/user/change-password')
         if new_password == repeat_new_password and check_password(user.password, old_password) == True:
             flash({'msg':'Update Password success', 'type':'success'})
             db.users.update({ "customer_id" : uid }, { '$set': { "password": set_password(new_password) }})
-            return redirect('/user/setting')
+            return redirect('/user/change-password')
+
 
 @user_ctrl.route('/update-tran-password', methods=['GET', 'POST'])
 def update_tran_password():
