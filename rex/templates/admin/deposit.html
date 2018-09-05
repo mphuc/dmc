@@ -48,7 +48,7 @@
                                                 {% for item in data.deposit %}
                                                 <tr>
                                                     <td>{{ item.date_added | format_date }}</td>
-                                                    <td>{{ item.username }}</td>
+                                                    <td><a href="/admin/customer-detail/{{ item.user_id}}">{{ item.username }}</a></td>
                                                     <td>{{ item.amount_sva | number_format}}</td>
                                                     <td>{{ item.amount_usd | number_format}}</td>
                                                     <td>{{ item.num_profit }}</td>

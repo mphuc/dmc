@@ -279,6 +279,8 @@ def caculator_dailybonus(ids):
             #detail = 'Get '+str(percent)+' '+"""%"""+' Daily profit from the investment $%s' %(x['package'])
             SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'dailyprofit', 'USD', percent, x['package'], '')
 
+            new_profit =  float(x['amount_frofit']) + commission
+            db.investments.update({'_id' : ObjectId(x['_id'])},{ '$set' : {'amount_frofit' : float(new_profit)}})
             #save history
                 
         return json.dumps({'status' : 'success'})

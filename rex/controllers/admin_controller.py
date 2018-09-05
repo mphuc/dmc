@@ -45,7 +45,7 @@ def login():
         password = request.form['password']
 
         user = db.admins.find_one({ '$or': [ { 'username': username }, { 'email': username } ] })
-
+        
         # if user is None or check_password(user['password'], password) == False:
         #     flash({'msg':'Invalid username or password', 'type':'danger'})
         #     return redirect('/admin/login')
@@ -121,18 +121,18 @@ def AdminDashboard():
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
     total_user = db.users.find({}).count()
-    total_lending = db.deposits.find({}).count()
+    total_lending = db.investments.find({}).count()
     #rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@rpcbtcsvadfndawrwlcoin.co")
     balance = 0
-    rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
-    getbalance = rpc_connection.getbalance()
+    # rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
+    # getbalance = rpc_connection.getbalance()
     
     data ={
             'menu' : 'dashboard',
             'total_user': total_user,
             'total_lending': total_lending,
             'total_btc': balance,
-            'serverbtc' : getbalance,
+            'serverbtc' : 0,
             'id_login' : session.get('user_id_admin')
         }
     return render_template('admin/dashboard.html', data=data)
@@ -151,7 +151,61 @@ def AdminCustomer():
         'float' : float,
         'id_login' : session.get('user_id_admin')
     }
-    return render_template('admin/home.html', data=data)
+    return render_template('admin/customer.html', data=data)
+
+@admin_ctrl.route('/verity-account', methods=['GET', 'POST'])
+def verity_account():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+
+    data_verity = db.verifys.find({'status' : 0})
+     
+    data ={
+        'data_verity': data_verity,
+        'menu' : 'verity-account',
+        'float' : float,
+        'id_login' : session.get('user_id_admin')
+    }
+    return render_template('admin/verity_account.html', data=data)
+
+@admin_ctrl.route('/verity-account/<ids>', methods=['GET', 'POST'])
+def verity_account_submit(ids):
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+
+    data_verity = db.verifys.find_one({'_id' : ObjectId(ids)})
+    
+    user = db.users.find_one({'customer_id' : data_verity['uid']})
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
+    data_country = json.load(open(json_url))
+
+    if request.method == 'POST':
+        
+        admin_node = request.form['admin_node']
+        status_verity = request.form['status_verity'] 
+        db.verifys.update({'_id' : ObjectId(ids)},{'$set' : {'admin_note' : admin_node ,'status' : int(status_verity)}})
+        
+        if int(status_verity) == 1:
+            status_verify_user  = 2
+        else: 
+            status_verify_user = 0
+        db.users.update({'customer_id' : data_verity['uid']},{'$set' : {'status_verify' : int(status_verify_user) }})
+        
+        return redirect('/admin/verity-account')
+
+    data ={
+        'data_verity': data_verity,
+        'user' : user,
+        'menu' : 'verity-account',
+        'float' : float,
+        'id_login' : session.get('user_id_admin'),
+        'data_country' : data_country,
+        'ids' : ids
+    }
+    return render_template('admin/verity_account_submit.html', data=data)
 
 @admin_ctrl.route('/deposit-btc', methods=['GET', 'POST'])
 def DepositBTC():
@@ -159,7 +213,7 @@ def DepositBTC():
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
 
-    query = db.txdeposits.find({'type':'BTC'})
+    query = db.deposits.find({})
     data ={
         'databtc': query,
         'menu' : 'deposit_btc',
@@ -186,14 +240,74 @@ def SupportCustomerID(user_id):
     error = None
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
+    
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
+    data_country = json.load(open(json_url))
+    user = db.users.find_one({'_id': ObjectId(user_id)})
+    if request.method == 'POST':
+        
+        document = request.form['document']
+        passport = request.form['passport']
+        date_passport = request.form['date_passport']
+        country = request.form['country']
+        address = request.form['address']
+        city = request.form['city']
+        gender = request.form['gender']
+        zipcode = request.form['zipcode']
+        state  = request.form['state']
+        phone = request.form['phone']
+        status_2fa = request.form['status_2fa']
+
+        balance_wallet = request.form['balance_wallet']
+        password = request.form['password']
+        active_email = request.form['active_email']
+        user['personal_info']['document'] = document
+        user['personal_info']['passport'] = passport
+        user['personal_info']['date_passport'] = date_passport
+        user['personal_info']['country'] = country
+        user['personal_info']['address'] = address
+        user['personal_info']['city'] = city
+        user['personal_info']['gender'] = gender
+        user['personal_info']['zipcode'] = zipcode
+        user['personal_info']['state'] = state
+        user['personal_info']['document'] = document
+        user['personal_info']['phone'] = phone
+        user['status_2fa'] = int(status_2fa)
+        user['active_email'] = int(active_email)
+        user['balance_wallet'] = balance_wallet
+        if password != '':
+            user['password'] = set_password(password)
+        
+        db.users.save(user)
+
     query = db.users.find_one({'_id': ObjectId(user_id)})
     data ={
-        'customer': query,
+        'user': query,
         'menu' : 'customer',
         'float' : float,
-        'user_id': user_id
+        'user_id': user_id,
+        'data_country' : data_country
+
     }
     return render_template('admin/editcustomer.html', data=data)
+
+@admin_ctrl.route('/customer-detail/<user_id>', methods=['GET', 'POST'])
+def customer_detail(user_id):
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+
+    query = db.users.find_one({'_id': ObjectId(user_id)})
+    history = db.historys.find({'uid': query['customer_id']})
+    data ={
+        'user': query,
+        'menu' : 'customer',
+        'float' : float,
+        'user_id': user_id,
+        'history' : history
+    }
+    return render_template('admin/customer_detail.html', data=data)
 
 @admin_ctrl.route('/updatePassword', methods=['GET', 'POST'])
 def updatePassword():
@@ -336,8 +450,8 @@ def AdminWithdraw():
     error = None
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
-    query = db.withdrawas.find({'tx': '', 'status': 0})
-    print query
+    query = db.withdrawas.find({ 'status': 0})
+    
     data ={
         'withdraw' : query,
         'menu' : 'withdraw',
@@ -379,7 +493,7 @@ def AdminWithdrawfn():
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
        
-    query = db.withdrawas.find({"$where":"this.tx.length >0"})
+    query = db.withdrawas.find({"status":1})
    
     data ={
         'withdraw' : query,
@@ -387,6 +501,21 @@ def AdminWithdrawfn():
         'float': float
     }
     return render_template('admin/withdraw_finish.html', data=data)
+
+@admin_ctrl.route('/investment', methods=['GET', 'POST'])
+def investment():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+       
+    query = db.investments.find()
+   
+    data ={
+        'withdraw' : query,
+        'menu' : 'investment',
+        'float': float
+    }
+    return render_template('admin/investment.html', data=data)
 
 @admin_ctrl.route('/withdraw-submit', methods=['GET', 'POST'])
 def SubmitWithdraw():

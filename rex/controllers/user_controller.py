@@ -533,7 +533,7 @@ def updateaccount():
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    if request.method == 'POST' :#and request.form['token_crt'] == session['token_crt']
+    if request.method == 'POST' and request.form['token_crt'] == session['token_crt']:
         
         document = request.form['document']
         passport = request.form['passport']

@@ -1,10 +1,10 @@
 {% extends "layout_admin.html" %}
-{% block title %}History Netword Bonus{% endblock %}
+{% block title %}Investment{% endblock %}
 
 {% block js %}
 
 {% endblock %}
-  
+	
 
 {% block main %}
 
@@ -13,7 +13,7 @@
                             <div class="card">
                                 <div class="content">
 
-                                    <h4 class="title">History Netword Bonus</h4>
+                                    <h4 class="title">History Investment</h4>
                                     <div class="toolbar">
                                         <!--        Here you can write extra buttons/actions for the toolbar              -->
                                     </div>
@@ -33,26 +33,34 @@
                                                     <th>DateTime</th>
                                                     <th>Username</th>
                                                     <th>Amount</th>
-                                                    <th>Detail</th>
-                                                                            
+                                                    <th>Profit</th>
+                                                    <th>Status</th>                            
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for item in data.history %}
+                                                {% for item in data.withdraw %}
                                                 <tr>
                                                     <td></td>
                                                     <td>{{ item.date_added | format_date }}</td>
                                                     <td><a href="/admin/customer-detail/{{ item.user_id}}">{{ item.username}}</a></td>
-                                                    <td>{{ item.amount | number_format}}</td>
-                                                    <td>{{ item.detail}}</td>
-                                                    
+                                                    <td>{{ item.package | number_format}}</td>
+                                                    <td>{{ item.amount_frofit | number_format}}</td>
+                                                    <td>
+                                                        {%if item.status == 0%}
+                                                            <span class="label label-danger">Finish</span>
+                                                        {% endif %}
+                                                        {%if item.status == 1%}
+                                                            <span class="label label-success">Active</span>
+                                                        {% endif %}
+                                                                
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <th colspan="3" style="text-align:right">Total:</th>
-                                                    <th colspan="2"></th>
+                                                    <th colspan="3"></th>
                                                 </tr>
                                             </tfoot>
                                         </table>

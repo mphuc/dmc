@@ -1,15 +1,15 @@
 <div class="sidebar" data-background-color="brown" data-active-color="danger">
    <div class="logo">
       <a href="/admin/dashboard" class="simple-text">
-      <img src="/static/home/images/logo.png" alt="Worldtrader" style="    width: 130px;">
+      <img src="/static/img/logo.png" alt="Worldtrader" style="    width: 80px;">
       </a>
    </div>
    <div class="logo logo-mini">
       <a href="#" class="simple-text">
-      <img src="/static/home/images/logo.png" alt="Worldtrader" style=" width: 70px; ">
+      <img src="/static/img/logo.png" alt="Worldtrader" style=" width: 70px; ">
       </a>
    </div>
-   <div class="sidebar-wrapper" style=" background-color: midnightblue; ">
+   <div class="sidebar-wrapper" style=" background-color: #121734; ">
       <ul class="nav">
        <!-- =========================== -->
       {% if data.menu == 'dashboard' %}
@@ -34,46 +34,45 @@
         <li class="active">
             <a href="/admin/customer">
               
-               <p>Customer</p>
+               <p>Customer Manage</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/admin/customer">
               
-               <p>Customer</p>
+               <p>Customer Manage</p>
             </a>
          </li>
      {% endif %}
-      <!-- =========================== -->
-      <!-- {% if data.menu == 'ico' %}
+     {% if data.menu == 'verity-account' %}
         <li class="active">
-            <a href="/admin/ico-order">
+            <a href="/admin/verity-account">
               
-               <p>ICO Order</p>
+               <p>Verity Account</p>
             </a>
          </li>
      {% else %}
        <li>
-            <a href="/admin/ico-order">
-               
-               <p>ICO Order</p>
+            <a href="/admin/verity-account">
+               <p>Verity Account</p>
             </a>
          </li>
-     {% endif %} -->
+     {% endif %}
+      
       <!-- =========================== -->
       {% if data.menu == 'deposit_btc' %}
         <li class="active">
             <a href="/admin/deposit-btc">
               
-               <p>History Deposit BTC</p>
+               <p>History Deposit</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/admin/deposit-btc">
               
-               <p>History Deposit BTC</p>
+               <p>History Deposit</p>
             </a>
          </li>
      {% endif %}
@@ -82,14 +81,14 @@
         <li class="active">
             <a href="/admin/withdraw">
               
-               <p>Withdraw</p>
+               <p>Withdraw Pendding</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/admin/withdraw">
               
-               <p>Withdraw</p>
+               <p>Withdraw Pendding</p>
             </a>
          </li>
      {% endif %}
@@ -110,18 +109,18 @@
          </li>
      {% endif %}
       <!-- =========================== -->
-      {% if data.menu == 'deposit' %}
+      {% if data.menu == 'investment' %}
         <li class="active">
-            <a href="/admin/deposit">
+            <a href="/admin/investment">
               
-               <p>Trading & Mining</p>
+               <p>Investment</p>
             </a>
          </li>
      {% else %}
        <li>
-            <a href="/admin/deposit">
+            <a href="/admin/investment">
                
-               <p>Trading & Mining</p>
+               <p>Investment</p>
             </a>
          </li>
      {% endif %}
@@ -130,14 +129,14 @@
         <li class="active">
             <a href="/admin/profit">
               
-               <p>History Refferal</p>
+               <p>History Direct Bonus</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/admin/profit">
                
-               <p>History Refferal</p>
+               <p>History Direct Bonus</p>
             </a>
          </li>
      {% endif %}
@@ -146,50 +145,51 @@
         <li class="active">
             <a href="/admin/profit-system">
               
-               <p>History System</p>
+               <p>History Network Bonus</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/admin/profit-system">
                
-               <p>History System</p>
+               <p>History Network Bonus</p>
+            </a>
+         </li>
+     {% endif %}
+
+     {% if data.menu == 'profit-generations' %}
+        <li class="active">
+            <a href="/admin/profit-generations">
+              
+               <p>History Generations Bonus</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/admin/profit-generations">
+               
+               <p>History Generations Bonus</p>
             </a>
          </li>
      {% endif %}
 
      {% if data.menu == 'profit-daily' %}
         <li class="active">
-            <a href="/admin/profit-daily">
+            <a href="/admin/profit-generations">
               
-               <p>History Daily</p>
+               <p>History Daily Profit</p>
             </a>
          </li>
      {% else %}
        <li>
             <a href="/admin/profit-daily">
                
-               <p>History Daily</p>
+               <p>History Daily Profit</p>
             </a>
          </li>
      {% endif %}
-    <!-- =========================== -->
-      {% if data.menu == 'support' %}
-        <li class="active">
-            <a href="/admin/support">
-              
-               <p>Support</p>
-            </a>
-         </li>
-     {% else %}
-       <li>
-            <a href="/admin/support">
-               
-               <p>Support</p>
-            </a>
-         </li>
-     {% endif %}
-        
+
+   
          <li>
             <a href="/admin/logout">
                

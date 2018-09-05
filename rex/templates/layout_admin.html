@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" >
     <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.html" >
-    <link rel="icon" type="image/png" href="/static/home/images/logo.png" >
+    <link rel="icon" type="image/png" href="/static/img/logo.png" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge" >
 
     <title>{% block title %}{% endblock %}</title>
@@ -28,15 +28,9 @@
     <link href="/static/assets/vendors/sweetalert/css/sweetalert2.min.css" rel="Stylesheet" >
     <!-- fakeLoader -->
     <link href="/static/assets/css/fakeLoader.css" rel="stylesheet" >
-
+    <link href="/static/assets/css/admin.css" rel="stylesheet" >
     {% block css %}{% endblock %}
-    <!-- Start Alexa Certify Javascript -->
-<script type="text/javascript">
-_atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: true};
-(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
-</script>
-<noscript><img src="https://certify.alexametrics.com/atrk.gif?account=awLMq1Fx9f207i" style="display:none" height="1" width="1" alt="" /></noscript>
-<!-- End Alexa Certify Javascript -->  
+    
 </head>
 
 <body>
@@ -129,7 +123,7 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
 }); 
 
 
-        $('#datatables_depoist').DataTable( {
+        var datatables_depoist = $('#datatables_depoist').DataTable( {
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -140,22 +134,69 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
                             i : 0;
                 };
                 total = api
-                    .column( 2 )
+                    .column( 4 )
                     .data()
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
                 pageTotal = api
-                    .column( 2, { page: 'current'} )
+                    .column( 4, { page: 'current'} )
                     .data()
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
-                $( api.column( 2 ).footer() ).html(
+                $( api.column( 4 ).footer() ).html(
+                    '$'+pageTotal +' ($'+ total +')'
+                );
+            },
+            "order": [[ 1, "desc" ]],
+            responsive: true
+        });
+
+        datatables_depoist.on( 'order.dt search.dt', function () {
+              datatables_depoist.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+        var datatables_investment = $('#datatables_investment').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 3 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotal = api
+                    .column( 3, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                $( api.column( 3 ).footer() ).html(
                     ''+pageTotal +' ('+ total +')'
                 );
             },
+            "order": [[ 1, "desc" ]],
+            responsive: true
         });
+
+        datatables_investment.on( 'order.dt search.dt', function () {
+              datatables_investment.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+
+        
 
         $('#datatables_withdraw').DataTable( {
             "footerCallback": function ( row, data, start, end, display ) {
@@ -213,7 +254,7 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
                 );
             },
         });
-        $('#datatables_history').DataTable( {
+        var datatables_history = $('#datatables_history').DataTable( {
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -224,25 +265,28 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
                             i : 0;
                 };
                 total = api
-                    .column( 2 )
+                    .column( 4 )
                     .data()
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
-                pageTotal = api
-                    .column( 2, { page: 'current'} )
-                    .data()
-                    .reduce( function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0 );
-                $( api.column( 2 ).footer() ).html(
-                    ''+pageTotal +' ('+ total +')'
+                
+                $( api.column( 4 ).footer() ).html(
+                    '$ '+total
                 );
             },
+            "order": [[ 1, "desc" ]],
+            responsive: true
         });
 
+         datatables_history.on( 'order.dt search.dt', function () {
+              datatables_history.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
 
-        $('#datatables_customer').DataTable( {
+
+        var table = $('#datatables_customer').DataTable( {
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -268,31 +312,46 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
                     ''+pageTotal +' ('+ total +')'
                 );
             },
+            "order": [[ 0, "desc" ]],
+            responsive: true
         });
-      /*var table= $('#datatables').DataTable({
-            "order": [[ 1, "desc" ]],
-            dom: 'Bfrtip',
-                buttons: [
-                 'excel'
-                ],
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
-            responsive: true,
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records",
-            }
+        
+        table.on( 'order.dt search.dt', function () {
+              table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
 
-        });*/
+        var datatables_tables = $('#datatables_tables').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                
+            },
+            "order": [[ 0, "desc" ]],
+            responsive: true
+        });
+        
+        datatables_tables.on( 'order.dt search.dt', function () {
+              datatables_tables.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+
+        
 
       $.fn.dataTable.ext.search.push(
           function(settings, data, dataIndex) {
             var min = $('#min-date').val();
             var max = $('#max-date').val();
-            var createdAt = data[0] || 0; // Our date column in the table
+            var createdAt = data[1] || 0; 
 
             if (
               (min == "" || max == "") ||
@@ -304,12 +363,29 @@ _atrk_opts = { atrk_acct:"awLMq1Fx9f207i", domain:"worldtrader.info",dynamic: tr
           }
         );
 
-        // Re-draw the table when the a date range filter changes
         $('.date-range-filter').change(function() {
           table.draw();
         });
 
-        // var table = $('#datatables').DataTable();
+        $('.table_historys .date-range-filter').change(function() {
+          datatables_history.draw();
+        });
+
+        $('.table_deposit .date-range-filter').change(function() {
+          datatables_depoist.draw();
+        });
+
+        $('.table_withdraw_pendding .date-range-filter').change(function() {
+          datatables_depoist.draw();
+        });
+
+        $('.table_investment .date-range-filter').change(function() {
+          datatables_investment.draw();
+        });
+
+        
+        
+        
 
         $('.card .material-datatables label').addClass('form-group');
     });

@@ -1,5 +1,5 @@
 {% extends "layout_admin.html" %}
-{% block title %}Dash{% endblock %}
+{% block title %}Edit Customer{% endblock %}
 
 {% block js %}
     
@@ -95,47 +95,208 @@
     <div class="col-md-12">
         <div class="card">
             <div class="content">            
-               <h4 class="title">Update infomation: {{data.customer.username}}</h4>
-               <div class="form-group label-floating">
-                  <label class="control-label">
-                     Wallet
-                     <star>*</star>
-                  </label>
-                  <input class="form-control" value="{{data.customer.wallet}}" id="new_wallet" name="new_wallet" type="text" required="true">
-               </div>
-               <div class="form-group label-floating">
-                  <label class="control-label">
-                     Email
-                     <star>*</star>
-                  </label>
-                  <input class="form-control" value="{{data.customer.email}}" id="new_email" name="new_email" type="text" required="true">
-               </div>
-               <div class="form-group label-floating">
-                  <label class="control-label">
-                     Phone
-                     <star>*</star>
-                  </label>
-                  <input class="form-control" value="{{data.customer.telephone}}" id="new_telephone" name="new_telephone" type="text" required="true">
-               </div>
-               <div class="form-group label-floating">
-                  <label class="control-label">
-                     New Password
-                     <star>*</star>
-                  </label>
-                  <input class="form-control" id="new_password" name="new_password" type="password" required="true">
-               </div>
-               <div class="form-group label-floating">
-                  <label class="control-label">
-                     Retype New Password
-                     <star>*</star>
-                  </label>
-                  <input class="form-control" id="repeat_new_password" name="repeat_new_password" type="password" required="true">
-                  <input type="hidden" id="user_id" value="{{data.user_id}}">
-               </div>
+               <h4 class="title">Update infomation: {{data.user['username']}}</h4>
+               <form  action="/admin/customer/{{data.user_id}}" enctype="multipart/form-data" method="post">
+                  <div class="content">
+                     <div class="col-md-4">
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Select document   
+                              <star>*</star>
+                           </label>
+                           <select  name="document" class="form-control" required="true">
+                                <option {% if data.user['personal_info']['document'] == 'Passport' %} selected="selected" {% endif %} value="Passport">Passport</option>
+                                <option {% if data.user['personal_info']['document'] == 'ID' %} selected="selected" {% endif %} value="ID">ID</option>
+                           </select>
+                        </div>
+                        <div class="clearfix"></div>
+                         <div class="row">
+                           <div class="col-md-6">
+                              <div class="form-group ">
+                                 <label class="control-label">
+                                    Country 
+                                    <star>*</star>
+                                 </label>
+                                 <select class="form-control" name="country" required="required" >
+                                       {% for item in data.data_country %} 
+                                       <option {% if data.user['personal_info']['country'] == item.country_name %} selected="selected" {% endif %}
+                                           data-id="{{item.dialling_code}}" value="{{item.country_name}}">{{item.country_name}}</option>
+                                       {% endfor %} 
+                                    </select>
+                                 
+                              </div>
+                           </div>
+                           <div class="col-md-6">
+                              <div class="form-group ">
+                                 <label class="control-label">
+                                    Gender 
+                                    <star>*</star>
+                                 </label>
+                                 <select name="gender" class="form-control" required="true">
+                                      <option {% if data.user['personal_info']['gender'] == 'Male' %} selected="selected" {% endif %} value="Male">Male</option>
+                                      <option {% if data.user['personal_info']['gender'] == 'Female' %} selected="selected" {% endif %} value="Female">Female</option>
+                                 </select>
+                              </div>
+                           </div>
+                         </div>
+
+                        <div class="form-group ">
+                           <label class="control-label">
+                              ZipCode  
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['zipcode']}}" required="true" name="zipcode" type="text" >
+                        </div>  
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                               <label class="control-label">
+                                  Status Authen  
+                                  <star>*</star>
+                               </label>
+                               <select name="status_2fa" class="form-control" required="true">
+                                    <option {% if data.user['status_2fa'] == 0 %} selected="selected" {% endif %} value="0">Disable</option>
+                                    <option {% if data.user['status_2fa'] == 1 %} selected="selected" {% endif %} value="1">Enlable</option>
+                               </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group ">
+                               <label class="control-label">
+                                  Active Register  
+                                  <star>*</star>
+                               </label>
+                               <select name="active_email" class="form-control" required="true">
+                                    <option {% if data.user['active_email'] == 0 %} selected="selected" {% endif %} value="0">Disable</option>
+                                    <option {% if data.user['active_email'] == 1 %} selected="selected" {% endif %} value="1">Enlable</option>
+                               </select>
+                            </div>
+                          </div>
+                        </div>
+                        {% if data.user['status_verify'] == 1 %}
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Passport/ID/DL image (Fontside)   
+                              <star>*</star>
+                           </label>
+                           
+                           <div class="text-center">
+                              <img width="80" src="{{data.user['personal_info']['img_passport_fontside']}}">
+                           </div>
+                           
+                        </div>
+                        {% endif %}
+                     </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Passport/ID/DL number
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['passport']}}" required="true" name="passport" type="text" >
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Address 
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['address']}}" required="true" name="address" type="text" >
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              State/Region  
+                              <star>*</star>
+                           </label>
+                           <input class="form-control"  value="{{data.user['personal_info']['state']}}" required="true" name="state" type="text" >
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              New Password
+                              <star>*</star>
+                           </label>
+                           <input class="form-control"  value="" placeholder="New Password"  name="password" type="text" >
+                        </div>
+                        {% if data.user['status_verify'] == 1 %}
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Passport/ID/DL image (Backside)  
+                              <star>*</star>
+                           </label>
+                           
+                           
+                           <div class="text-center">
+                              <img width="80" src="{{data.user['personal_info']['img_passport_backside']}}">
+                           </div>
+                           
+                        </div>
+                        {% endif %}
+                     </div>
+
+                     <div class="col-md-4">
+                        <div class="form-group">
+                           <label class="control-label">
+                              Id Date
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['date_passport']}}"  name="date_passport" type="date"  required="true">
+                        </div>
+
+                        <div class="form-group">
+                           <label class="control-label">
+                              City/Town
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['city']}}"  name="city" type="text" required="true">
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Phone 
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['personal_info']['phone']}}"  required="true" name="phone" type="text">
+                        </div>
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Balance 
+                              <star>*</star>
+                           </label>
+                           <input class="form-control" value="{{data.user['balance_wallet']}}"  required="true" name="balance_wallet" type="text">
+                        </div>
+                        {% if data.user['status_verify'] == 1 %}
+                        <div class="form-group ">
+                           <label class="control-label">
+                              Proof of Addresses *
+                              <star>*</star>
+                           </label>
+                           
+                           
+                           <div class="text-center">
+                              <img width="80" src="{{data.user['personal_info']['img_address']}}">
+                           </div>
+                           
+                           
+                           
+                        </div>
+                        {% endif %}
+                     </div>
+                     
+                     
+                     <input type="hidden" name="token_crt" value="{{data.token_crt}}">
+                     
+                     <div class="text-center">
+                        <button type="submit" class="btn btn-rose btn-fill btn-wd">Update</button>
+                     </div>
+                  </div>
+               </form>
+
+
+
+
+
+
+
               
-               <div class="text-center">
-                  <button type="submit" id="frmChangePasswordr" class="btn btn-rose btn-fill btn-wd">Change</button>
-               </div>
                
             </div>
             <!-- end content-->
@@ -145,55 +306,7 @@
     <!-- end col-md-12 -->
 </div>
 <div class="row" style="display: none;" >
-    <div class="col-md-12">
-        <div class="card">
-            <div class="content">            
-               <h4 class="title">Tree: {{data.customer.username}}</h4>
-                <label class="control-label">
-                     Sponsor
-                     <star>*</star>
-                    </label>
-               <div class="input-group">
-                
-
-                    <input class="form-control" id="p_node" name="p_node" value="{{data.customer.p_node | find_username}}" type="text">
-                  <span class="input-group-addon btn btn-dashboard" id="UpdatesPnode">Update</span>
-                </div>
-               <label class="control-label">
-                     Binary
-                     <star>*</star>
-                    </label>
-                <div class="input-group">
-                 
-                   <input class="form-control" id="p_binary" name="p_binary" type="text" value="{{data.customer.p_binary | find_username}}">
-                  <span class="input-group-addon btn btn-dashboard" id="checkPbinary">Update</span>
-                </div>
-<!--  <label class="control-label">
-                     Left
-                     <star>*</star>
-                    </label>
-               <div class="input-group">
-                
-                   <input class="form-control" id="left" name="left" type="text-center"  value="{{data.customer.left | find_username}}">
-                  <span class="input-group-addon btn btn-dashboard" id="checkLeft">Update</span>
-                </div>
-                <label class="control-label">
-                     Right
-                     <star>*</star>
-                    </label>
-                <div class="input-group">
-                 
-                   <input class="form-control" id="right" name="right" type="text" value="{{data.customer.right | find_username}}">
-                  <span class="input-group-addon btn btn-dashboard" id="checkRight">Update</span>
-                </div> -->
-             
-            
-            </div>
-            <!-- end content-->
-        </div>
-        <!--  end card  -->
-    </div>
-    <!-- end col-md-12 -->
+    
 </div>
 
 {% endblock %}

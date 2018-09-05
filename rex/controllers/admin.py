@@ -44,7 +44,7 @@ def ProfitDaiyly():
     error = None
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
-    query = db.historys.find({'detail': {'$regex': 'referral'}})
+    query = db.historys.find({'type': {'$regex': 'referral'}})
     
 
     data ={
@@ -54,12 +54,28 @@ def ProfitDaiyly():
        
         }
     return render_template('admin/profit.html', data=data)
+@admin1_ctrl.route('/profit-generations', methods=['GET', 'POST'])
+def ProfitDaiylysystemgenerations():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    query = db.historys.find({'type': {'$regex': 'generations'}})
+    
+
+    data ={
+            'menu' : 'profit-generations',
+
+            'history': query
+       
+        }
+    return render_template('admin/profit-generations.html', data=data)
+
 @admin1_ctrl.route('/profit-system', methods=['GET', 'POST'])
 def ProfitDaiylysystem():
     error = None
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
-    query = db.historys.find({'detail': {'$regex': 'System'}})
+    query = db.historys.find({'type': {'$regex': 'binarybonus'}})
     
 
     data ={
@@ -75,7 +91,7 @@ def ProfitDaiylydaily():
     error = None
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
-    query = db.historys.find({'detail': {'$regex': 'profit'}})
+    query = db.historys.find({'type': {'$regex': 'dailyprofit'}})
     
 
     data ={

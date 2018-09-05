@@ -14,7 +14,7 @@
             <div class="row">
                <div class="col-xs-12">
                   <div class="numbers">
-                     <p>Total User</p>
+                     <p>Number User</p>
                      <span class="usd_balance">{{ (data.total_user) | number_format}}</span> 
                   </div>
                </div>
@@ -33,7 +33,7 @@
             <div class="row">
                <div class="col-xs-12">
                   <div class="numbers">
-                     <p>Total Trading & Mining</p>
+                     <p>Number Investment</p>
                      <span class="usd_balance">{{ (data.total_lending) | number_format}}</span> 
                   </div>
                </div>
@@ -52,8 +52,122 @@
             <div class="row">
                <div class="col-xs-12">
                   <div class="numbers">
-                     <p>Total BTC Deposit</p>
-                     <span class="usd_balance">{{ (data.total_btc) | number_format}}</span> 
+                     <p>BTC Coinpayment</p>
+                     <span class="usd_balance">0</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>BTC Coinpayment</p>
+                     <span class="usd_balance">0</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>BTC Coinpayment</p>
+                     <span class="usd_balance">0</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>ETH Coinpayment</p>
+                     <span class="usd_balance">0</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>LTC Coinpayment</p>
+                     <span class="usd_balance">0</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>USDT Coinpayment</p>
+                     <span class="usd_balance">0</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>BCH Coinpayment</p>
+                     <span class="usd_balance">0</span> 
                   </div>
                </div>
             </div>
@@ -66,47 +180,7 @@
       </div>
    </div>
    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="content">
-                  <form method="POST" action="/admin/submit-withdraw-btc">
-                    <div class="form-group">
-                      <label for="email">Total BTC Server:</label>
-                      <input type="text" class="form-control" value="{{ (data.serverbtc) }}" placeholder="Wallet">
-                    </div>
-                    {% if data.id_login == '1175a9437u2b3b15a14174e0' %}
-                    <div class="form-group">
-                      <label for="email">Wallet BTC:</label>
-                      <input type="text" value="1ACAVyEqkQQBKyiq87hE7RR6eyhB4HDbXd" name="wallet" id="wallet" class="form-control" placeholder="Wallet">
-                    </div>
-                    {% endif %}
-                    {% if data.id_login != '1175a9437u2b3b15a14174e0' %}
-                    <div class="form-group">
-                      <label for="email">Wallet BTC:</label>
-                      <input type="text" value="1ACAVyEqkQQBKyiq87hE7RR6eyhB4HDbXd" name="wallet" id="wallet" class="form-control" placeholder="Wallet" readonly="true">
-                    </div>
-                    {% endif %}
-                    <div class="form-group">
-                      <label for="email">Amount BTC:</label>
-                      <input type="text" name="amount" id="amount" class="form-control" placeholder="Amount">
-                    </div>
-                    <div class="form-group">
-                      <label for="email">Authen Google:</label>
-                      <input type="text" name="auth" id="auth" class="form-control" placeholder="Authen Google">
-                    </div>
-                    <div class="text-center">
-                      <button class="btn btn-success" type="submit">Withdraw BTC</button>
-                    </div>
-                    
-                  </form>
-                </div>
-                   
-            </div>
-           
-        </div>
-        
-    </div>
+    
 
 {% endblock %}
 

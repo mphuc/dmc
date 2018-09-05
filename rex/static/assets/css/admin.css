@@ -1,0 +1,7 @@
+body .wrapper{
+  background: #0598ab;
+}
+#min-date,#max-date,#min-date-history,#max-date-history{
+  border-radius: 5px;
+  background: #fff;
+}
