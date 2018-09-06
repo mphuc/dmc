@@ -16,7 +16,8 @@ class Notification(Document):
         'content':  unicode,
         'date_added' : datetime.datetime,
         'status': int,
-        'type' : unicode
+        'type' : unicode,
+        'read' : int
     }
     use_dot_notation = True
 

@@ -28,6 +28,22 @@
          </li>
      {% endif %}
 
+     {% if data.menu == 'profit-setup' %}
+        <li class="active">
+            <a href="/admin/profit-setup">
+               
+               <p>Setup Profit</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/admin/profit-setup">
+             
+               <p>Setup Profit</p>
+            </a>
+         </li>
+     {% endif %}
+
      
       <!-- =========================== -->
       {% if data.menu == 'customer' %}
@@ -189,6 +205,21 @@
          </li>
      {% endif %}
 
+
+      {% if data.menu == 'notifications' %}
+        <li class="active">
+            <a href="/admin/notifications">
+               <p>Notifications</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/admin/notifications">
+               <p>Notifications</p>
+            </a>
+         </li>
+     {% endif %}
+      
    
          <li>
             <a href="/admin/logout">

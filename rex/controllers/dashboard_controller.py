@@ -125,7 +125,7 @@ def dashboard():
 		total_node_rights = total_node_right(uid)
 		
 
-		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
 		number_notifications = list_notifications.count()
 		data ={
 			'refferal_link' : refferal_link,
@@ -149,14 +149,18 @@ def informationcenter():
 	else:
 		uid = session.get('uid')
 		user = db.users.find_one({'customer_id': uid})
-		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()
+
+		notification = db.notifications.find({'type' : 'all'})
+
 		data ={
 		    'user': user,
 		    'menu' : 'information-center',
 		    'float' : float,
 		    'number_notifications' : number_notifications,
 		    'list_notifications' : list_notifications,
+		    'notification' : notification
 		}
 		return render_template('account/information_center.html', data=data)
 @dashboard_ctrl.route('/list-notifications', methods=['GET', 'POST'])
@@ -168,12 +172,19 @@ def list_notifications():
 		uid = session.get('uid')
 		user = db.users.find_one({'customer_id': uid})
 
-		
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+		number_notifications = list_notifications.count()
+
+
+		notification = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
 
 		data ={
 		    'user': user,
 		    'menu' : 'notifications',
-		    'float' : float
+		    'float' : float,
+		    'number_notifications' : number_notifications,
+		    'list_notifications' : list_notifications,
+		    'notification' : notification
 		}
 		return render_template('account/list_notifications.html', data=data)
 
@@ -186,12 +197,20 @@ def notifications(id_notification):
 	else:
 		uid = session.get('uid')
 		user = db.users.find_one({'customer_id': uid})
-		notifications = db.notifications.find_one({'_id' : ObjectId(id_notification)})
+		notification = db.notifications.find_one({'_id' : ObjectId(id_notification)})
+
+		db.notifications.update({'_id' : ObjectId(id_notification)},{'$set' : {'read' : 1}})
+
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
+		number_notifications = list_notifications.count()
+
 		data ={
 		    'user': user,
 		    'menu' : 'notifications',
 		    'float' : float,
-		    'notifications' : notifications
+		    'notification' : notification,
+		    'number_notifications' : number_notifications,
+		    'list_notifications' : list_notifications,
 		}
 		return render_template('account/notifications.html', data=data)
 

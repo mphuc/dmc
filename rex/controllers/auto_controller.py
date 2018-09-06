@@ -230,7 +230,7 @@ def auto_tickers():
 @auto_ctrl.route('/dailybonus/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
 def caculator_dailybonus(ids):
     if ids =='RsaW3Kb1gDkdRUGDo':
-        investment = db.investments.find({'$and' :[{'package':{'$gt': 100 }},{'status' : 1}]} )
+        investment = db.investments.find({'$and' :[{'package':{'$gt': 100 }},{'status' : 1},{'reinvest' : 0}]} )
         for x in investment:
             #bang profit
             profit = db.profits.find_one({})
@@ -279,8 +279,12 @@ def caculator_dailybonus(ids):
             #detail = 'Get '+str(percent)+' '+"""%"""+' Daily profit from the investment $%s' %(x['package'])
             SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'dailyprofit', 'USD', percent, x['package'], '')
 
+            reinvest = 0
+            if (float(x['amount_frofit']) + commission) >= (float(x['package'])*1.5):
+                reinvest = 1
+
             new_profit =  float(x['amount_frofit']) + commission
-            db.investments.update({'_id' : ObjectId(x['_id'])},{ '$set' : {'amount_frofit' : float(new_profit)}})
+            db.investments.update({'_id' : ObjectId(x['_id'])},{ '$set' : {'amount_frofit' : float(new_profit),'reinvest' : reinvest}})
             #save history
                 
         return json.dumps({'status' : 'success'})

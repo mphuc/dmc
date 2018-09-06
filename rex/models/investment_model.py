@@ -17,7 +17,11 @@ class Investment(Document):
         'package' : float,
         'status' : int,
         'date_added' : datetime.datetime,
-        'amount_frofit' : float
+        'amount_frofit' : float,
+        'upgrade' : int,
+        'coin_amount' : float,
+        'date_upgrade' : datetime.datetime,
+        'reinvest' : int
     }
     default_values = {
         'date_added': datetime.datetime.utcnow()

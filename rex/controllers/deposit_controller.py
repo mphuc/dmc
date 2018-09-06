@@ -63,13 +63,9 @@ def deposit():
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
 
-    package_active = 0
-    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
-    if investment is not None:
-        package_active = float(investment['package'])
-
-
-    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    investment = db.investments.find_one({'$and' :[{'uid': uid}]} )
+    
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
@@ -77,7 +73,7 @@ def deposit():
         'float' : float,
         'int': int,
         'user': user,
-        'package_active' : package_active,
+        'investment' : investment,
         'number_notifications' : number_notifications,
         'list_notifications' : list_notifications
         
@@ -94,7 +90,7 @@ def deposithistory():
     user = db.users.find_one({'customer_id': uid})
     investment = db.investments.find( {'uid': uid})
 
-    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
@@ -156,10 +152,10 @@ def ActiveInvestment(package):
 
     check_investment = False
     investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
-    if investment is None or (float(investment['package']) == 100 and int(package) != 1):
+    if investment is None:
         check_investment = True
 
-    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
@@ -176,6 +172,172 @@ def ActiveInvestment(package):
         'list_notifications' : list_notifications
     }
     return render_template('account/investment-active.html', data=data)
+
+@deposit_ctrl.route('/upgrade-investment/<package>', methods=['GET', 'POST'])
+def UpgradeInvestment(package):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/auth/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    if int(package) == 1:
+        name_package = 'STARTED'
+        amount_package = 110
+    if int(package) == 2:
+        name_package = 'EXCUTIVE'
+        amount_package = 510
+    if int(package) == 3:
+        name_package = 'SILVER'
+        amount_package = 1010
+    if int(package) == 4:
+        name_package = 'GOLD'
+        amount_package = 3010
+    if int(package) == 5:
+        name_package = 'SAPPHIRE'
+        amount_package = 5010
+    if int(package) == 6:
+        name_package = 'RUBY'
+        amount_package = 10010
+    if int(package) == 7:
+        name_package = 'PLATINUM'
+        amount_package = 30010
+    if int(package) == 8:
+        name_package = 'DIAMOND'
+        amount_package = 50010
+    if int(package) == 9:
+        name_package = 'BLUE DIAMOND'
+        amount_package = 100010
+    if int(package) == 10:
+        name_package = 'BLACK DIAMOND'
+        amount_package = 500010
+    if int(package) == 11:
+        name_package = 'CROWN DIAMOND'
+        amount_package = 1000010
+
+
+
+    check_balance = True
+    check_upgrade = False
+    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]})
+    if investment is None:
+        check_upgrade = False
+    else:
+        package_old = float(investment['package'])
+
+        if (float(user['balance_wallet']) + float(investment['package'])) < float(amount_package):
+            check_balance = False
+        if int(investment['upgrade']) == 0:
+            check_upgrade = True
+
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    number_notifications = list_notifications.count()
+
+
+
+    data ={
+        'title' : 'Deposit',
+        'menu' : 'investment',
+        'name_package' : name_package,
+        'amount_package' : amount_package,
+        'package' : package,
+        'float' : float,
+        'int': int,
+        'user': user,
+        'check_balance' : check_balance,
+        'check_upgrade' :check_upgrade,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
+    }
+    return render_template('account/investment-upgrade.html', data=data)
+
+@deposit_ctrl.route('/upgrade-investment-submit/<package>', methods=['GET', 'POST'])
+def UpgradeInvestmentSumit(package):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.User.find_one({'customer_id': uid})
+
+    coin_amount = 0
+
+    if int(package) == 1:
+        name_package = 'STARTED'
+        amount_package = 110
+    if int(package) == 2:
+        name_package = 'EXCUTIVE'
+        amount_package = 510
+    if int(package) == 3:
+        name_package = 'SILVER'
+        amount_package = 1010
+    if int(package) == 4:
+        name_package = 'GOLD'
+        amount_package = 3010
+    if int(package) == 5:
+        name_package = 'SAPPHIRE'
+        amount_package = 5010
+    if int(package) == 6:
+        name_package = 'RUBY'
+        amount_package = 10010
+        coin_amount = 2500
+    if int(package) == 7:
+        name_package = 'PLATINUM'
+        amount_package = 30010
+        coin_amount = 7500
+    if int(package) == 8:
+        name_package = 'DIAMOND'
+        amount_package = 50010
+        coin_amount = 12500
+    if int(package) == 9:
+        name_package = 'BLUE DIAMOND'
+        amount_package = 100010
+        coin_amount = 25000
+    if int(package) == 10:
+        name_package = 'BLACK DIAMOND'
+        amount_package = 500010
+        coin_amount = 125000
+    if int(package) == 11:
+        name_package = 'CROWN DIAMOND'
+        amount_package = 1000010
+        coin_amount = 250000
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+
+    
+    check_investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
+    if check_investment is not None and int(check_investment['upgrade']) == 0:
+    #check balance
+        if (float(user['balance_wallet']) + float(check_investment['package'])) >= float(amount_package):
+                               
+    #update balance
+            user = db.users.find_one({'customer_id': uid})
+            new_balance_wallet = (float(user['balance_wallet']) + float(check_investment['package'])) - float(amount_package)
+            new_coin_wallet = (float(user['coin_wallet']) - float(check_investment['coin_amount'])) + float(coin_amount)
+            db.users.update({ "customer_id" : uid }, { '$set': { "coin_wallet" : new_coin_wallet, "balance_wallet": float(new_balance_wallet) ,"level" : int(package),"investment" : float(amount_package) - 10} })
+    #create investment
+            
+            db.investments.update({'_id' : ObjectId(check_investment['_id'])},{'$set' : {
+                'amount_usd' : float(amount_package),
+                'package': float(amount_package) - 10,
+                'upgrade' : 1,
+                'date_upgrade' : datetime.utcnow(),
+                'reinvest' : 0
+            }})
+
+            if user['p_binary'] != '':
+                    #chay hai nhanh
+                    package_update = float(amount_package)- float(check_investment['package'])
+
+                    binaryAmount(uid, float(package_update) - 10)
+                    #chay p_node
+                    TotalnodeAmount(uid, float(package_update) - 10)
+                    #hoa hong truc tiep
+                    FnRefferalProgram(uid, float(package_update) - 10)
+
+            return redirect('/account/upgrade-investment/'+package)
+        else:
+            return redirect('/account/upgrade-investment/'+package)
+    else:
+        return redirect('/account/upgrade-investment/'+package)
 
 @deposit_ctrl.route('/active-investment-submit/<package>', methods=['GET', 'POST'])
 def ActiveInvestmentSumit(package):
@@ -229,27 +391,18 @@ def ActiveInvestmentSumit(package):
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
 
+
     check_investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]} )
-    if check_investment is None or (float(check_investment['package']) == 100 and int(package) != 1):
-        
+    if check_investment is  None:
     #check balance
         if float(user['balance_wallet']) >= float(amount_package):
-            #check package 100
-            check_package_100  = db.investments.find_one( {'$and' :  [{'status' : 1},{'uid': uid}]},{'package' : 100})
-            if check_package_100 is not None:
-                db.investments.update({'_id': ObjectId(check_package_100['_id'])},{'$set' : {'status' : 0}})
-
-                new_balance_wallets = float(user['balance_wallet']) + float(check_package_100['package'])
-                db.users.update({ "customer_id" : uid }, { '$set': { "balance_wallet": float(new_balance_wallets) } })
-
-                if user['p_binary'] != '':
-                    #chay hai nhanh
-                    binaryAmount(uid, float(amount_package) - 10)
-                    #chay p_node
-                    TotalnodeAmount(uid, float(amount_package) - 10)
-                    #hoa hong truc tiep
-                    FnRefferalProgram(uid, float(amount_package) - 10)                
-
+                # if user['p_binary'] != '':
+                #     #chay hai nhanh
+                #     binaryAmount(uid, float(amount_package) - 10)
+                #     #chay p_node
+                #     TotalnodeAmount(uid, float(amount_package) - 10)
+                #     #hoa hong truc tiep
+                #     FnRefferalProgram(uid, float(amount_package) - 10)                
     #update balance
             user = db.users.find_one({'customer_id': uid})
             new_balance_wallet = float(user['balance_wallet'])- float(amount_package)
@@ -263,12 +416,15 @@ def ActiveInvestmentSumit(package):
                 'amount_usd' : float(amount_package),
                 'package': float(amount_package) - 10,
                 'status' : 1,
+                'upgrade' : 0,
                 'date_added' : datetime.utcnow(),
-                'amount_frofit' : 0
+                'amount_frofit' : 0,
+                'coin_amount' : coin_amount,
+                'date_upgrade' : '',
+                'reinvest' : 0
             }
             db.investments.insert(data_investment)
 
-            
             return redirect('/account/active-investment/'+package)
         else:
             return redirect('/account/active-investment/'+package)

@@ -220,7 +220,7 @@ def personal():
     count_f1 = db.User.find({'$and' :[{'p_node': uid},{"level": { "$gt": 0 }}]}).count()
 
 
-    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
 
     values = {
@@ -500,7 +500,7 @@ def personaladdtree(p_binary,position):
     
     query = db.User.find({'$and' :[{'p_node': uid},{'p_binary' : ''},{"level": { "$gt": 0 }}]})
     checkF1 = True
-    list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     if query.count() == 0:
         checkF1 = False

@@ -20,7 +20,7 @@ def support():
 	user_id = session.get('user_id')
 	query = db.supports.find({'user_id': user_id})
 	user = db.User.find_one({'customer_id': uid})
-	list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 	number_notifications = list_notifications.count()
 	data ={
 	'support' : query,

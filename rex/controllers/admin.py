@@ -101,6 +101,174 @@ def ProfitDaiylydaily():
        
         }
     return render_template('admin/profit-daily.html', data=data)
+
+@admin1_ctrl.route('/notifications', methods=['GET', 'POST'])
+def notifications():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    query = db.notifications.find({})
+    
+
+    data ={
+        'menu' : 'profit-daily',
+        'history': query
+    }
+    return render_template('admin/notifications.html', data=data)
+
+@admin1_ctrl.route('/create-notifications', methods=['GET', 'POST'])
+def create_notifications():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    
+    data ={
+        'menu' : 'notifications'
+    }
+    return render_template('admin/create-notifications.html', data=data)
+
+@admin1_ctrl.route('/create-notifications-submit', methods=['GET', 'POST'])
+def create_notifications_submit():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    if request.method == 'POST':
+        content = request.form['content']
+        option = request.form['option']
+        username = request.form['username']
+
+       
+        user_id_user = ''
+        uid_user = ''
+        username_user = ''
+        if option == 'account':
+            user = db.users.find_one({'username': username.lower()})
+            if user is None:
+                return json.dumps({'user': False})
+            else:
+                user_id_user = user['_id']
+                uid_user = user['customer_id']
+                username_user = user['username']
+        datas = {
+            'user_id': user_id_user,
+            'uid': uid_user,
+            'username': username_user,
+            'content':  content,
+            'date_added' : datetime.utcnow(),
+            'status': 0,
+            'type' : option,
+            'read' : 0
+        }
+        db.notifications.insert(datas)
+        
+        return json.dumps({'complete': True})
+
+@admin1_ctrl.route('/edit-notifications-submit/<ids>', methods=['GET', 'POST'])
+def edit_notifications_submit(ids):
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    if request.method == 'POST':
+        content = request.form['content']
+        option = request.form['option']
+        username = request.form['username']
+
+       
+        user_id_user = ''
+        uid_user = ''
+        username_user = ''
+        if option == 'account':
+            user = db.users.find_one({'username': username.lower()})
+            if user is None:
+                return json.dumps({'user': False})
+            else:
+                user_id_user = user['_id']
+                uid_user = user['customer_id']
+                username_user = user['username']
+        # datas = {
+        #     'user_id': user_id_user,
+        #     'uid': uid_user,
+        #     'username': username_user,
+        #     'content':  content,
+        #     'date_added' : datetime.utcnow(),
+        #     'status': 0,
+        #     'type' : option,
+        #     'read' : 0
+        # }
+        db.notifications.update({'_id' : ObjectId(ids)},{'$set' : {'user_id' : user_id_user,
+            'uid' : uid_user,
+            'username' : username_user,
+            'content' : content,
+            'type' : option
+        }})
+        
+        return json.dumps({'complete': True})
+
+@admin1_ctrl.route('/notifications-enlable/<ids>', methods=['GET', 'POST'])
+def notifications_enlable(ids):
+    error = None
+
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    
+    db.notifications.update({'_id' : ObjectId(ids)} , {'$set' : {'status' : 0}})
+    return redirect('/admin/notifications')
+
+@admin1_ctrl.route('/notifications-disable/<ids>', methods=['GET', 'POST'])
+def notifications_disable(ids):
+    error = None
+   
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    
+    db.notifications.update({'_id' : ObjectId(ids)} , {'$set' : {'status' : 1}})
+    return redirect('/admin/notifications')
+
+@admin1_ctrl.route('/notifications-edit/<ids>', methods=['GET', 'POST'])
+def notifications_edit(ids):
+    error = None
+   
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    
+
+    notification = db.notifications.find_one({'_id' : ObjectId(ids)})
+
+    data ={
+        'ids' : ids,
+        'notification' : notification,
+        'menu' : 'notifications'
+    }
+    return render_template('admin/edit-notifications.html', data=data)
+
+@admin1_ctrl.route('/profit-setup', methods=['GET', 'POST'])
+def profitsetup():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+
+    profit = db.profits.find_one({})
+    if request.method == 'POST':
+        
+        profit['500'] = request.form['package-2']
+        profit['1000'] = request.form['package-3']
+        profit['3000'] = request.form['package-4']
+        profit['5000'] = request.form['package-5']
+        profit['10000'] = request.form['package-6']
+        profit['30000'] = request.form['package-7']
+        profit['50000'] = request.form['package-8']
+        profit['100000'] = request.form['package-9']
+        profit['500000'] = request.form['package-10']
+        profit['1000000'] = request.form['package-11']
+        db.profits.save(profit) 
+    data ={
+            'menu' : 'profit-setup',
+
+            'profit': profit
+       
+        }
+    return render_template('admin/profit-setup.html', data=data)
+
 @admin1_ctrl.route('/updatePercent', methods=['POST'])
 def updatePercent():
     error = None

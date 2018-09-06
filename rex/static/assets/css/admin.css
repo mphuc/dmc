@@ -5,3 +5,17 @@ body .wrapper{
   border-radius: 5px;
   background: #fff;
 }
+.content_setup_profit input{
+  background: #fff;
+  border: 1px solid #ababad;
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+}
+.content_setup_profit
+.table > tbody > tr > td {
+    padding: 0px 11px;
+}
+#username_select{
+  display: none;
+}

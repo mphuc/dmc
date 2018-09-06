@@ -323,6 +323,11 @@ def format_usds(value):
     value = float(value)
     return '{:20,.0f}'.format(value)
 
+@app.template_filter()
+def format_html(html):
+    return html
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -331,6 +336,7 @@ def page_not_found(e):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/user/uploader-avatar', methods = ['GET', 'POST'])
 def upload_file():
     if session.get(u'logged_in') is None:

@@ -40,7 +40,32 @@ def set_password(password):
 def check_password(pw_hash, password):
     return check_password_hash(pw_hash, password)
 
+def test_sendmail():
+    username = 'info@diamondcapital.co'
+    password = 'm{Q]EI+qNZmD'
+    msg = MIMEMultipart('mixed')
 
+    sender = 'info@diamondcapital.co'
+    recipient = str('trungdoanict@gmail.com')
+
+    msg['Subject'] = 'SmartFVA Reset Password'
+    msg['From'] = sender
+    msg['To'] = recipient
+    
+    html = """qeqwewq
+    """
+    
+    html_message = MIMEText(html, 'html')
+    
+    msg.attach(html_message)
+
+    mailServer = smtplib.SMTP('capitalvs.net', 25) # 8025, 587 and 25 can also be used. 
+    mailServer.ehlo()
+    mailServer.starttls()
+    mailServer.ehlo()
+    mailServer.login(username, password)
+    mailServer.sendmail(sender, recipient, msg.as_string())
+    mailServer.close()
 
 def mail_reset_pass(email, usernames, password_new):
     html = """\
@@ -95,6 +120,8 @@ def mail_reset_pass(email, usernames, password_new):
 
 @auth_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
+
+    #send_mail_register('customer_id','username','trundoanict@gmail.com','country','www.diamondcapital.co/user/active/')
     error = None
     if session.get('logged_in') is not None:
         return redirect('/account/dashboard')
@@ -241,6 +268,7 @@ def signup(id_sponsor):
 
       if val_sponsor == '' and val_country == '' and val_email == '' and val_username == '' and val_password == '' and val_terms == '' and val_recaptcha == '':
         create_user(check_sponser.customer_id,username,country,email,password)
+        
         flash({'msg':'Account successfully created. Please check your email to activate your account', 'type':'success'})
         return redirect('/auth/login') 
 
@@ -336,60 +364,55 @@ def create_user(sponsor,username,country,email,password):
   }
   customer = db.users.insert(datas)
 
-def send_mail_register(email,usernames,link_active):
-  
-    html = """\
-        <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center">
-       <div class="adM">
-       </div>
-       <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background-color:#f9f9f9">
-          <tbody>
-             <tr>
-                <td style="padding:20px 10px 10px 0px;text-align:left">
-                   <a href="https://worldtraders.info/" title="worldtraders" target="_blank" >
-                   <img src="https://worldtraders.info/static/home/images/logo/logo.png" alt="worldtraders" class="CToWUd" style=" width: 200px; ">
-                   </a>
-                </td>
-                <td style="padding:0px 0px 0px 10px;text-align:right">
-                </td>
-             </tr>
-          </tbody>
-       </table>
-    </div>
-    <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center">
-       <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background:#fff;font-size:14px;border:2px solid #e8e8e8;text-align:left;table-layout:fixed">
-          <tbody>
-             <tr>
-                <td style="padding:30px 30px 10px 30px;line-height:1.8">Dear <b>"""+str(usernames)+"""</b>,</td>
-             </tr>
-             <tr>
-                <td style="padding:10px 30px;line-height:1.8">Thank you for registering on the <a href="https://worldtraders.info/" target="_blank">World Trade</a>.</td>
-             </tr>
-             <tr>
-                <td style="padding:10px 30px;line-height:1.8">Your World Trade verification code is: <b>"""+str(link_active)+"""</b></td>
-             </tr>
-             
-             <tr>
-                <td style="border-bottom:3px solid #efefef;width:90%;display:block;margin:0 auto;padding-top:30px"></td>
-             </tr>
-             <tr>
-                <td style="padding:30px 30px 30px 30px;line-height:1.3">Best regards,<br>  <a href="https://worldtraders.info/" target="_blank" >World Trader</a></td>
-             </tr>
-          </tbody>
-       </table>
-    </div>
-    <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center;padding-bottom:10px;     height: 50px;">
-   
-  </div>
-    """
-    return requests.post(
-      "https://api.mailgun.net/v3/worldtrader.info/messages",
-      auth=("api", "key-4cba65a7b1a835ac14b7949d5795236a"),
-      data={"from": "World Trade <no-reply@worldtrader.info>",
-        "to": ["", email],
-        "subject": "Account activation email",
-        "html": html})
+  send_mail_register(customer_id,username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
 
+def send_mail_register(customer_id,username_user,email,country,link_active):
+    username = 'info@diamondcapital.co'
+    password = 'm{Q]EI+qNZmD'
+    msg = MIMEMultipart('mixed')
+    sender = 'info@diamondcapital.co'
+    recipient = str(email)
+    msg['Subject'] = 'WELCOME TO DIAMOND CAPITAL'
+    msg['From'] = sender
+    msg['To'] = recipient
+    html = """
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="//i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      <h1><span style="font-size:19.0pt;font-family:Verdana;color:black">
+      WELCOME TO DIAMOND CAPITAL
+      </span></h1>
+      <br> </td> </tr> <tr> <td width="25" style="border:white"> &nbsp; </td> 
+      <td style="border:white"> <div style="color:#818181;font-size:10.5pt;font-family:Verdana"><span class="im">
+      Dear """+str(username_user)+""",<br><br></span> 
+      <p>Thank you for enrolling!</p>
+      <p>Below you will find your new member ID number. Please use this number when calling customer support services and in all correspondence.We would like to personally thank you for enrolling as a new team member and we are looking forward to your success!</p>
+      <p style="text-align:left">
+        <strong>Your Member: """+str(customer_id)+"""</trong></p>
+      <p style="text-align:left">
+        <strong>Username: """+str(username_user)+"""</trong>
+      </p>
+       <p style="text-align:left">
+        <strong>Your URL Name: """+str(country)+"""</trong>
+       </p>     
+       <br/>
+       <br/>
+       <p>Please click below for active your account</p>  
+       <br/>
+       <p style="text-align:center">
+          <a href='"""+str(link_active)+"""' style="background-color:#41a3e4;color:#ffffff;padding:15px 30px;border-radius:3px;text-decoration:none" target="_blank">
+            Active
+          </a>
+        </p>                      
+      <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
+    """
+    html_message = MIMEText(html, 'html')
+    msg.attach(html_message)
+    mailServer = smtplib.SMTP('capitalvs.net', 25) 
+    mailServer.ehlo()
+    mailServer.starttls()
+    mailServer.ehlo()
+    mailServer.login(username, password)
+    mailServer.sendmail(sender, recipient, msg.as_string())
+    mailServer.close()
 
 @auth_ctrl.route('/resend-activation-email', methods=['GET', 'POST'])
 def ResendActivationEmail():

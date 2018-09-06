@@ -61,7 +61,7 @@ def homedeposit():
 		user = db.users.find_one({'customer_id': uid})
 			
 		deposit = db.deposits.find({'uid': uid})
-		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()			
 		data ={
 			'user': user,
@@ -169,7 +169,7 @@ def homewithdraw():
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
-		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()	
 		data ={
 			'user': user,
@@ -280,7 +280,7 @@ def hometransfer():
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
-		list_notifications = db.notifications.find({'$or' : [{'uid' : uid},{'type' : 'all'}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()	
 		data ={
 			'user': user,
