@@ -15,7 +15,7 @@ def daily_income_history():
 	uid = session.get('uid')
 	query = db.historys.find({'$and' : [{'type' : 'dailyprofit'},{'uid': uid}]})
 	user = db.users.find_one({'customer_id': uid})
-	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 	number_notifications = list_notifications.count()
 	data ={
 		'history' : query,
@@ -34,7 +34,7 @@ def direct_sales_onus():
 	uid = session.get('uid')
 	query = db.historys.find({'$and' : [{'type' : 'referral'},{'uid': uid}]})
 	user = db.users.find_one({'customer_id': uid})
-	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 	number_notifications = list_notifications.count()
 	data ={
 		'history' : query,
@@ -53,7 +53,7 @@ def network_bonus():
 	uid = session.get('uid')
 	query = db.historys.find({'$and' : [{'type' : 'binarybonus'},{'uid': uid}]})
 	user = db.users.find_one({'customer_id': uid})
-	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 	number_notifications = list_notifications.count()
 	data ={
 		'history' : query,
@@ -72,7 +72,7 @@ def generations_bonus():
 	uid = session.get('uid')
 	query = db.historys.find({'$and' : [{'type' : 'generations'},{'uid': uid}]})
 	user = db.users.find_one({'customer_id': uid})
-	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 	number_notifications = list_notifications.count()
 	data ={
 		'history' : query,

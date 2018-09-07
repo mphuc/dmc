@@ -129,8 +129,12 @@ def dashboard():
 		if query_f1.count() == 0:
 			checkF1 = False
 
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
 		number_notifications = list_notifications.count()
+
+
+		notification_all = db.notifications.find_one({'$and' : [{'type' : 'all'},{'status' : 0}]})
+		
 		data ={
 			'refferal_link' : refferal_link,
 		    'user': user,
@@ -144,7 +148,8 @@ def dashboard():
 		    'total_node_lefts' : total_node_lefts,
 		    'total_node_rights' : total_node_rights,
 		    'refferal' : query_f1,
-	        'checkF1' : checkF1
+	        'checkF1' : checkF1,
+	        'notification_all' : notification_all
 		}
 		
 		return render_template('account/dashboard.html', data=data)
@@ -155,7 +160,7 @@ def informationcenter():
 	else:
 		uid = session.get('uid')
 		user = db.users.find_one({'customer_id': uid})
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()
 
 		notification = db.notifications.find({'type' : 'all'})
@@ -178,7 +183,7 @@ def list_notifications():
 		uid = session.get('uid')
 		user = db.users.find_one({'customer_id': uid})
 
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()
 
 
@@ -207,7 +212,7 @@ def notifications(id_notification):
 
 		db.notifications.update({'_id' : ObjectId(id_notification)},{'$set' : {'read' : 1}})
 
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
 		number_notifications = list_notifications.count()
 
 		data ={

@@ -44,7 +44,7 @@
                         <p><i class="fa fa-star"></i> Please enter the receiver ID.</p>
                         {% endif %}
                         {% if data.val_user_id == 'not' %}
-                        <p><i class="fa fa-star"></i> The wrong recipient ID. Please try again.</p>
+                        <p><i class="fa fa-star"></i> The wrong username. Please try again.</p>
                         {% endif %}
                         {% if data.val_quantity == 'empty' %}
                         <p><i class="fa fa-star"></i> Minimum withdrawal amount is $ 10.</p>
@@ -84,11 +84,11 @@
                   </div>
                </div>
               
-               <div class="row" >
+               <div class="row" style="margin-top: 15px;">
                   <label class="col-md-3 control-label" for="Comm_Money">To user <span class="text-danger">*</span></label>
                   <div class="col-md-6">
-                     <input type="text"  placeholder="An user's ID" id="input_user_id" name="user_id" class="form-control" >
-                     <input style="margin-top: 5px;" type="text"  placeholder="Name" id="input_user_name" name="username" class="form-control" readonly="true">
+                     <!-- <input type="text"  placeholder="An user's ID" id="input_user_id" name="user_id" class="form-control" > -->
+                     <input style="margin-top: 5px;" type="text"  placeholder="Username" id="input_user_name" name="username" class="form-control">
                   </div>
                </div>
                <div class="row" style="margin-top: 15px;">

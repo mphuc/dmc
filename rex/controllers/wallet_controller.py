@@ -61,7 +61,7 @@ def homedeposit():
 		user = db.users.find_one({'customer_id': uid})
 			
 		deposit = db.deposits.find({'uid': uid})
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()			
 		data ={
 			'user': user,
@@ -169,7 +169,7 @@ def homewithdraw():
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()	
 		data ={
 			'user': user,
@@ -207,13 +207,13 @@ def hometransfer():
 		if request.method == 'POST':
 			if request.form['token_crt'] == session['token_crt']:
 				quantity = request.form['quantity']
-				user_id = request.form['user_id']
+				username = request.form['username']
 				authen = request.form['authen']
 
-				if user_id == '' or user_id == uid:
+				if username == '' or username == user['username']:
 					val_user_id = 'empty'
 				else:
-					check_id_user = db.users.find_one({'customer_id': user_id})
+					check_id_user = db.users.find_one({'username': username})
 					if check_id_user is None:
 						val_user_id = 'not'
 
@@ -246,9 +246,9 @@ def hometransfer():
 						db.transfers.insert(data_transfer)
 
 
-						user_receive = db.users.find_one({'customer_id': user_id})
+						user_receive = db.users.find_one({'customer_id': check_id_user['customer_id']})
 						new_balance_wallet_recevie = float(user_receive['balance_wallet']) + float(quantity)
-						db.users.update({ "customer_id" : user_id }, { '$set': { "balance_wallet": float(new_balance_wallet_recevie) } })
+						db.users.update({ "customer_id" : check_id_user['customer_id'] }, { '$set': { "balance_wallet": float(new_balance_wallet_recevie) } })
 
 						data_transfers = {
 							'uid' : user_id,
@@ -280,7 +280,7 @@ def hometransfer():
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
-		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()	
 		data ={
 			'user': user,

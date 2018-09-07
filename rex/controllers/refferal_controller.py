@@ -17,7 +17,7 @@ def refferal():
 	user = db.users.find_one({'customer_id': uid})
 	username = user['username']
 	
-	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 	number_notifications = list_notifications.count()
 	data ={
 		'refferal' : query,

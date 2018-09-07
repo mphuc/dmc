@@ -67,56 +67,6 @@ def test_sendmail():
     mailServer.sendmail(sender, recipient, msg.as_string())
     mailServer.close()
 
-def mail_reset_pass(email, usernames, password_new):
-    html = """\
-        <div style="font-family:Arial,sans-serif;background-color:#1a1c35;color:#424242;text-align:center">
-   <div class="">
-   </div>
-   <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background-color:#1a1c35">
-      <tbody>
-         <tr>
-            <td style="padding:20px 10px 10px 0px;text-align:left">
-               <a href="https://worldtrader.info/" title="World Trade" target="_blank" >
-               <img src="https://worldtrader.info/static/home/images/logo/logo.png" alt="" class="" style=" width: 100px;">
-               </a>
-            </td>
-            <td style="padding:0px 0px 0px 10px;text-align:right">
-            </td>
-         </tr>
-      </tbody>
-   </table>
-</div>
-<div style="font-family:Arial,sans-serif;background-color:#1a1c35;color:#424242;text-align:center">
-   <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background:#fff;font-size:14px;border:2px solid #e8e8e8;text-align:left;table-layout:fixed">
-      <tbody>
-       <tr>
-          <td style="padding:30px 30px 10px 30px;line-height:1.8">Hi <b>"""+str(usernames)+"""</b>,</td></tr>
-         <tr>
-            <td style="padding:10px 30px;line-height:1.8">You recently requested to reset your password for your User Login and Management account on the <a href="https://worldtrader.info/" target="_blank">World Trade</a>.</td>
-         </tr>
-         <td style="padding:10px 30px">
-            <b style="display:inline-block">New password is : </b> """+str(password_new)+""" <br>
-                </td>
-         <tr>
-            <td style="border-bottom:3px solid #efefef;width:90%;display:block;margin:0 auto;padding-top:30px"></td>
-         </tr>
-         <tr>
-            <td style="padding:30px 30px 30px 30px;line-height:1.3">Best regards,<br> World Trade Team<br></td>
-         </tr>
-      </tbody>
-   </table>
-</div>
-<div style="font-family:Arial,sans-serif;background-color:#1a1c35;color:#424242;text-align:center;padding-bottom:10px;height: 50px;">
-   
-</div>
-    """
-    return requests.post(
-      "https://api.mailgun.net/v3/worldtrader.info/messages",
-      auth=("api", "key-4cba65a7b1a835ac14b7949d5795236a"),
-      data={"from": "World Trade <no-reply@worldtrader.info>",
-        "to": ["", email],
-        "subject": "Reset Password",
-        "html": html})
 
 @auth_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
@@ -276,7 +226,7 @@ def signup(id_sponsor):
     json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
     data_country = json.load(open(json_url))
 
-    sponser_url = db.User.find_one({'customer_id': id_sponsor})
+    sponser_url = db.User.find_one({'username': id_sponsor})
     if sponser_url is None:
       username_sponsor = ''
     else:
@@ -502,11 +452,13 @@ def forgot_password():
             if user is None:
                 val_username = 'not'
             else:
-                password_new_generate = id_generator()
+                code_active = id_generator(40)
                 
-                password_new = set_password(password_new_generate)
-                db.users.update({ "username" : user.username }, { '$set': { "password": password_new } })
-                mail_reset_pass(user.email, user.username, password_new_generate)
+                db.users.update({ "username" : user.username }, { '$set': { "code_active": code_active } })
+
+                link_change_password = 'https://www.diamondcapital.co/auth/change-password/'+code_active
+
+                mail_reset_pass(user.email, user.username, link_change_password)
                 val_complete = 'suceess'
                 
     value = {
@@ -517,6 +469,75 @@ def forgot_password():
     }
     return render_template('reset-password.html', data=value)
 
+@auth_ctrl.route('/change-password/<codeactive>', methods=['GET', 'POST'])
+def change_password(codeactive):
+    error = None
+
+
+    if session.get('logged_in') is not None:
+        return redirect('/account/dashboard')
+    val_password = ''
+    val_repassword = ''
+    val_recaptcha = ''
+    val_complete = ''
+    if request.method == 'POST':
+        password = request.form['password']
+        repassword = request.form['re_password']
+        recaptcha = request.form['g-recaptcha-response']
+
+        if password == '':
+          val_password = 'empty'
+        if repassword == '':
+          val_repassword = 'empty'
+        if password != repassword:
+          val_complete = 'not-password'
+        if recaptcha == '':
+          val_recaptcha = 'empty'
+        else:
+          api_url     = 'https://www.google.com/recaptcha/api/siteverify';
+          site_key    = '6LcESjUUAAAAAN0l4GsSiE2cLLZLZQSRZsEdSroE';
+          secret_key  = '6LcESjUUAAAAAGsX2iLiwlnbBUyUsZXTz7jrPfAX';
+          
+          site_key_post = recaptcha
+
+          ret = urllib2.urlopen('https://api.ipify.org')
+          remoteip = ret.read()
+
+          api_url = str(api_url)+'?secret='+str(secret_key)+'&response='+str(site_key_post)+'&remoteip='+str(remoteip);
+          response = urllib2.urlopen(api_url)
+          response = response.read()
+          response = json.loads(response)
+          if response['success']:
+            val_recaptcha = ''
+          else:
+            val_recaptcha = 'empty'
+
+
+        if val_password == '' and val_repassword =='' and val_recaptcha == '' and val_complete == '':
+            
+            user = db.users.find_one({ 'code_active': codeactive })
+            
+            if user is None:
+                val_recaptcha = 'empty'
+            else:
+                code_active = id_generator(40)
+                password_new = set_password(password)
+                db.users.update({ "_id" : ObjectId(user['_id']) }, { '$set': { "code_active": code_active, 'password': password_new } })
+                val_complete = 'suceess'
+       
+    if val_complete != 'suceess':
+      user = db.users.find_one({ 'code_active': codeactive })
+      if user is None:
+        return redirect('/auth/login')          
+    value = {
+      'val_password' : val_password,
+      'val_repassword' : val_repassword,
+      'val_recaptcha' : val_recaptcha,
+      'val_complete' : val_complete,
+      'form' : request.form,
+      'codeactive' :codeactive
+    }
+    return render_template('change_password.html', data=value)
 
 @auth_ctrl.route('/update_password/<emails>', methods=['GET', 'POST'])
 def dashboarupdate_weerpassword(emails):
@@ -527,80 +548,43 @@ def dashboarupdate_weerpassword(emails):
     return json.dumps({'afa':'success'})
 
 
-def reset_password_mail(email, usernames, password_new):
-    username = 'support@smartfva.co'
-    password = 'YK45OVfK45OVfobZ5XYobZ5XYK45OVfobZ5XYK45OVfobZ5X'
+def mail_reset_pass(username_user,email,link_active):
+    username = 'info@diamondcapital.co'
+    password = 'm{Q]EI+qNZmD'
     msg = MIMEMultipart('mixed')
-
-    sender = 'support@smartfva.co'
+    sender = 'info@diamondcapital.co'
     recipient = str(email)
-
-    msg['Subject'] = 'SmartFVA Reset Password'
+    msg['Subject'] = 'Diamond Capital forget password'
     msg['From'] = sender
     msg['To'] = recipient
-    # username = 'no-reply@smartfva.co'
-    # password = 'rbdlnsmxqpswyfdv'
-    # msg = MIMEMultipart('mixed')
-    # mailServer = smtplib.SMTP('smtp.gmail.com', 587) # 8025, 587 and 25 can also be used. 
-    # mailServer.ehlo()
-    # mailServer.starttls()
-    # mailServer.ehlo()
-    # mailServer.login(username, password)
-    # sender = 'no-reply@smartfva.co'
-    # recipient = email
-
-    # msg['Subject'] = 'SmartFVA Reset Password'
-    # msg['From'] = sender
-    # msg['To'] = recipient
-    html = """\
-        <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center">
-   <div class="adM">
-   </div>
-   <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background-color:#f9f9f9">
-      <tbody>
-         <tr>
-            <td style="padding:20px 10px 10px 0px;text-align:left">
-               <a href="https://smartfva.co/" title="smartfva" target="_blank" >
-               <img src="https://i.imgur.com/tyjTbng.png" alt="smartfva" class="CToWUd" style=" width: 100px; ">
-               </a>
-            </td>
-            <td style="padding:0px 0px 0px 10px;text-align:right">
-            </td>
-         </tr>
-      </tbody>
-   </table>
-</div>
-<div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center">
-   <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background:#fff;font-size:14px;border:2px solid #e8e8e8;text-align:left;table-layout:fixed">
-      <tbody>
-       <tr>
-                <td style="padding:30px 30px 10px 30px;line-height:1.8">Hello <b>"""+str(usernames)+"""</b>,</td>
-             </tr>
-         <tr>
-            <td style="padding:10px 30px;line-height:1.8">Your SmartFVA Account password has been changed.</td>
-         </tr>
-         <td style="padding:10px 30px">
-                   Your new password is: <b> """+str(password_new)+""" </b> <br>
-                </td>
-         <tr>
-            <td style="border-bottom:3px solid #efefef;width:90%;display:block;margin:0 auto;padding-top:30px"></td>
-         </tr>
-         <tr>
-            <td style="padding:30px 30px 30px 30px;line-height:1.3">Best regards,<br> Smartfva Team<br>  <a href="https://smartfva.co/" target="_blank" >www.smartfva.co</a></td>
-         </tr>
-      </tbody>
-   </table>
-</div>
-<div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center;padding-bottom:10px;     height: 50px;">
-   
-</div>
+    html = """
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="//i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      <h1><span style="font-size:19.0pt;font-family:Verdana;color:black">
+        Diamond Capital forget password
+      </span></h1>
+      <br> </td> </tr> <tr> <td width="25" style="border:white"> &nbsp; </td> 
+      <td style="border:white"> <div style="color:#818181;font-size:10.5pt;font-family:Verdana"><span class="im">
+      Dear """+str(email)+""",<br><br></span> 
+      
+      <p style="text-align:left">
+        <strong>Username: """+str(username_user)+"""</trong>
+      </p>
+         
+       <br/>
+       <br/>
+       <p>Please click the link below to change password</p>  
+       <br/>
+       <p style="text-align:center">
+          <a href='"""+str(link_active)+"""' style="background-color:#41a3e4;color:#ffffff;padding:15px 30px;border-radius:3px;text-decoration:none" target="_blank">
+            Change password
+          </a>
+        </p>                      
+      <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
     """
-    
+    print html
     html_message = MIMEText(html, 'html')
-    
     msg.attach(html_message)
-
-    mailServer = smtplib.SMTP('mail.smtp2go.com', 2525) # 8025, 587 and 25 can also be used. 
+    mailServer = smtplib.SMTP('capitalvs.net', 25) 
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()

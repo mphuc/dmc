@@ -7978,8 +7978,8 @@ input.ct-danger + span + label + span.switch-right {
 .login-page .card, .lock-page .card {
   
   border-radius: 6px;
-  padding-top: 25px;
-  padding-bottom: 25px; }
+  padding-top: 5px;
+  padding-bottom: 5px; }
   .login-page .card .header, .lock-page .card .header {
     text-align: center; }
     .login-page .card .header .title, .lock-page .card .header .title {
@@ -11388,13 +11388,12 @@ div.widget-last-second {
   }
 }
 .login-content {
-    padding: 30px 30px 20px;
+    padding: 10px 10px 10px;
     border: 3px solid #fff;
     background: #000B21;
     opacity: 0.8;
     filter: alpha(opacity=80);
-    min-height: 940px;
-
+   
     padding-top: 0px;
     margin: 0 auto;
 }
@@ -11847,3 +11846,14 @@ h1, h2, h3, h4, h5, h6 {
 #identity_2, #identity_3{
   display: none;
 }
+/*#Account form img{
+  width: 150px
+}
+
+#Account .card .content {
+    padding: 20px 15px 0px 15px;
+}
+.login-page .card{
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}*/

@@ -415,7 +415,7 @@ def change_password():
         return redirect('/user/login')
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
     'user' : user,
@@ -432,7 +432,7 @@ def my_profile():
         return redirect('/user/login')
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
 
     data ={
@@ -458,7 +458,7 @@ def verify_accountsss():
     session['token_crt'] = token_crt
     
     verify = db.verifys.find({'uid': uid})
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
     'user' : user,
@@ -486,7 +486,7 @@ def verify_account_identity():
     session['token_crt'] = token_crt
     
     verify = db.verifys.find({'uid': uid})
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
     'user' : user,
@@ -518,7 +518,7 @@ def two_factor_auth():
     json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
     data_country = json.load(open(json_url))
     data_ticker = db.tickers.find_one({})
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
     'user' : user,

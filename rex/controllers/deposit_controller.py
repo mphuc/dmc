@@ -65,7 +65,7 @@ def deposit():
 
     investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]})
     
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
@@ -90,7 +90,7 @@ def deposithistory():
     user = db.users.find_one({'customer_id': uid})
     investment = db.investments.find( {'uid': uid})
 
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
@@ -155,7 +155,7 @@ def ActiveInvestment(package):
     if investment is None:
         check_investment = True
 
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
     data ={
         'title' : 'Deposit',
@@ -229,7 +229,7 @@ def UpgradeInvestment(package):
         if int(investment['upgrade']) == 0:
             check_upgrade = True
 
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
 
 
@@ -302,7 +302,7 @@ def ReinvestInvestment(package):
         if float(user['balance_wallet']) < float(amount_package):
             check_balance = False
         
-    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
 
 
