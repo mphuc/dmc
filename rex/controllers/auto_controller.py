@@ -174,7 +174,7 @@ def get_receive_program_package(user_id,amount):
 
     if float(amount) > max_receive - float(customer['max_out_package']):
         amount_receve = max_receive - float(customer['max_out_package'])
-        db.investments.update({'uid': user_id},{'$set' : {'status' : 0}})
+        db.investments.update({'uid': user_id},{'$set' : {'reinvest' : 1}})
     else:
         amount_receve = amount
     customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])

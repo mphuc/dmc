@@ -347,20 +347,18 @@ def create_user(sponsor,username,country,email,password):
     'max_out_day' : 0,
     'max_out_package' : 0,
     'status_verify' : 0,
-    'personal_info' : { 'document' : '',
-                        'passport' : '',
-                        'date_passport' :'',
-                        'country' : '',
-                        'address' : '',
-                        'city' : '',
-                        'gender' : '',
-                        'zipcode' : '',
-                        'state'  : '',
-                        'phone' : '',
-                        'img_passport_fontside' : '',
-                        'img_passport_backside' : '',
-                        'img_address' : ''
-                        } 
+    'personal_info' : { 
+      'firstname' : '',
+      'lastname' : '',
+      'date_birthday' :'',
+      'address' :'',
+      'postalcode' : '',
+      'city' : '',
+      'country' : '',
+      'img_passport_fontside' : '',
+      'img_passport_backside' : '',
+      'img_address' : ''
+    } 
   }
   customer = db.users.insert(datas)
 

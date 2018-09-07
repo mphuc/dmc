@@ -1,10 +1,5 @@
 [
 	{
-		"country_code": "",
-		"country_name": "Please select a country",
-		"dialling_code": ""
-	},
-	{
 		"country_code": "AF",
 		"country_name": "Afghanistan",
 		"dialling_code": "+93"

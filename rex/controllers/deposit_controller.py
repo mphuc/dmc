@@ -63,7 +63,7 @@ def deposit():
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
 
-    investment = db.investments.find_one({'$and' :[{'uid': uid}]} )
+    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1}]})
     
     list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
@@ -249,6 +249,178 @@ def UpgradeInvestment(package):
         'list_notifications' : list_notifications
     }
     return render_template('account/investment-upgrade.html', data=data)
+
+@deposit_ctrl.route('/reinvest-investment/<package>', methods=['GET', 'POST'])
+def ReinvestInvestment(package):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/auth/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    if int(package) == 1:
+        name_package = 'STARTED'
+        amount_package = 110
+    if int(package) == 2:
+        name_package = 'EXCUTIVE'
+        amount_package = 510
+    if int(package) == 3:
+        name_package = 'SILVER'
+        amount_package = 1010
+    if int(package) == 4:
+        name_package = 'GOLD'
+        amount_package = 3010
+    if int(package) == 5:
+        name_package = 'SAPPHIRE'
+        amount_package = 5010
+    if int(package) == 6:
+        name_package = 'RUBY'
+        amount_package = 10010
+    if int(package) == 7:
+        name_package = 'PLATINUM'
+        amount_package = 30010
+    if int(package) == 8:
+        name_package = 'DIAMOND'
+        amount_package = 50010
+    if int(package) == 9:
+        name_package = 'BLUE DIAMOND'
+        amount_package = 100010
+    if int(package) == 10:
+        name_package = 'BLACK DIAMOND'
+        amount_package = 500010
+    if int(package) == 11:
+        name_package = 'CROWN DIAMOND'
+        amount_package = 1000010
+
+
+
+    check_balance = True
+    check_reinvest = True
+    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1},{'reinvest' : 1}]})
+    if investment is None or float(investment['package']) > float(amount_package)-10:
+        check_reinvest = False
+    else:
+        if float(user['balance_wallet']) < float(amount_package):
+            check_balance = False
+        
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    number_notifications = list_notifications.count()
+
+
+
+    data ={
+        'title' : 'Deposit',
+        'menu' : 'investment',
+        'name_package' : name_package,
+        'amount_package' : amount_package,
+        'package' : package,
+        'float' : float,
+        'int': int,
+        'user': user,
+        'check_balance' : check_balance,
+        'check_reinvest' :check_reinvest,
+        'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
+    }
+    return render_template('account/investment-reinvest.html', data=data)
+
+@deposit_ctrl.route('/reinvest-investment-submit/<package>', methods=['GET', 'POST'])
+def ReinvestInvestmentSumit(package):
+    
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.User.find_one({'customer_id': uid})
+
+    coin_amount = 0
+
+    if int(package) == 1:
+        name_package = 'STARTED'
+        amount_package = 110
+    if int(package) == 2:
+        name_package = 'EXCUTIVE'
+        amount_package = 510
+    if int(package) == 3:
+        name_package = 'SILVER'
+        amount_package = 1010
+    if int(package) == 4:
+        name_package = 'GOLD'
+        amount_package = 3010
+    if int(package) == 5:
+        name_package = 'SAPPHIRE'
+        amount_package = 5010
+    if int(package) == 6:
+        name_package = 'RUBY'
+        amount_package = 10010
+        coin_amount = 2500
+    if int(package) == 7:
+        name_package = 'PLATINUM'
+        amount_package = 30010
+        coin_amount = 7500
+    if int(package) == 8:
+        name_package = 'DIAMOND'
+        amount_package = 50010
+        coin_amount = 12500
+    if int(package) == 9:
+        name_package = 'BLUE DIAMOND'
+        amount_package = 100010
+        coin_amount = 25000
+    if int(package) == 10:
+        name_package = 'BLACK DIAMOND'
+        amount_package = 500010
+        coin_amount = 125000
+    if int(package) == 11:
+        name_package = 'CROWN DIAMOND'
+        amount_package = 1000010
+        coin_amount = 250000
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+
+    
+
+    investment = db.investments.find_one({'$and' :[{'uid': uid},{'status' : 1},{'reinvest' : 1}]})
+    if investment is not None and float(investment['package']) <= float(amount_package)-10:
+    #check balance
+        if float(user['balance_wallet']) >= float(amount_package):
+                               
+    #update balance
+            user = db.users.find_one({'customer_id': uid})
+            new_balance_wallet = float(user['balance_wallet'])  - float(amount_package)
+            new_coin_wallet = float(user['coin_wallet']) + float(coin_amount)
+            db.users.update({ "customer_id" : uid }, { '$set': { "coin_wallet" : new_coin_wallet, "balance_wallet": float(new_balance_wallet) ,"level" : int(package),"investment" : float(amount_package) - 10 ,'max_out_day' : 0,'max_out_package' : 0} })
+    #create investment
+            
+            db.investments.update({'_id' : ObjectId(investment['_id'])},{'$set' : {'status' : 0}})
+
+            data_investment = {
+                'uid' : uid,
+                'user_id': user['_id'],
+                'username' : user['username'],
+                'amount_usd' : float(amount_package),
+                'package': float(amount_package) - 10,
+                'status' : 1,
+                'upgrade' : 0,
+                'date_added' : datetime.utcnow(),
+                'amount_frofit' : 0,
+                'coin_amount' : coin_amount,
+                'date_upgrade' : '',
+                'reinvest' : 0
+            }
+            db.investments.insert(data_investment)
+
+            if user['p_binary'] != '':
+                    #chay hai nhanh
+                    
+                    binaryAmount(uid, float(amount_package) - 10)
+                    #chay p_node
+                    TotalnodeAmount(uid, float(amount_package) - 10)
+                    #hoa hong truc tiep
+                    FnRefferalProgram(uid, float(amount_package) - 10)
+
+            return redirect('/account/reinvest-investment/'+package)
+        else:
+            return redirect('/account/reinvest-investment/'+package)
+    else:
+        return redirect('/account/reinvest-investment/'+package)
 
 @deposit_ctrl.route('/upgrade-investment-submit/<package>', methods=['GET', 'POST'])
 def UpgradeInvestmentSumit(package):
@@ -522,7 +694,7 @@ def get_receive_program_package(user_id,amount):
 
     if float(amount) > max_receive - float(customer['max_out_package']):
         amount_receve = max_receive - float(customer['max_out_package'])
-        db.investments.update({'uid': user_id},{'$set' : {'status' : 0}})
+        db.investments.update({'uid': user_id},{'$set' : {'reinvest' : 1}})
     else:
         amount_receve = amount
     customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])

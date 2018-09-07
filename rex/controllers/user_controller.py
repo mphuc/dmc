@@ -472,6 +472,34 @@ def verify_accountsss():
     }
     return render_template('account/verify_account.html', data=data)
 
+@user_ctrl.route('/verify-account/identity', methods=['GET', 'POST'])
+def verify_account_identity():
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
+    data_country = json.load(open(json_url))
+
+    token_crt = id_generator(15) 
+    session['token_crt'] = token_crt
+    
+    verify = db.verifys.find({'uid': uid})
+    list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+    number_notifications = list_notifications.count()
+    data ={
+    'user' : user,
+    'title': 'Account',
+    'menu' : 'setting',
+    'data_country' : data_country,
+    'token_crt' : token_crt,
+    'verify' : verify,
+    'list_notifications' : list_notifications,
+    'number_notifications' : number_notifications
+    }
+    return render_template('account/verify_account_identity.html', data=data)
+
 @user_ctrl.route('/two-factor-auth', methods=['GET', 'POST'])
 def two_factor_auth():
     if session.get(u'logged_in') is None:
@@ -526,6 +554,7 @@ def Check2FA():
       types = 'success'
     flash({'msg': msg, 'type':types})
   return redirect('/user/two-factor-auth')
+
 @user_ctrl.route('/updateaccount', methods=['GET', 'POST'])
 def updateaccount():
     if session.get(u'logged_in') is None:
@@ -535,37 +564,41 @@ def updateaccount():
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     if request.method == 'POST' and request.form['token_crt'] == session['token_crt']:
         
-        document = request.form['document']
-        passport = request.form['passport']
-        date_passport = request.form['date_passport']
-        country = request.form['country']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        date_birthday = request.form['date_birthday']
         address = request.form['address']
+        postalcode = request.form['postalcode']
         city = request.form['city']
-        gender = request.form['gender']
-        zipcode = request.form['zipcode']
-        state  = request.form['state']
-        phone = request.form['phone']
-        img_passport_fontside = request.files['img_passport_fontside']
-        img_passport_backside = request.files['img_passport_backside']
-        img_address = request.files['img_address']
-
-        user['personal_info']['document'] = document
-        user['personal_info']['passport'] = passport
-        user['personal_info']['date_passport'] = date_passport
-        user['personal_info']['country'] = country
+        country = request.form['country']
+        
+        user['personal_info']['firstname'] = firstname
+        user['personal_info']['lastname'] = lastname
+        user['personal_info']['date_birthday'] = date_birthday
         user['personal_info']['address'] = address
+        user['personal_info']['postalcode'] = postalcode
         user['personal_info']['city'] = city
-        user['personal_info']['gender'] = gender
-        user['personal_info']['zipcode'] = zipcode
-        user['personal_info']['state'] = state
-        user['personal_info']['document'] = document
-        user['personal_info']['phone'] = phone
+        user['personal_info']['country'] = country
         
+        db.users.save(user)
+        
+        session['token_crt'] = id_generator(15)
+        return redirect('/user/verify-account/identity')
+    return redirect('/user/verify-account')
 
-        
-        upload_1     = request.files.get('img_passport_fontside')
-        upload_2     = request.files.get('img_passport_backside')
-        upload_3     = request.files.get('img_address')
+@user_ctrl.route('/account/identity', methods=['GET', 'POST'])
+def identity():
+    if session.get(u'logged_in') is None:
+        return redirect('/user/login')
+    uid = session.get('uid')
+    user = db.users.find_one({'customer_id': uid})
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    if request.method == 'POST' and request.form['token_crt'] == session['token_crt']:
+          
+        print request.files
+        upload_1     = request.files.get('file_1')
+        upload_2     = request.files.get('file_2')
+        upload_3     = request.files.get('file_3')
     
         save_path = SITE_ROOT+'/../static/img/upload'.format(category='category')
         if not os.path.exists(save_path):
@@ -609,9 +642,8 @@ def updateaccount():
 
         
         session['token_crt'] = id_generator(15) 
-        flash({'msg':'Update profile success', 'type':'success'})
-        return redirect('/user/verify-account')
-    return redirect('/user/verify-account')
+        return redirect('/user/verify-account/identity')
+    return redirect('/user/verify-account/identity')
 
 @user_ctrl.route('/updatewallet', methods=['GET', 'POST'])
 def updatewallet():

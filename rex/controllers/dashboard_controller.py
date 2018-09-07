@@ -115,7 +115,7 @@ def dashboard():
 		user = db.users.find_one({'customer_id': uid})
 
 		username = user['username']
-		refferal_link = 'http://0.0.0.0:58056/auth/register/%s' % (user['customer_id'])
+		refferal_link = 'http://0.0.0.0:58056/auth/register/%s' % (user['username'])
 		Profit_Statitics = 0
 		if float(user['total_earn']) > 0:
 			Profit_Statitics = round(float(user['total_earn'])/(float(user['investment'])*2.5),2)
@@ -124,6 +124,10 @@ def dashboard():
 		total_node_lefts = total_node_left(uid)
 		total_node_rights = total_node_right(uid)
 		
+		query_f1 = db.User.find({'$and' :[{'p_node': uid},{'p_binary' : ''},{"level": { "$gt": 0 }}]})
+		checkF1 = True
+		if query_f1.count() == 0:
+			checkF1 = False
 
 		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
 		number_notifications = list_notifications.count()
@@ -138,7 +142,9 @@ def dashboard():
 		    'total_binary_left' : total_binary_lefts,
 		    'total_binary_right' :total_binary_rights,
 		    'total_node_lefts' : total_node_lefts,
-		    'total_node_rights' : total_node_rights
+		    'total_node_rights' : total_node_rights,
+		    'refferal' : query_f1,
+	        'checkF1' : checkF1
 		}
 		
 		return render_template('account/dashboard.html', data=data)

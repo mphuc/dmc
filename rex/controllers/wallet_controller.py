@@ -240,8 +240,8 @@ def hometransfer():
 							'status' : 1,
 							'date_added' : datetime.utcnow(),
 							'type' : 'send',
-							'from' :  str(uid)+'-'+user['username'],
-							'to' : str(user_id)+'-'+str(check_id_user['username'])
+							'from' :  user['username'],
+							'to' : str(check_id_user['username'])
 						}
 						db.transfers.insert(data_transfer)
 
@@ -258,8 +258,8 @@ def hometransfer():
 							'status' : 1,
 							'date_added' : datetime.utcnow(),
 							'type' : 'receive',
-							'from' :  str(user_id)+'-'+str(check_id_user['username']),
-							'to' : str(uid)+'-'+user['username']
+							'from' :  str(check_id_user['username']),
+							'to' : user['username']
 						}
 						db.transfers.insert(data_transfers)
 						val_transfer = 'complete'

@@ -42,7 +42,7 @@
                      <br>
                      <div class="text-center" style="margin-bottom:20px;">
                         
-                        {% if data.investment == None %}
+                        {% if data.investment == None%}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/1'">Invesment Now</button>
                         {% endif %}
                      </div>
@@ -68,8 +68,12 @@
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/2'">Invesment Now</button>
                         {% endif %}
 
-                        {% if data.investment != None and data.investment['package'] < 500 %}
+                        {% if data.investment != None and data.investment['package'] < 500 and data.investment['upgrade'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/2'">Upgrade package</button>
+                        {% endif %}
+
+                        {% if data.investment != None and  data.investment['package'] <= 500 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/2'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -93,8 +97,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/3'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 1000 %}
+                        {% if data.investment != None and data.investment['package'] < 1000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/3'">Upgrade package</button>
+                        {% endif %}
+                        {% if data.investment != None and    data.investment['package'] <= 1000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/3'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -115,11 +122,14 @@
                      
                      <br>
                      <div class="text-center" style="margin-bottom:20px;">
-                        {% if data.investment == None or data.package_active == 100 %}
+                        {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/4'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 3000 %}
+                        {% if data.investment != None and data.investment['package'] < 3000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/4'">Upgrade package</button>
+                        {% endif %}
+                        {% if  data.investment != None and   data.investment['package'] <= 3000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/4'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -143,8 +153,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/5'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 5000 %}
+                        {% if data.investment != None and data.investment['package'] < 5000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/5'">Upgrade package</button>
+                        {% endif %}
+                        {% if  data.investment != None and   data.investment['package'] <= 5000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/5'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -168,8 +181,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/6'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 10000 %}
+                        {% if data.investment != None and data.investment['package'] < 10000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/6'">Upgrade package</button>
+                        {% endif %}
+                        {% if  data.investment != None and   data.investment['package'] <= 10000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/6'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -193,8 +209,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/7'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 30000 %}
+                        {% if data.investment != None and data.investment['package'] < 30000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/7'">Upgrade package</button>
+                        {% endif %}
+                        {% if data.investment != None and   data.investment['package'] <= 30000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/7'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -218,8 +237,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/8'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 50000 %}
+                        {% if data.investment != None and data.investment['package'] < 50000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/8'">Upgrade package</button>
+                        {% endif %}
+                        {% if data.investment != None and   data.investment['package'] <= 50000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/8'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -243,8 +265,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/9'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 100000 %}
+                        {% if data.investment != None and data.investment['package'] < 100000  and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/9'">Upgrade package</button>
+                        {% endif %}
+                        {%  if  data.investment != None and  data.investment['package'] <= 100000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/9'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -268,8 +293,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/10'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 500000 %}
+                        {% if data.investment != None and data.investment['package'] < 500000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
                         <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/10'">Upgrade package</button>
+                        {% endif %}
+                        {% if data.investment != None and   data.investment['package'] <= 500000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/10'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
@@ -293,8 +321,11 @@
                         {% if data.investment == None %}
                         <button type="button" class="btn btn-primary" onclick="window.location.href='/account/active-investment/11'">Invesment Now</button>
                         {% endif %}
-                        {% if data.investment != None and data.investment['package'] < 1000000 %}
-                        <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/10'">Upgrade package</button>
+                        {% if data.investment != None and data.investment['package'] < 1000000 and data.investment['upgrade'] != 1 and data.investment['reinvest'] != 1%}
+                        <button type="button" class="btn btn-success" onclick="window.location.href='/account/upgrade-investment/11'">Upgrade package</button>
+                        {% endif %}
+                        {% if data.investment != None and  data.investment['package'] <= 1000000 and data.investment['reinvest'] == 1%}
+                        <button type="button" class="btn btn-info" onclick="window.location.href='/account/reinvest-investment/11'">Reinvest Now</button>
                         {% endif %}
                      </div>
                   </div>
