@@ -28,8 +28,9 @@
                         <th>Username</th>
                         <!-- <th>customer_id</th> -->
                         <th>Email</th>
-                        <th>Telephone</th>
                         <th>Balance</th>
+                        <th>Telephone</th>
+                        
                         <th>Verify</th>
                         <th>Action</th>
                         
@@ -44,8 +45,9 @@
                         <td><a href="/admin/customer-detail/{{ item._id}}">{{ item.username}}</a></td>
                         
                         <td>{{ item.email}}</td>
-                        <td>{{ item.personal_info.phone}}</td>
                         <td>{{ item.balance_wallet | format_usd }}</td>
+                        <td>{{ item.personal_info.phone}}</td>
+                        
                         <td>
                             {% if item.status_verify == 0 %}
                                 <span style="color: red">Not verify</span>
