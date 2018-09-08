@@ -115,7 +115,7 @@ def dashboard():
 		user = db.users.find_one({'customer_id': uid})
 
 		username = user['username']
-		refferal_link = 'http://0.0.0.0:58056/auth/register/%s' % (user['username'])
+		refferal_link = 'http://192.254.72.34:58011/auth/register/%s' % (user['username'])
 		Profit_Statitics = 0
 		if float(user['total_earn']) > 0:
 			Profit_Statitics = round(float(user['total_earn'])/(float(user['investment'])*2.5),2)
