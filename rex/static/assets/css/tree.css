@@ -733,8 +733,8 @@ span.btn.btn-default.btn-tree {
 .personal-tree {
     width: 100%;
     height: 722px;
-    /*margin-top: 60px*/
-    position: absolute;
+    margin-top: 60px
+   /* position: absolute;*/
     overflow-x: scroll;
 }
 .personal_contain {
@@ -924,6 +924,7 @@ a.adduser {
    /* z-index: 999999999999;
     top: 135px;
     bottom: -40px;*/
+    z-index: 999999999999;
 }
 .customer_toolip table{
    /* background: #3B76A0;*/
@@ -1075,6 +1076,10 @@ a.adduser {
     max-width: 265px;
     /* If max-width does not work, try using width instead */
     width: 265px; 
+    z-index: 99999999;
+}
+.customer_toolip{
+    z-index: 99999999;
 }
 .customer_toolip .table > tbody > tr > td{
     padding: 5px 11px;
