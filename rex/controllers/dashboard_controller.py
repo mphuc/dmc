@@ -59,10 +59,8 @@ def total_node_left(customer_id):
     else:
     	
     	id_left_all = str(customer['left'])+get_id_tree(customer['left'])
-        
         id_left_all = id_left_all.split(',')
 
-        
         if (len(id_left_all) > 0):
             for yy in id_left_all:
             	check_user = db.users.find_one({'customer_id': yy})

@@ -123,14 +123,15 @@
       <div class="card-body">
          <div class="">
             <div class="material-datatables">
-               <table id="datatables_deposit" class="table table-bordered" style="width:100%;cellspacing:0">
+               <table id="datatables_transfer" class="table table-bordered" style="width:100%;cellspacing:0">
                   <thead>
                      <tr>
-                        <th>No.</th>
+                        <th class="text-center">>No.</th>
                         <th>Datetime</th>
                         <th>From Acount</th>
                         <th>To Acount</th>
-                        <th>USD</th>
+                        <th>Receive</th>
+                        <th>Send</th>
                         <th>Status</th>
                      </tr>
                   </thead>
@@ -138,20 +139,36 @@
                      {% if data.transfer %}
                      {% for item in data.transfer %}
                      <tr>
-                        <td></td>
+                        <td class="text-center">></td>
                         <td>{{ item.date_added | format_date }}</td>
                         <td>{{ item.from }}</td>
                         <td>{{ item.to }}</td>
-                        <td>{% if item.type == "send" %}-{% endif %}{{item.amount | format_usd }}</td>
+                        <td class="text-center">
+                        {% if item.type == "send" %}
+                           {{item.amount | format_usd }}
+                        {% endif %}
+                        </td>
+                        <td class="text-center">
+                        {% if item.type == "receive" %}
+                           {{item.amount | format_usd }}
+                        {% endif %}
+                        </td>
                         <td class="text-center">
                            <label style="color:green">Success</label>
-                           
                         </td>
                      </tr>
                      {% endfor %}
                      {% endif %}
                   </tbody>
-                  
+                  <tfoot>
+                     <tr>
+                         
+                        <th colspan="4" class="text-right">Total</th>
+                        <th class="text-center"></th> 
+                        <th class="text-center" colspan="1"></th> 
+                        <th ></th>
+                     </tr>
+                 </tfoot>
                </table>
             </div>
          </div>
