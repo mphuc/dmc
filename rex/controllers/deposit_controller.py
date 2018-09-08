@@ -575,7 +575,7 @@ def ActiveInvestmentSumit(package):
                 #     TotalnodeAmount(uid, float(amount_package) - 10)
                 #     #hoa hong truc tiep
                 #     FnRefferalProgram(uid, float(amount_package) - 10)                
-    #update balance
+    #update balance 
             user = db.users.find_one({'customer_id': uid})
             new_balance_wallet = float(user['balance_wallet'])- float(amount_package)
             new_coin_wallet = float(user['coin_wallet']) + float(coin_amount)
