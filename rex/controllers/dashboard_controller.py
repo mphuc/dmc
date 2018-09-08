@@ -57,14 +57,17 @@ def total_node_left(customer_id):
     if customer['left'] == '':
         count_left = 0
     else:
-    	if customer['left'] == customer_id:
-        	id_left_all = str(customer['left'])+get_id_tree(customer['left'])
-        else: 
-        	id_left_all = get_id_tree(customer['left'])
+    	
+    	id_left_all = str(customer['left'])+get_id_tree(customer['left'])
+        
         id_left_all = id_left_all.split(',')
+
+        
         if (len(id_left_all) > 0):
             for yy in id_left_all:
-                count_left = count_left + 1
+            	check_user = db.users.find_one({'customer_id': yy})
+            	if check_user is not None and check_user['p_node'] == customer_id:
+                	count_left = count_left + 1
     return count_left
 
 def get_id_tree(ids):
@@ -95,14 +98,16 @@ def total_node_right(customer_id):
     if customer['right'] == '':
         count_right = 0
     else:
-    	if customer['right'] == customer_id:
-        	id_right_all = str(customer['right'])+get_id_tree(customer['right'])
-        else:
-        	id_right_all = get_id_tree(customer['right'])
+    	
+    	id_right_all = str(customer['right'])+get_id_tree(customer['right'])
+        
         id_right_all = id_right_all.split(',')
         if (len(id_right_all) > 0):
             for yy in id_right_all:
-                count_right = count_right + 1
+            	check_user = db.users.find_one({'customer_id': yy})
+            	if check_user is not None and check_user['p_node'] == customer_id:
+                	count_right = count_right + 1
+
     return count_right    
 
 @dashboard_ctrl.route('/dashboard', methods=['GET', 'POST'])
