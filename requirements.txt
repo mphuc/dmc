@@ -1,4 +1,4 @@
-adium-theme-ubuntu==0.3.4
+
 base58==0.2.5
 block-io==1.1.6
 certifi==2017.11.5
