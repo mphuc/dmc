@@ -11846,7 +11846,7 @@ h1, h2, h3, h4, h5, h6 {
 #identity_2, #identity_3{
   display: none;
 }
-/*#Account form img{
+#Account form img{
   width: 150px
 }
 
@@ -11856,4 +11856,4 @@ h1, h2, h3, h4, h5, h6 {
 .login-page .card{
   padding-bottom: 0px;
   margin-bottom: 0px;
-}*/
+}
