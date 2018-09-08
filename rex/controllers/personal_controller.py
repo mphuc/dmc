@@ -441,7 +441,7 @@ def reduceTree_ico(user):
     tree = {
         "id":str(user['customer_id']),
         # "text":str(user['username']) +" (Invest: $" +str(user['total_invest'])+")",
-        "text":str(user['username']),
+        "text":'<img src="/static/img/package/package-'+str(int(user['level']))+'.png" alt="" class="img_tree_s">'+str(user['username']),
         "empty":False,
         "iconCls":"level2",
         "fl":1,
@@ -452,7 +452,7 @@ def reduceTree_ico(user):
     children_tree_ico(tree)
     return json
 def children_tree_ico(json):
-    customer = db.users.find({'p_node': json['id']}, {'username':1, 'total_invest': 1, 'customer_id': 1})
+    customer = db.users.find({'p_node': json['id']}, {'username':1, 'total_invest': 1, 'customer_id': 1, 'level': 1})
     if customer:
         for x in customer:
             checkF1 = db.users.find({'p_node': str(x['customer_id'])}).count()
@@ -464,7 +464,7 @@ def children_tree_ico(json):
             tree = {
                 "id":str(x['customer_id']),
                 # "text":str(x['username'])+" (Invest: $" +str(x['total_invest'])+")",
-                "text":str(x['username']),
+                "text":'<img src="/static/img/package/package-'+str(int(x['level']))+'.png" alt="" class="img_tree_s">'+str(x['username']),
                 "empty":False,
                 "iconCls":"level2",
                 "fl":1,
@@ -476,7 +476,7 @@ def children_tree_ico(json):
         json['children']=0
     return json
 def renderJson_ico(uid):
-    user = db.users.find_one({'customer_id': uid}, {'username': 1, 'total_invest':1, 'customer_id': 1})
+    user = db.users.find_one({'customer_id': uid}, {'username': 1, 'total_invest':1, 'customer_id': 1, 'level': 1})
     return reduceTree_ico(user)
 @personal_ctrl.route('/json_tree_ico/<uid>', methods=['GET', 'POST'])
 def json_tree_ico(uid):

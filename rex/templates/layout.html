@@ -133,7 +133,7 @@
           } ).draw();
 
 
-         var datatables_referrals = $('#datatables_referrals').DataTable( {
+         var datatables_referrals = $('.datatables_referrals').DataTable( {
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -145,6 +145,38 @@
 
          datatables_referrals.on( 'order.dt search.dt', function () {
               datatables_referrals.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+         var datatables_referrals1 = $('.datatables_referrals1').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                
+            },
+            "order": [[ 2, "desc" ]],
+            responsive: true
+        });
+
+         datatables_referrals1.on( 'order.dt search.dt', function () {
+              datatables_referrals1.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+         var datatables_referrals2 = $('.datatables_referrals2').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                
+            },
+            "order": [[ 2, "desc" ]],
+            responsive: true
+        });
+
+         datatables_referrals2.on( 'order.dt search.dt', function () {
+              datatables_referrals2.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                   cell.innerHTML = i+1;
               } );
           } ).draw();

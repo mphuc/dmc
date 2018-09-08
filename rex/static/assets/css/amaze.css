@@ -11857,3 +11857,11 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
+.img_tree_s{
+  width: 15px;
+  margin-left: -20px;
+  background: white;
+  height: 19px !important;
+  margin-top: -3px;
+  margin-right: 5px;
+}

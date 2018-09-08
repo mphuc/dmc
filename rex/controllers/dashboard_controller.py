@@ -124,10 +124,7 @@ def dashboard():
 		total_node_lefts = total_node_left(uid)
 		total_node_rights = total_node_right(uid)
 		
-		query_f1 = db.User.find({'$and' :[{'p_node': uid},{'p_binary' : ''},{"level": { "$gt": 0 }}]})
-		checkF1 = True
-		if query_f1.count() == 0:
-			checkF1 = False
+		
 
 		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
 		number_notifications = list_notifications.count()
@@ -147,8 +144,6 @@ def dashboard():
 		    'total_binary_right' :total_binary_rights,
 		    'total_node_lefts' : total_node_lefts,
 		    'total_node_rights' : total_node_rights,
-		    'refferal' : query_f1,
-	        'checkF1' : checkF1,
 	        'notification_all' : notification_all
 		}
 		
