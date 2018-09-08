@@ -199,11 +199,9 @@ def function():
 def getInfo(): # date = datetime object.
     data_ticker = db.tickers.find_one({})
     data = {
-        'btc_usd':data_ticker['btc_usd'],
-        'sva_btc':data_ticker['sva_btc'],
-        'sva_usd':data_ticker['sva_usd']
+        'btc_usd':data_ticker['btc_usd']
     }
-    return json.dumps(data)
+    return json.dumps(data_ticker)
 
 
 @app.route('/info-ico', methods=['GET', 'POST'])
