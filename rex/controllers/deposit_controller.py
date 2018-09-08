@@ -596,7 +596,7 @@ def ActiveInvestmentSumit(package):
                 'reinvest' : 0
             }
             db.investments.insert(data_investment)
-
+            #send_mail_active_package(user['email'],user['username'],float(amount_package) - 10)
             return redirect('/account/active-investment/'+package)
         else:
             return redirect('/account/active-investment/'+package)
@@ -931,57 +931,41 @@ def AddTreeSubmit(p_binary,position):
         
     else:
         return redirect('/account/add-tree/'+p_binary+'/'+position)
-def send_mail_active_package(email,usernames,amount):
+def send_mail_active_package(email,username_user,package):
     
-    html = """\
-        <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center">
-       <div class="adM">
-       </div>
-       <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background-color:#f9f9f9">
-          <tbody>
-             <tr>
-                <td style="padding:20px 10px 10px 0px;text-align:left">
-                   <a href="https://worldtrader.info" title="World Trade" target="_blank" >
-                   <img src="https://worldtrader.info/static/home/images/logo/logo.png" alt="World Trade" class="CToWUd" style=" width: 200px; ">
-                   </a>
-                </td>
-                <td style="padding:0px 0px 0px 10px;text-align:right">
-                </td>
-             </tr>
-          </tbody>
-       </table>
-    </div>
-    <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center">
-       <table style="table-layout:fixed;width:90%;max-width:600px;margin:0 auto;background:#fff;font-size:14px;border:2px solid #e8e8e8;text-align:left;table-layout:fixed">
-          <tbody>
-             <tr>
-                <td style="padding:30px 30px 10px 30px;line-height:1.8">Dear <b>"""+str(usernames)+"""</b>,</td>
-             </tr>
-             <tr>
-                <td style="padding:10px 30px;line-height:1.8">You have successfully activated the $ """+str(amount)+""" package from World Trade</td>
-             </tr>
-             
-             <tr>
-                <td style="border-bottom:3px solid #efefef;width:90%;display:block;margin:0 auto;padding-top:30px"></td>
-             </tr>
-             <tr>
-                <td style="padding:30px 30px 30px 30px;line-height:1.3">Best regards,<br> <a href="https://worldtrader.info/" target="_blank" >World Trade</a></td>
-             </tr>
-          </tbody>
-       </table>
-    </div>
-    <div style="font-family:Arial,sans-serif;background-color:#f9f9f9;color:#424242;text-align:center;padding-bottom:10px;     height: 50px;">
-   
-</div>
+    username = 'info@diamondcapital.co'
+    password = 'm{Q]EI+qNZmD'
+    msg = MIMEMultipart('mixed')
+    sender = 'info@diamondcapital.co'
+    recipient = str(email)
+    msg['Subject'] = 'Activation of the investment package successfully'
+    msg['From'] = sender
+    msg['To'] = recipient
+    html = """
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="//i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      <h1><span style="font-size:19.0pt;font-family:Verdana;color:black">
+      Activation of the investment package successfully
+      </span></h1>
+      <br> </td> </tr> <tr> <td width="25" style="border:white"> &nbsp; </td> 
+      <td style="border:white"> <div style="color:#818181;font-size:10.5pt;font-family:Verdana"><span class="im">
+      Dear """+str(username_user)+""",<br><br></span> 
+      <p></p>
+      
+      <p style="text-align:left">
+        <strong>Package: $"""+str(package)+"""</trong></p>
+       <br/>
+       <br/>                    
+      <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
     """
-
-    return requests.post(
-      "https://api.mailgun.net/v3/worldtrader.info/messages",
-      auth=("api", "key-4cba65a7b1a835ac14b7949d5795236a"),
-      data={"from": "World Trade <no-reply@worldtrader.info>",
-        "to": ["", email],
-        "subject": "Trade & Mining",
-        "html": html})
+    html_message = MIMEText(html, 'html')
+    msg.attach(html_message)
+    mailServer = smtplib.SMTP('capitalvs.net', 25) 
+    mailServer.ehlo()
+    mailServer.starttls()
+    mailServer.ehlo()
+    mailServer.login(username, password)
+    mailServer.sendmail(sender, recipient, msg.as_string())
+    mailServer.close()  
 
 
 #send_mail_active_package('vngroup12@gmail.com','vngroup','10000')

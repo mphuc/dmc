@@ -289,7 +289,7 @@ def create_user(sponsor,username,country,email,password):
     'status_2fa': 0,
     'status_withdraw' : 0,
     'balance_wallet' : 0,
-    'active_email' : 0,
+    'active_email' : 1,
     'code_active' : code_active,
     'investment' : 0,
     'coin_wallet' : 0,
@@ -312,7 +312,7 @@ def create_user(sponsor,username,country,email,password):
   }
   customer = db.users.insert(datas)
 
-  send_mail_register(customer_id,username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
+  #send_mail_register(customer_id,username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
 
 def send_mail_register(customer_id,username_user,email,country,link_active):
     username = 'info@diamondcapital.co'
