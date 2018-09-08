@@ -97,197 +97,115 @@
             <div class="content">            
                <h4 class="title">Update infomation: {{data.user['username']}}</h4>
                <form  action="/admin/customer/{{data.user_id}}" enctype="multipart/form-data" method="post">
+
                   <div class="content">
-                     <div class="col-md-4">
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Select document   
-                              <star>*</star>
-                           </label>
-                           <select  name="document" class="form-control" required="true">
-                                <option {% if data.user['personal_info']['document'] == 'Passport' %} selected="selected" {% endif %} value="Passport">Passport</option>
-                                <option {% if data.user['personal_info']['document'] == 'ID' %} selected="selected" {% endif %} value="ID">ID</option>
+                     <div class="f-fl" style="margin-bottom: 30px">
+                        <p class="step-title ng-binding">Basic Information</p>
+                     </div>
+
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> First Name</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="{{data.user['personal_info']['firstname']}}" required="true" name="firstname" type="text" >
+                        </div>
+                     </div>
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Last Name</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="{{data.user['personal_info']['lastname']}}" required="true" name="lastname" type="text" >
+                        </div>
+                     </div>
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Date of birth</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="{{data.user['personal_info']['date_birthday']}}" required="true" name="date_birthday" type="date" >
+                        </div>
+                     </div>
+
+                     <div class="f-fl" style="margin-bottom: 30px; margin-top: 50px">
+                        <p class="step-title ng-binding">Residential address</p>
+                     </div>
+                     
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Address</label>
+                        <div class="col-md-8">
+                           <textarea style="height: 60px;" class="form-control" required="true" name="address">{{data.user['personal_info']['address']}}</textarea>
+                        </div>
+                     </div>
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Postal Code</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="{{data.user['personal_info']['postalcode']}}" required="true" name="postalcode" type="text" >
+                        </div>
+                     </div>
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> City</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="{{data.user['personal_info']['city']}}" required="true" name="city" type="text" >
+                        </div>
+                     </div>
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Country</label>
+                        <div class="col-md-6">
+                           <select class="form-control" name="country" required="required" >
+                              <option value="">Please select a country</option>
+                              {% for item in data.data_country %} 
+                              <option {% if data.user['personal_info']['country'] == item.country_name %} selected="selected" {% endif %}
+                                  data-id="{{item.dialling_code}}" value="{{item.country_name}}">{{item.country_name}}</option>
+                              {% endfor %} 
                            </select>
                         </div>
-                        <div class="clearfix"></div>
-                         <div class="row">
-                           <div class="col-md-6">
-                              <div class="form-group ">
-                                 <label class="control-label">
-                                    Country 
-                                    <star>*</star>
-                                 </label>
-                                 <select class="form-control" name="country" required="required" >
-                                       {% for item in data.data_country %} 
-                                       <option {% if data.user['personal_info']['country'] == item.country_name %} selected="selected" {% endif %}
-                                           data-id="{{item.dialling_code}}" value="{{item.country_name}}">{{item.country_name}}</option>
-                                       {% endfor %} 
-                                    </select>
-                                 
-                              </div>
-                           </div>
-                           <div class="col-md-6">
-                              <div class="form-group ">
-                                 <label class="control-label">
-                                    Gender 
-                                    <star>*</star>
-                                 </label>
-                                 <select name="gender" class="form-control" required="true">
-                                      <option {% if data.user['personal_info']['gender'] == 'Male' %} selected="selected" {% endif %} value="Male">Male</option>
-                                      <option {% if data.user['personal_info']['gender'] == 'Female' %} selected="selected" {% endif %} value="Female">Female</option>
-                                 </select>
-                              </div>
-                           </div>
-                         </div>
-
-                        <div class="form-group ">
-                           <label class="control-label">
-                              ZipCode  
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['personal_info']['zipcode']}}" required="true" name="zipcode" type="text" >
-                        </div>  
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group ">
-                               <label class="control-label">
-                                  Status Authen  
-                                  <star>*</star>
-                               </label>
-                               <select name="status_2fa" class="form-control" required="true">
-                                    <option {% if data.user['status_2fa'] == 0 %} selected="selected" {% endif %} value="0">Disable</option>
-                                    <option {% if data.user['status_2fa'] == 1 %} selected="selected" {% endif %} value="1">Enlable</option>
-                               </select>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group ">
-                               <label class="control-label">
-                                  Active Register  
-                                  <star>*</star>
-                               </label>
-                               <select name="active_email" class="form-control" required="true">
-                                    <option {% if data.user['active_email'] == 0 %} selected="selected" {% endif %} value="0">Disable</option>
-                                    <option {% if data.user['active_email'] == 1 %} selected="selected" {% endif %} value="1">Enlable</option>
-                               </select>
-                            </div>
-                          </div>
-                        </div>
-                        {% if data.user['status_verify'] == 1 %}
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Passport/ID/DL image (Fontside)   
-                              <star>*</star>
-                           </label>
-                           
-                           <div class="text-center">
-                              <img width="80" src="{{data.user['personal_info']['img_passport_fontside']}}">
-                           </div>
-                           
-                        </div>
-                        {% endif %}
                      </div>
 
-                     <div class="col-md-4">
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Passport/ID/DL number
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['personal_info']['passport']}}" required="true" name="passport" type="text" >
-                        </div>
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Address 
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['personal_info']['address']}}" required="true" name="address" type="text" >
-                        </div>
-                        <div class="form-group ">
-                           <label class="control-label">
-                              State/Region  
-                              <star>*</star>
-                           </label>
-                           <input class="form-control"  value="{{data.user['personal_info']['state']}}" required="true" name="state" type="text" >
-                        </div>
-                        <div class="form-group ">
-                           <label class="control-label">
-                              New Password
-                              <star>*</star>
-                           </label>
-                           <input class="form-control"  value="" placeholder="New Password"  name="password" type="text" >
-                        </div>
-                        {% if data.user['status_verify'] == 1 %}
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Passport/ID/DL image (Backside)  
-                              <star>*</star>
-                           </label>
-                           
-                           
-                           <div class="text-center">
-                              <img width="80" src="{{data.user['personal_info']['img_passport_backside']}}">
-                           </div>
-                           
-                        </div>
-                        {% endif %}
+                     <div class="f-fl" style="margin-bottom: 30px; margin-top: 50px">
+                        <p class="step-title ng-binding">User</p>
                      </div>
 
-                     <div class="col-md-4">
-                        <div class="form-group">
-                           <label class="control-label">
-                              Id Date
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['personal_info']['date_passport']}}"  name="date_passport" type="date"  required="true">
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> New Password</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="" name="password" type="text" >
                         </div>
-
-                        <div class="form-group">
-                           <label class="control-label">
-                              City/Town
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['personal_info']['city']}}"  name="city" type="text" required="true">
-                        </div>
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Phone 
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['personal_info']['phone']}}"  required="true" name="phone" type="text">
-                        </div>
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Balance 
-                              <star>*</star>
-                           </label>
-                           <input class="form-control" value="{{data.user['balance_wallet']}}"  required="true" name="balance_wallet" type="text">
-                        </div>
-                        {% if data.user['status_verify'] == 1 %}
-                        <div class="form-group ">
-                           <label class="control-label">
-                              Proof of Addresses *
-                              <star>*</star>
-                           </label>
-                           
-                           
-                           <div class="text-center">
-                              <img width="80" src="{{data.user['personal_info']['img_address']}}">
-                           </div>
-                           
-                           
-                           
-                        </div>
-                        {% endif %}
                      </div>
-                     
-                     
+
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Balance</label>
+                        <div class="col-md-6">
+                           <input class="form-control" value="{{data.user['balance_wallet']}}" name="balance_wallet" type="text" >
+                        </div>
+                     </div>
+
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Active Register</label>
+                        <div class="col-md-6">
+                           <select name="active_email" class="form-control" required="true">
+                                <option {% if data.user['active_email'] == 0 %} selected="selected" {% endif %} value="0">Disable</option>
+                                <option {% if data.user['active_email'] == 1 %} selected="selected" {% endif %} value="1">Enlable</option>
+                           </select>
+                        </div>
+                     </div>
+
+
+                     <div class="row" style="margin-bottom: 10px">
+                        <label class="col-md-2 control-label text-right" for="Comm_Type"> Status Authen  </label>
+                        <div class="col-md-6">
+                           <select name="status_2fa" class="form-control" required="true">
+                                <option {% if data.user['status_2fa'] == 0 %} selected="selected" {% endif %} value="0">Disable</option>
+                                <option {% if data.user['status_2fa'] == 1 %} selected="selected" {% endif %} value="1">Enlable</option>
+                           </select>
+                        </div>
+                     </div>
+                      
+
+
+                        
                      <input type="hidden" name="token_crt" value="{{data.token_crt}}">
                      
-                     <div class="text-center">
+                  </div>
+
+                  <div class="text-center">
                         <button type="submit" class="btn btn-rose btn-fill btn-wd">Update</button>
                      </div>
-                  </div>
                </form>
 
 

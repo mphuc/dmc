@@ -247,32 +247,29 @@ def SupportCustomerID(user_id):
     user = db.users.find_one({'_id': ObjectId(user_id)})
     if request.method == 'POST':
         
-        document = request.form['document']
-        passport = request.form['passport']
-        date_passport = request.form['date_passport']
-        country = request.form['country']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        date_birthday = request.form['date_birthday']
         address = request.form['address']
+        postalcode = request.form['postalcode']
         city = request.form['city']
-        gender = request.form['gender']
-        zipcode = request.form['zipcode']
-        state  = request.form['state']
-        phone = request.form['phone']
+        country = request.form['country']
+
         status_2fa = request.form['status_2fa']
+        active_email = request.form['active_email']
+        
+        user['personal_info']['firstname'] = firstname
+        user['personal_info']['lastname'] = lastname
+        user['personal_info']['date_birthday'] = date_birthday
+        user['personal_info']['address'] = address
+        user['personal_info']['postalcode'] = postalcode
+        user['personal_info']['city'] = city
+        user['personal_info']['country'] = country
 
         balance_wallet = request.form['balance_wallet']
         password = request.form['password']
         active_email = request.form['active_email']
-        user['personal_info']['document'] = document
-        user['personal_info']['passport'] = passport
-        user['personal_info']['date_passport'] = date_passport
-        user['personal_info']['country'] = country
-        user['personal_info']['address'] = address
-        user['personal_info']['city'] = city
-        user['personal_info']['gender'] = gender
-        user['personal_info']['zipcode'] = zipcode
-        user['personal_info']['state'] = state
-        user['personal_info']['document'] = document
-        user['personal_info']['phone'] = phone
+        
         user['status_2fa'] = int(status_2fa)
         user['active_email'] = int(active_email)
         user['balance_wallet'] = balance_wallet
