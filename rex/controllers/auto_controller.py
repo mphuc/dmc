@@ -362,9 +362,17 @@ def caculator_binary(ids):
                         SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'binarybonus', 'USD', detail, '', '')
 
                     #save history
-
-                    
         return json.dumps({'status' : 'success'})
     else:
         return json.dumps({'status' : 'error'})
 
+
+@auto_ctrl.route('/update-maxoutdat/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
+def updatemax_out_day(ids):
+    if ids =='RsaW3Kb1gDkdRUGDo':
+
+        db.users.update({}, {'$set': {'max_out_day': 0 }}, multi=True)
+
+        return json.dumps({'status' : 'success'})
+    else:
+        return json.dumps({'status' : 'error'})
