@@ -196,6 +196,11 @@ def countIco():
         'percent': round(percent, 2)
     }
     return json.dumps(data)
+
+@app.template_filter()
+def format_int(value): # date = datetime object.
+    return int(value)
+
 @app.template_filter()
 def format_date(date): # date = datetime object.
     return date.strftime('%Y-%m-%d %H:%M:%S')
