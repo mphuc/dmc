@@ -255,7 +255,7 @@ def hometransfer():
 						db.users.update({ "customer_id" : check_id_user['customer_id'] }, { '$set': { "balance_wallet": float(new_balance_wallet_recevie) } })
 
 						data_transfers = {
-							'uid' : user_id,
+							'uid' : user_receive['customer_id'],
 							'user_id': user_receive['_id'],
 							'username' : user_receive['username'],
 							'amount' : quantity,
