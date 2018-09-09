@@ -22,6 +22,25 @@
 {% endblock %}
 {% block main %}
 
+
+<div class="row price_dashboard">
+   <div class="items">
+      BTC/USD: {{data.data_ticker['btc_usd'] | format_usd}}
+   </div>
+   <div class="items">
+      ETH/USD: {{data.data_ticker['eth_usd'] | format_usd}}
+   </div>
+   <div class="items">
+      LTC/USD: {{data.data_ticker['ltc_usd'] | format_usd}}
+   </div>
+   <div class="items">
+      BCH/USD: {{data.data_ticker['bch_usd'] | format_usd}}
+   </div>
+   <div class="items">
+      USDT/USD: 1.00
+   </div>
+</div>
+
 {% if data.notification_all != None%}
 <div class="row">
    <div class="card-body col-lg-12" style="padding:0px;">
@@ -74,7 +93,7 @@
        <span style="font-size:26px;">{{data.user['coin_wallet'] | format_usds}}</span>
       </div>
    </div>
-   <div class="col-md-6 nopaddingiright" onclick="window.location.href='/account/withdraw'">
+   <div class="col-md-6 nopadding-right" onclick="window.location.href='/account/withdraw'">
        <div class="item">
           <h4>Wallet </h4>
           <span style="font-size:26px;">${{data.user['balance_wallet'] | format_usd}}</span>
@@ -82,15 +101,16 @@
    </div>
 
    <div class="col-md-6 nopadding-left" onclick="window.location.href='/account/investment-history'" >
-      <div class="item" style="min-height: 143px;">
+      <div class="item" style="min-height: 105px;">
        <h4>Total Investment</h4>
        <span style="font-size:26px;">${{data.user['investment'] | format_usd}}</span>
       </div>
    </div>
-   <div class="col-md-6 nopaddingiright" onclick="window.location.href='/account/total-income'">
+   <div class="col-md-6 nopadding-right" onclick="window.location.href='/account/total-income'">
        <div class="item">
           <h4>Total Income  </h4>
           <span style="font-size:26px;">${{data.user['total_earn'] | format_usd}}</span>
+          <div class="clearfix"></div>
           <p style="font-size:19px">Profit Statitics {{data.Profit_Statitics}}%</p>
       </div>
    </div>
@@ -172,7 +192,7 @@
    
    <!-- End item !-->
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:160px">
          <div class="card-header" style="border-bottom:0px">
             Directly Sponsored 
          </div>
@@ -200,7 +220,7 @@
       </div>
    </div>
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:160px">
          <div class="card-header" style="border-bottom:0px">
             Member 
          </div>
@@ -230,7 +250,7 @@
    </div>
    <!-- End item !-->
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:160px">
          <div class="card-header" style="border-bottom:0px">
             System
          </div>
@@ -243,14 +263,14 @@
 
                      <p class="text-center" style="font-size:15px; color: #fff;
                      padding: 0; font-weight: bold;">Points Left</p>
-                     <p class="text-center" style="font-size:19px color: #fff;
+                     <p class="text-center" style="font-size:19px; color: #fff;
                      padding: 0">${{data.user['total_pd_left'] | format_usd}} </p>
                      
                   </div>
                   <div class="pull-right" style="width: 50%">
                      <p class="text-center" class="text-center" style="font-size:15px; color: #fff;
                      padding: 0;font-weight: bold;">Points Right</p>
-                     <p class="text-center" style="font-size:19px color: #fff;
+                     <p class="text-center" style="font-size:19px; color: #fff;
                      padding: 0">${{data.user['total_pd_right'] | format_usd}} </p>
                      
                   </div>
@@ -263,7 +283,7 @@
       </div>
    </div>
    <div class="col-lg-3 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; min-height:176px">
+      <div class="card" style="margin-bottom:0px; background:none; min-height:160px">
          <div class="card-header" style="border-bottom:0px">
             System All
          </div>
@@ -276,14 +296,14 @@
                      <p class="text-center" style="font-size:15px; color: #fff;
                      padding: 0; font-weight: bold;">Points Left</p>
                      
-                     <p class="text-center" style="font-size:19px color: #fff;
+                     <p class="text-center" style="font-size:19px; color: #fff;
                      padding: 0">${{data.user['total_amount_left'] | format_usd}}</p>
                   </div>
                   <div class="pull-right" style="width: 50%">
                      <p class="text-center" class="text-center" style="font-size:15px; color: #fff;
                      padding: 0;font-weight: bold;">Points Right</p>
                      
-                     <p class="text-center" style="font-size:19px color: #fff;
+                     <p class="text-center" style="font-size:19px; color: #fff;
                      padding: 0">${{data.user['total_amount_right'] | format_usd}}</p>
                   </div>
                   

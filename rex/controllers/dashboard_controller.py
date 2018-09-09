@@ -127,6 +127,7 @@ def dashboard():
 		total_node_lefts = total_node_left(uid)
 		total_node_rights = total_node_right(uid)
 		
+		data_ticker = db.tickers.find_one({})
 		
 
 		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]} )
@@ -147,7 +148,8 @@ def dashboard():
 		    'total_binary_right' :total_binary_rights,
 		    'total_node_lefts' : total_node_lefts,
 		    'total_node_rights' : total_node_rights,
-	        'notification_all' : notification_all
+	        'notification_all' : notification_all,
+	        'data_ticker' : data_ticker
 		}
 		
 		return render_template('account/dashboard.html', data=data)

@@ -11872,18 +11872,58 @@ h1, h2, h3, h4, h5, h6 {
 }
 .wallet_item .item{
   background: #fff;
-  min-height: 70px;
+  min-height: 67px;
   padding: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
   cursor: pointer;
 }
 .wallet_item .item h4{
-  font-size: 32px;
+  font-size: 23px;
+  float: left;
+  line-height: 39px;
+}
+.wallet_item .item span{
+  float: right
 }
 .nopadding-left{
   padding-left: 0px;
 }
 .nopadding-right{
   padding-right: 0px;
+}
+.price_dashboard{
+  
+  background: #fff;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+}
+.price_dashboard .items{
+  float: left;
+    width: 20%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    height: 60px;
+    line-height: 60px;
+}
+
+@media screen and (max-width: 767px) {
+  .price_dashboard .items{
+    width: 50%;
+    height: 40px;
+    line-height: 40px;
+  }
+  .nopadding-right{
+    padding-left: 0px;
+  }
+  .nopadding-left{
+    padding-right: 0px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .price_dashboard .items{
+    width: 100%;
+
+  }
 }
