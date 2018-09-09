@@ -174,7 +174,9 @@ def get_receive_program_package(user_id,amount):
 
     if float(amount) > max_receive - float(customer['max_out_package']):
         amount_receve = max_receive - float(customer['max_out_package'])
-        db.investments.update({'uid': user_id},{'$set' : {'reinvest' : 1}})
+        investment = db.investments.find_one({'$and' :[{'status' : 1},{"uid" : user_id }]} )
+        if investment is not None:
+            db.investments.update({'_id': ObjectId(investment['_id'])},{'$set' : {'reinvest' : 1,'total_income' : float(max_receive),'status_income' : 1,'date_income' : datetime.utcnow()}})
     else:
         amount_receve = amount
     customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])
@@ -279,12 +281,16 @@ def caculator_dailybonus(ids):
             #detail = 'Get '+str(percent)+' '+"""%"""+' Daily profit from the investment $%s' %(x['package'])
             SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'dailyprofit', 'USD', percent, x['package'], '')
 
-            reinvest = 0
-            if (float(x['amount_frofit']) + commission) >= (float(x['package'])*1.5):
-                reinvest = 1
 
             new_profit =  float(x['amount_frofit']) + commission
-            db.investments.update({'_id' : ObjectId(x['_id'])},{ '$set' : {'amount_frofit' : float(new_profit),'reinvest' : reinvest}})
+            db.investments.update({'_id' : ObjectId(x['_id'])},{ '$set' : {'amount_frofit' : float(new_profit)}})
+            
+            
+            if (float(x['amount_frofit']) + commission) >= (float(x['package'])*1.5):
+                date_income = datetime.utcnow()
+                db.investments.update({'_id' : ObjectId(x['_id'])},{ '$set' : {'reinvest' : 1, 'total_income' : float(x['package'])*1.5,'status_income' : 1,'date_income' : datetime.utcnow()}})
+            
+
             #save history
                 
         return json.dumps({'status' : 'success'})
@@ -362,6 +368,18 @@ def caculator_binary(ids):
                             SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'binarybonus', 'USD', detail, '', '')
 
                         #save history
+                        else:
+                            customers = db.users.find_one({'customer_id': x['customer_id']})
+                            detail = 'Weak branches $%s. Max out package' %(balanced)
+                            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'binarybonus', 'USD', detail, '', '')
+
+                    else:
+                        customers = db.users.find_one({'customer_id': x['customer_id']})
+                        detail = 'Weak branches $%s. Max out day' %(balanced)
+                        SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'binarybonus', 'USD', detail, '', '')
+
+
+
         return json.dumps({'status' : 'success'})
     else:
         return json.dumps({'status' : 'error'})

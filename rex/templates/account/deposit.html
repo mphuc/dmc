@@ -35,6 +35,7 @@
                   <tr style="border-top:0px solid #DADEE7;border-bottom:1px solid #DADEE7">
                      <th style="border-top:0px">Coin</th>
                      <th style="border-top:0px">Name</th>
+                     <th style="border-top:0px" class="text-center">Price</th>
                      <th style="border-top:0px; text-align:center" width="200px">Actions</th>
                   </tr>
                </thead>
@@ -43,6 +44,7 @@
                      <td>
                      <img src="/static/img/BTC.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">BTC</span></td>
                      <td> Bitcoin</td>
+                     <td class="text-center">{{data.ticker['btc_usd'] | format_usd}}</td>
                      <td style="text-align:center">
                         <button class="btn btn-default btn-deposit button--deposit" data-coin="BTC" data-content="btc-action">Deposit</button>                                
                      </td>
@@ -71,6 +73,7 @@
                      <td>
                      <img src="/static/img/ETH.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">ETH</span></td>
                      <td> Ethereum</td>
+                     <td class="text-center">{{data.ticker['eth_usd'] | format_usd}}</td>
                      <td style="text-align:center">
                         <button class="btn btn-default btn-deposit button--deposit" data-coin="ETH" data-content="btc-action">Deposit</button>                                
                      </td>
@@ -99,6 +102,7 @@
                      <td>
                      <img src="/static/img/LTC.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">LTC</span></td>
                      <td> Litecoin</td>
+                     <td class="text-center">{{data.ticker['ltc_usd'] | format_usd}}</td>
                      <td style="text-align:center">
                         <button class="btn btn-default btn-deposit button--deposit" data-coin="LTC" data-content="btc-action">Deposit</button>                                
                      </td>
@@ -127,6 +131,7 @@
                      <td>
                      <img src="/static/img/BCH.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">BCH</span></td>
                      <td> Bitcoin Cash</td>
+                     <td class="text-center">{{data.ticker['bch_usd'] | format_usd}}</td>
                      <td style="text-align:center">
                         <button class="btn btn-default btn-deposit button--deposit" data-coin="BCH" data-content="btc-action">Deposit</button>                                
                      </td>
@@ -155,6 +160,7 @@
                      <td>
                      <img src="/static/img/USDT.png" width="40" style="margin-right: 10px;"><span class="span-coin-name">USDT</span></td>
                      <td> Tether</td>
+                     <td class="text-center">1.00</td>
                      <td style="text-align:center">
                         <button class="btn btn-default btn-deposit button--deposit" data-coin="USDT" data-content="btc-action">Deposit</button>                                
                      </td>

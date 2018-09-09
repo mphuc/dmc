@@ -83,3 +83,25 @@ def generations_bonus():
         'list_notifications' : list_notifications
 	}
 	return render_template('account/generations_bonus.html', data=data)
+
+@history_ctrl.route('/total-income', methods=['GET', 'POST'])
+def total_income():
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
+	uid = session.get('uid')
+	print uid
+	query = db.investments.find({'$and' : [{'status_income' : 1},{'uid': uid}]})
+	
+
+	user = db.users.find_one({'customer_id': uid})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	number_notifications = list_notifications.count()
+	data ={
+		'history' : query,
+		'title': 'History',
+		'menu' : 'history',
+		'user': user,
+		'number_notifications' : number_notifications,
+        'list_notifications' : list_notifications
+	}
+	return render_template('account/total_income.html', data=data)

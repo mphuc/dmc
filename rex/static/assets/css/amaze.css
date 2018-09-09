@@ -8405,13 +8405,13 @@ input.ct-danger + span + label + span.switch-right {
 
   .sidebar,
   .off-canvas-sidebar {
-    position: fixed;
+   position: fixed;
     display: block;
     top: 0;
     height: 100%;
     width: 230px;
-    right: 0;
-    left: auto;
+    left: 0;
+    right: auto;
     z-index: 1032;
     visibility: visible;
     background-color: #9A9A9A;
@@ -8420,11 +8420,11 @@ input.ct-danger + span + label + span.switch-right {
     text-align: left;
     padding-right: 0px;
     padding-left: 0;
-    -webkit-transform: translate3d(230px, 0, 0);
-    -moz-transform: translate3d(230px, 0, 0);
-    -o-transform: translate3d(230px, 0, 0);
-    -ms-transform: translate3d(230px, 0, 0);
-    transform: translate3d(230px, 0, 0);
+    -webkit-transform: translate3d(-230px, 0, 0);
+    -moz-transform: translate3d(-230px, 0, 0);
+    -o-transform: translate3d(-230px, 0, 0);
+    -ms-transform: translate3d(-230px, 0, 0);
+    transform: translate3d(-230px, 0, 0);
     -webkit-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
@@ -8550,11 +8550,11 @@ input.ct-danger + span + label + span.switch-right {
 
   .nav-open .wrapper {
     left: 0;
-    -webkit-transform: translate3d(-230px, 0, 0);
-    -moz-transform: translate3d(-230px, 0, 0);
-    -o-transform: translate3d(-230px, 0, 0);
-    -ms-transform: translate3d(-230px, 0, 0);
-    transform: translate3d(-230px, 0, 0); }
+    -webkit-transform: translate3d(230px, 0, 0);
+    -moz-transform: translate3d(230px, 0, 0);
+    -o-transform: translate3d(230px, 0, 0);
+    -ms-transform: translate3d(230px, 0, 0);
+    transform: translate3d(230px, 0, 0); }
 
   .navbar-toggle .icon-bar {
     display: block;
@@ -8571,7 +8571,9 @@ input.ct-danger + span + label + span.switch-right {
   .navbar-header .navbar-toggle {
     margin: 17px 15px 17px 0;
     width: 40px;
-    height: 40px; }
+    height: 40px; 
+    float: left;
+  }
 
   .bar1,
   .bar2,

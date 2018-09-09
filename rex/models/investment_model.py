@@ -21,7 +21,10 @@ class Investment(Document):
         'upgrade' : int,
         'coin_amount' : float,
         'date_upgrade' : datetime.datetime,
-        'reinvest' : int
+        'reinvest' : int,
+        'total_income' : float,
+        'status_income' : int,
+        'date_income' : datetime.datetime
     }
     default_values = {
         'date_added': datetime.datetime.utcnow()

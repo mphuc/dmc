@@ -62,11 +62,15 @@ def homedeposit():
 			
 		deposit = db.deposits.find({'uid': uid})
 		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
-		number_notifications = list_notifications.count()			
+		number_notifications = list_notifications.count()	
+
+		ticker = db.tickers.find_one({})
+
 		data ={
 			'user': user,
 			'menu' : 'wallet',
 			'float' : float,
+			'ticker' : ticker,
 			'deposit' : deposit,
 			'number_notifications' : number_notifications,
         	'list_notifications' : list_notifications

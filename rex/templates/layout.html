@@ -149,6 +149,9 @@
               } );
           } ).draw();
 
+         
+
+
          var datatables_referrals1 = $('.datatables_referrals1').DataTable( {
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
@@ -286,6 +289,25 @@
               } );
           } ).draw();
 
+
+         var datatables_income = $('.datatables_income').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                
+            },
+            "order": [[ 1, "desc" ]],
+            responsive: true
+        });
+
+         datatables_income.on( 'order.dt search.dt', function () {
+              datatables_income.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
+
+
+         
       </script>
    </body>
 </html>

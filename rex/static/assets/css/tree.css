@@ -732,10 +732,13 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree {
     width: 100%;
-    height: 722px;
-    margin-top: 60px
+    height: 922px;
+    margin-top: -160px;
+    padding-top: 250px;
    /* position: absolute;*/
     overflow-x: scroll;
+    position: relative;
+    z-index: 99999999999;
 }
 .personal_contain {
     padding: 0 35px 35px

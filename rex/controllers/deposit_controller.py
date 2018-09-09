@@ -57,7 +57,8 @@ def check_active_investment(uid):
 
 @deposit_ctrl.route('/investment-lists', methods=['GET', 'POST'])
 def deposit():
-    
+
+
     if session.get(u'logged_in') is None:
         return redirect('/user/login')
     uid = session.get('uid')
@@ -403,7 +404,10 @@ def ReinvestInvestmentSumit(package):
                 'amount_frofit' : 0,
                 'coin_amount' : coin_amount,
                 'date_upgrade' : '',
-                'reinvest' : 0
+                'reinvest' : 0,
+                'total_income' : '',
+                'status_income' : 0,
+                'date_income' : ''
             }
             db.investments.insert(data_investment)
 
@@ -593,7 +597,10 @@ def ActiveInvestmentSumit(package):
                 'amount_frofit' : 0,
                 'coin_amount' : coin_amount,
                 'date_upgrade' : '',
-                'reinvest' : 0
+                'reinvest' : 0,
+                'total_income' : '',
+                'status_income' : 0,
+                'date_income' : ''
             }
             db.investments.insert(data_investment)
             #send_mail_active_package(user['email'],user['username'],float(amount_package) - 10)
@@ -697,7 +704,7 @@ def get_receive_program_package(user_id,amount):
 
         investment = db.investments.find_one({'$and' :[{'status' : 1},{"uid" : user_id }]} )
         if investment is not None:
-            db.investments.update({'_id': ObjectId(investment['_id'])},{'$set' : {'reinvest' : 1}})
+            db.investments.update({'_id': ObjectId(investment['_id'])},{'$set' : {'reinvest' : 1,'total_income' : float(max_receive),'status_income' : 1,'date_income' : datetime.utcnow()}})
     else:
         amount_receve = amount
     customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])
@@ -892,6 +899,21 @@ def FnRefferalProgram(user_id, amount_invest):
                                     db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 'g_wallet' :new_g_wallet } })
                                     detail = 'Get '+str(percent)+' '+"""%"""+' from F%s floor generations bonus from member %s investment $%s' %(i,username_invest, amount_invest)
                                     SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'generations', 'USD', detail, '', '')
+                        else:
+                            if binary_left(customers['customer_id']) == 1 and binary_right(customers['customer_id']) == 1:
+                                if int(i) == 1:
+                                    detail = 'Member %s investment $%s. Max out package' %(username_invest, amount_invest)
+                                    SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'referral', 'USD', detail, '', '')
+                                else:
+                                    detail = 'F%s member %s investment $%s. Max out package' %(i,username_invest, amount_invest)
+                                    SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'generations', 'USD', detail, '', '')
+                    else:
+                        if int(i) == 1:
+                            detail = 'Member %s investment $%s. Max out day' %(username_invest, amount_invest)
+                            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'referral', 'USD', detail, '', '')
+                        else:
+                            detail = 'F%s member %s investment $%s. Max out day' %(i,username_invest, amount_invest)
+                            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'generations', 'USD', detail, '', '')
         else:
             break
   

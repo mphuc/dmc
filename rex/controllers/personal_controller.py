@@ -64,7 +64,7 @@ def reduceTree (user):
         
         "leftPD":format_usd(user['total_pd_left']),
         "rightPD":format_usd(user['total_pd_right']),
-        "totalPD":format_usd(user['total_invest']),
+        "totalPD":format_usd(user['investment']),
         "sponsor":user_sponser,
         "empty":False,
         "iconCls":"level2",
@@ -100,7 +100,7 @@ def children_tree (json):
             "level_user":"Null",
             "leftPD":format_usd(user_p_left['total_pd_left']),
             "rightPD":format_usd(user_p_left['total_pd_right']),
-            "totalPD":format_usd(user_p_left['total_invest']),
+            "totalPD":format_usd(user_p_left['investment']),
             "sponsor":user_sponser_left['username'],
             "empty":False,
             "iconCls":"level2 left",
@@ -142,7 +142,7 @@ def children_tree (json):
             "level_user":"Null",
             "leftPD":format_usd(user_p_right['total_pd_left']),
             "rightPD":format_usd(user_p_right['total_pd_right']),
-            "totalPD":format_usd(user_p_right['total_invest']),
+            "totalPD":format_usd(user_p_right['investment']),
             "sponsor":user_sponser_right['username'],
             "empty":False,
             "iconCls":"level2 right",
@@ -452,7 +452,7 @@ def reduceTree_ico(user):
     children_tree_ico(tree)
     return json
 def children_tree_ico(json):
-    customer = db.users.find({'p_node': json['id']}, {'username':1, 'total_invest': 1, 'customer_id': 1, 'level': 1})
+    customer = db.users.find({'p_node': json['id']}, {'username':1, 'investment': 1, 'customer_id': 1, 'level': 1})
     if customer:
         for x in customer:
             checkF1 = db.users.find({'p_node': str(x['customer_id'])}).count()
@@ -476,7 +476,7 @@ def children_tree_ico(json):
         json['children']=0
     return json
 def renderJson_ico(uid):
-    user = db.users.find_one({'customer_id': uid}, {'username': 1, 'total_invest':1, 'customer_id': 1, 'level': 1})
+    user = db.users.find_one({'customer_id': uid}, {'username': 1, 'investment':1, 'customer_id': 1, 'level': 1})
     return reduceTree_ico(user)
 @personal_ctrl.route('/json_tree_ico/<uid>', methods=['GET', 'POST'])
 def json_tree_ico(uid):
