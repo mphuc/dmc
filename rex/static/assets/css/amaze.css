@@ -11867,3 +11867,23 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: -3px;
   margin-right: 5px;
 }
+.wallet_item{
+
+}
+.wallet_item .item{
+  background: #fff;
+  min-height: 70px;
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.wallet_item .item h4{
+  font-size: 32px;
+}
+.nopadding-left{
+  padding-left: 0px;
+}
+.nopadding-right{
+  padding-right: 0px;
+}

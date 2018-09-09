@@ -65,81 +65,40 @@
    </div>
 </div>
 
-<div class="row panel-body">
-    <div class="col-lg-6 col-sm-6 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none;">
-         <div class="card-header" style="border-bottom:0px">
-            DMCC Bonus        
-         </div>
-         <div class="card-body">
-            <div class="box blue-2 p-10-20">
-               <p></p>
-               <span style="font-size:26px;">{{data.user['coin_wallet'] | format_usds}}</span>
-               <p></p>
-               
-            </div>
-         </div>
-      </div>
-      <!-- End item !-->
-   </div>
 
-   <div class="col-lg-6 col-sm-6 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none; cursor: pointer;" onclick="window.location.href='/account/withdraw'">
-         <div class="card-header" style="border-bottom:0px;">
-            Wallet     
-         </div>
-         <div class="card-body">
-            <div class="half pull-left l-s-t-30">
-               <!-- BOX -->
-               <div class="box blue-1">
-                  <p></p>
-                  <span style="font-size:26px;">${{data.user['balance_wallet'] | format_usd}}</span>
-                  <p></p>
-               </div>
-               <!-- /BOX -->
-            </div>
-         </div>
+
+<div class="row wallet_item">
+   <div class="col-md-6 nopadding-left">
+      <div class="item">
+       <h4>DMCC </h4>
+       <span style="font-size:26px;">{{data.user['coin_wallet'] | format_usds}}</span>
       </div>
    </div>
-   <div class="col-lg-6 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none;cursor: pointer; min-height:176px" onclick="window.location.href='/account/investment-history'">
-         <div class="card-header" style="border-bottom:0px">
-            Total Investment        
-         </div>
-         <div class="card-body">
-            <div class="half pull-left l-s-t-30">
-               <!-- BOX -->
-               <div class="box blue-1">
-                  <p></p>
-                  <span style="font-size:26px;">${{data.user['investment'] | format_usd}}</span>
-                  <p></p>
-               </div>
-               <!-- /BOX -->
-            </div>
-         </div>
+   <div class="col-md-6 nopaddingiright" onclick="window.location.href='/account/withdraw'">
+       <div class="item">
+          <h4>Wallet </h4>
+          <span style="font-size:26px;">${{data.user['balance_wallet'] | format_usd}}</span>
       </div>
    </div>
 
-   <div class="col-lg-6 nopadding">
-      <div class="card" style="margin-bottom:0px; background:none;  cursor: pointer; min-height:176px" onclick="window.location.href='/account/total-income'">
-         <div class="card-header" style="border-bottom:0px;">
-            Total Income      
-         </div>
-         <div class="card-body">
-            <div class="half pull-left l-s-t-30">
-               <!-- BOX -->
-               <div class="box blue-1">
-                  <p></p>
-                  <span style="font-size:26px;">${{data.user['total_earn'] | format_usd}}</span>
-                  <p style="font-size:20px;color: #fff">Profit Statitics {{data.Profit_Statitics}}%</p>
-                  
-               </div>
-               <!-- /BOX -->
-            </div>
-         </div>
+   <div class="col-md-6 nopadding-left" onclick="window.location.href='/account/investment-history'" >
+      <div class="item" style="min-height: 143px;">
+       <h4>Total Investment</h4>
+       <span style="font-size:26px;">${{data.user['investment'] | format_usd}}</span>
       </div>
    </div>
-   <!-- End item !-->
+   <div class="col-md-6 nopaddingiright" onclick="window.location.href='/account/total-income'">
+       <div class="item">
+          <h4>Total Income  </h4>
+          <span style="font-size:26px;">${{data.user['total_earn'] | format_usd}}</span>
+          <p style="font-size:20px;">Profit Statitics {{data.Profit_Statitics}}%</p>
+      </div>
+   </div>
+</div>
+
+
+<div class="row panel-body" style="margin-top: 20px">
+   
    <div class="col-lg-3 nopadding">
       <div class="card" style="margin-bottom:0px; background:none;cursor: pointer" onclick="window.location.href='/account/daily-income-history'">
          <div class="card-header" style="border-bottom:0px">
