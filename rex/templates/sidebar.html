@@ -17,7 +17,7 @@
   </div>
     {% if data.user['level'] > 0 %}
       <div class="text-center">
-        <img src="/static/img/level/{{data.user['level']}}.png" alt="" style=" width: 95px; margin: 5px auto">
+        <img src="/static/img/level/{{data.user['level'] | format_int}}.png" alt="" style=" width: 95px; margin: 5px auto">
       </div>
     {% endif %}
       <ul class="nav">
