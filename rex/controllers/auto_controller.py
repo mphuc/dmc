@@ -333,35 +333,35 @@ def caculator_binary(ids):
                     commission = round(commission,2)
                     check_max_out_day = get_receive_program_day(x['customer_id'],commission)
 
-                    check_max_out_package = get_receive_program_package(x['customer_id'],commission)
-                    
-                    if float(check_max_out_day) > 0  and float(check_max_out_package) > 0:
-                        if float(check_max_out_day) > float(check_max_out_package):
-                            commission = float(check_max_out_package)
-                        else:
-                            commission = float(check_max_out_day)
+                    if float(check_max_out_day) > 0:
+                        check_max_out_package = get_receive_program_package(x['customer_id'],commission)
+                        if float(check_max_out_package) > 0:
+                            if float(check_max_out_day) > float(check_max_out_package):
+                                commission = float(check_max_out_package)
+                            else:
+                                commission = float(check_max_out_day)
 
 
-                        #update balance
-                        customers = db.users.find_one({'customer_id': x['customer_id']})
+                            #update balance
+                            customers = db.users.find_one({'customer_id': x['customer_id']})
 
-                        s_wallet = float(customers['s_wallet'])
-                        new_s_wallet = float(s_wallet) + float(commission)
-                        new_s_wallet = float(new_s_wallet)
+                            s_wallet = float(customers['s_wallet'])
+                            new_s_wallet = float(s_wallet) + float(commission)
+                            new_s_wallet = float(new_s_wallet)
 
-                        total_earn = float(customers['total_earn'])
-                        new_total_earn = float(total_earn) + float(commission)
-                        new_total_earn = float(new_total_earn)
+                            total_earn = float(customers['total_earn'])
+                            new_total_earn = float(total_earn) + float(commission)
+                            new_total_earn = float(new_total_earn)
 
-                        balance_wallet = float(customers['balance_wallet'])
-                        new_balance_wallet = float(balance_wallet) + float(commission)
-                        new_balance_wallet = float(new_balance_wallet)
+                            balance_wallet = float(customers['balance_wallet'])
+                            new_balance_wallet = float(balance_wallet) + float(commission)
+                            new_balance_wallet = float(new_balance_wallet)
 
-                        db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 's_wallet' :new_s_wallet } })
-                        detail = 'Get '+str(percent)+' '+"""%"""+' Binary bonus from weak branches $%s' %(balanced)
-                        SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'binarybonus', 'USD', detail, '', '')
+                            db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 's_wallet' :new_s_wallet } })
+                            detail = 'Get '+str(percent)+' '+"""%"""+' Binary bonus from weak branches $%s' %(balanced)
+                            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'binarybonus', 'USD', detail, '', '')
 
-                    #save history
+                        #save history
         return json.dumps({'status' : 'success'})
     else:
         return json.dumps({'status' : 'error'})

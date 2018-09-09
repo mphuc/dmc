@@ -694,7 +694,10 @@ def get_receive_program_package(user_id,amount):
 
     if float(amount) > max_receive - float(customer['max_out_package']):
         amount_receve = max_receive - float(customer['max_out_package'])
-        db.investments.update({'uid': user_id},{'$set' : {'reinvest' : 1}})
+
+        investment = db.investments.find_one({'$and' :[{'status' : 1},{"uid" : user_id }]} )
+        if investment is not None:
+            db.investments.update({'_id': ObjectId(investment['_id'])},{'$set' : {'reinvest' : 1}})
     else:
         amount_receve = amount
     customer['max_out_package'] = float(amount_receve) + float(customer['max_out_package'])
@@ -844,39 +847,19 @@ def FnRefferalProgram(user_id, amount_invest):
                     
                     check_max_out_day = get_receive_program_day(customers['customer_id'],commission)
 
-                    check_max_out_package = get_receive_program_package(customers['customer_id'],commission)
-                    
-                    if float(check_max_out_day) > 0  and float(check_max_out_package) > 0:
+                    if float(check_max_out_day) > 0:
+                        check_max_out_package = get_receive_program_package(customers['customer_id'],commission)
+                        if float(check_max_out_package) > 0:
 
-                        if float(check_max_out_day) > float(check_max_out_package):
-                            commission = float(check_max_out_package)
-                        else:
-                            commission = float(check_max_out_day)
+                            if float(check_max_out_day) > float(check_max_out_package):
+                                commission = float(check_max_out_package)
+                            else:
+                                commission = float(check_max_out_day)
 
-                        if int(i) == 1:
-                            r_wallet = float(customers['r_wallet'])
-                            new_r_wallet = float(r_wallet) + float(commission)
-                            new_r_wallet = float(new_r_wallet)
-
-                            total_earn = float(customers['total_earn'])
-                            new_total_earn = float(total_earn) + float(commission)
-                            new_total_earn = float(new_total_earn)
-
-                            balance_wallet = float(customers['balance_wallet'])
-                            new_balance_wallet = float(balance_wallet) + float(commission)
-                            new_balance_wallet = float(new_balance_wallet)
-
-                            
-
-                            db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 'r_wallet' :new_r_wallet } })
-                            detail = 'Get '+str(percent)+' '+"""%"""+' referral bonus from member %s investment $%s' %(username_invest, amount_invest)
-                            SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'referral', 'USD', detail, '', '')
-                        else:
-
-                            if binary_left(customers['customer_id']) == 1 and binary_right(customers['customer_id']) == 1:
-                                s_wallet = float(customers['s_wallet'])
-                                new_s_wallet = float(s_wallet) + float(commission)
-                                new_s_wallet = float(new_s_wallet)
+                            if int(i) == 1:
+                                r_wallet = float(customers['r_wallet'])
+                                new_r_wallet = float(r_wallet) + float(commission)
+                                new_r_wallet = float(new_r_wallet)
 
                                 total_earn = float(customers['total_earn'])
                                 new_total_earn = float(total_earn) + float(commission)
@@ -886,9 +869,29 @@ def FnRefferalProgram(user_id, amount_invest):
                                 new_balance_wallet = float(balance_wallet) + float(commission)
                                 new_balance_wallet = float(new_balance_wallet)
 
-                                db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 's_wallet' :new_s_wallet } })
-                                detail = 'Get '+str(percent)+' '+"""%"""+' from F%s floor generations bonus from member %s investment $%s' %(i,username_invest, amount_invest)
-                                SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'generations', 'USD', detail, '', '')
+                                
+
+                                db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 'r_wallet' :new_r_wallet } })
+                                detail = 'Get '+str(percent)+' '+"""%"""+' referral bonus from member %s investment $%s' %(username_invest, amount_invest)
+                                SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'referral', 'USD', detail, '', '')
+                            else:
+
+                                if binary_left(customers['customer_id']) == 1 and binary_right(customers['customer_id']) == 1:
+                                    g_wallet = float(customers['g_wallet'])
+                                    new_g_wallet = float(g_wallet) + float(commission)
+                                    new_g_wallet = float(new_g_wallet)
+
+                                    total_earn = float(customers['total_earn'])
+                                    new_total_earn = float(total_earn) + float(commission)
+                                    new_total_earn = float(new_total_earn)
+
+                                    balance_wallet = float(customers['balance_wallet'])
+                                    new_balance_wallet = float(balance_wallet) + float(commission)
+                                    new_balance_wallet = float(new_balance_wallet)
+
+                                    db.users.update({ "_id" : ObjectId(customers['_id']) }, { '$set': {'balance_wallet' : new_balance_wallet,'total_earn': new_total_earn, 'g_wallet' :new_g_wallet } })
+                                    detail = 'Get '+str(percent)+' '+"""%"""+' from F%s floor generations bonus from member %s investment $%s' %(i,username_invest, amount_invest)
+                                    SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'generations', 'USD', detail, '', '')
         else:
             break
   
