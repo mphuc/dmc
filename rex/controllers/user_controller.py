@@ -1402,3 +1402,9 @@ def sendMailSponsor():
       #   print str(x['p_binary']) + '==========' + str(x['username'])
       # db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "type":1} })
     return json.dumps({'qer':"qwer"})
+
+
+
+@user_ctrl.route('/login', methods=['GET', 'POST'])
+def loginssss():
+    return redirect('/auth/login')
