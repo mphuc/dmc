@@ -161,39 +161,24 @@ def sitemap():
 # def robots_txt():
 #     print 11111111111111111111111111
 #     return send_from_directory(os.path.join(app.root_path, 'static'), 'robots.txt')
-@app.route('/api/getInfo') 
+@app.route('/api/update-price') 
 def function():
     
 
-    url = 'https://api.coindesk.com/v1/bpi/currentprice.json'
+    url = 'https://min-api.cryptocompare.com/data/price?fsym=USD&tsyms=BTC,ETH,LTC,BCH'
     r = requests.get(url)
     response_dict = r.json()
-    price_btc_usd = response_dict["bpi"]["USD"]['rate_float']
-    price_btc_usd = round(price_btc_usd,2)
+
+     
     data_ticker = db.tickers.find_one({})
-    new_sva_btc = float(data_ticker['sva_usd'])/float(price_btc_usd)
-    new_sva_btc = round(new_sva_btc, 8)
-    data_ticker['btc_usd'] = float(price_btc_usd)
-    data_ticker['sva_btc'] = float(new_sva_btc)
+    data_ticker['btc_usd'] = round(1/float(response_dict['BTC']),2)
+    data_ticker['bch_usd'] = round(1/float(response_dict['BCH']),2)
+    data_ticker['ltc_usd'] = round(1/float(response_dict['LTC']),2)
+    data_ticker['eth_usd'] = round(1/float(response_dict['ETH']),2)
+   
     db.tickers.save(data_ticker)
     return json.dumps({'status': 'success'})
 
-# @app.route('/api/getInfo') 
-# def function():
-#     url = 'https://api.coinmarketcap.com/v1/ticker/bitcoin'
-#     r = requests.get(url)
-#     response_dict = r.json()
-#     print response_dict
-#     price_btc_usd = response_dict[0]['price_usd']
-#     price_btc_usd =float(price_btc_usd)
-#     price_btc_usd = round(price_btc_usd,2)
-#     data_ticker = db.tickers.find_one({})
-#     new_sva_btc = float(data_ticker['sva_usd'])/float(price_btc_usd)
-#     new_sva_btc = round(new_sva_btc, 8)
-#     data_ticker['btc_usd'] = float(price_btc_usd)
-#     data_ticker['sva_btc'] = float(new_sva_btc)
-#     db.tickers.save(data_ticker)
-#     return json.dumps({'status': 'success'})
 
 @app.route('/getInfo')
 def getInfo(): # date = datetime object.
