@@ -144,14 +144,15 @@
                         <td>{{ item.from }}</td>
                         <td>{{ item.to }}</td>
                         <td class="text-center">
-                        {% if item.type == "send" %}
+                        {% if item.type == "receive" %}
                            {{item.amount | format_usd }}
                         {% endif %}
                         </td>
                         <td class="text-center">
-                        {% if item.type == "receive" %}
+                        {% if item.type == "send" %}
                            {{item.amount | format_usd }}
                         {% endif %}
+                        
                         </td>
                         <td class="text-center">
                            <label style="color:green">Success</label>
