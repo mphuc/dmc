@@ -28,22 +28,14 @@ import urllib2
 import base64
 import onetimepass
 import sys
-import nexmo
+
 import requests
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 sys.setrecursionlimit(10000)
 digits58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 
-# client_phone = nexmo.Client(key='bdb3da34', secret='248d0239989cff29')
-# check_num_phone = client_phone.get_standard_number_insight(number='+84949537053')
-# print(asdasdasd)
-# testq = client_phone.send_message({
-#     'from': 'World Trader',
-#     'to': '+84962657798',
-#     'text': 'Your World Trader verification code is '
-# })
-# print(testq)
+
 
 
 
