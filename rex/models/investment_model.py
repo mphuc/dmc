@@ -24,7 +24,8 @@ class Investment(Document):
         'reinvest' : int,
         'total_income' : float,
         'status_income' : int,
-        'date_income' : datetime.datetime
+        'date_income' : datetime.datetime,
+        'date_profit' : datetime.datetime
     }
     default_values = {
         'date_added': datetime.datetime.utcnow()

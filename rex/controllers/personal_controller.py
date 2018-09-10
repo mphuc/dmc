@@ -249,7 +249,7 @@ def countBinary():
         'customer_id' : uid,
         'count_left' : count_left,
         'count_right': count_right,
-        'username' : user.username
+        'username' : user['username']
         }
         db.trees.insert(data_tree)
         values = {

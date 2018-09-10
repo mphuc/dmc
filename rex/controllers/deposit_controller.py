@@ -407,7 +407,8 @@ def ReinvestInvestmentSumit(package):
                 'reinvest' : 0,
                 'total_income' : '',
                 'status_income' : 0,
-                'date_income' : ''
+                'date_income' : '',
+                'date_profit' : datetime.utcnow() + timedelta(days=3)
             }
             db.investments.insert(data_investment)
 
@@ -600,7 +601,8 @@ def ActiveInvestmentSumit(package):
                 'reinvest' : 0,
                 'total_income' : '',
                 'status_income' : 0,
-                'date_income' : ''
+                'date_income' : '',
+                'date_profit' : datetime.utcnow() + timedelta(days=3)
             }
             db.investments.insert(data_investment)
             #send_mail_active_package(user['email'],user['username'],float(amount_package) - 10)
@@ -678,6 +680,9 @@ def SaveHistory(uid, user_id, username, amount, types, wallet, detail, rate, txt
 def get_receive_program_package(user_id,amount):
     customer = db.users.find_one({"customer_id" : user_id })
     
+
+    if customer['level'] == 1:
+       max_receive = 0
     if customer['level'] == 2:
        max_receive = 1250 
     if customer['level'] == 3:
@@ -714,6 +719,8 @@ def get_receive_program_package(user_id,amount):
 def get_receive_program_day(user_id,amount):
     customer = db.users.find_one({"customer_id" : user_id })
     
+    if customer['level'] == 1:
+        max_receive = 0
     if customer['level'] == 2:
        max_receive = 500 
     if customer['level'] == 3:
@@ -848,7 +855,7 @@ def FnRefferalProgram(user_id, amount_invest):
                     percent = 1
                 if  int(i) > 4:   
                     percent = 0.5
-                if int(customers['level']) > 0:
+                if int(customers['level']) > 1:
                     commission = float(amount_invest)*percent/100
                     commission = round(commission,2)
                     
