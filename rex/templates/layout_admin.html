@@ -146,7 +146,7 @@
                         return intVal(a) + intVal(b);
                     }, 0 );
                 $( api.column( 4 ).footer() ).html(
-                    '$'+pageTotal +' ($'+ total +')'
+                    '$'+formatNumber(pageTotal) +' ($'+ formatNumber(total) +')'
                 );
             },
             "order": [[ 1, "desc" ]],
@@ -182,7 +182,7 @@
                         return intVal(a) + intVal(b);
                     }, 0 );
                 $( api.column( 3 ).footer() ).html(
-                    ''+pageTotal +' ('+ total +')'
+                    ''+formatNumber(pageTotal) +' ('+ formatNumber(total) +')'
                 );
             },
             "order": [[ 1, "desc" ]],
@@ -221,7 +221,7 @@
                         return intVal(a) + intVal(b);
                     }, 0 );
                 $( api.column( 2 ).footer() ).html(
-                    ''+pageTotal +' ('+ total +')'
+                    ''+formatNumber(pageTotal) +' ('+ formatNumber(total) +')'
                 );
             },
         });
@@ -250,7 +250,7 @@
                         return intVal(a) + intVal(b);
                     }, 0 );
                 $( api.column( 2 ).footer() ).html(
-                    ''+pageTotal +' ('+ total +')'
+                    ''+formatNumber(pageTotal) +' ('+ formatNumber(total) +')'
                 );
             },
         });
@@ -272,7 +272,7 @@
                     }, 0 );
                 
                 $( api.column( 4 ).footer() ).html(
-                    '$ '+total
+                    '$ '+formatNumber(total)
                 );
             },
             "order": [[ 1, "desc" ]],
@@ -309,7 +309,7 @@
                         return intVal(a) + intVal(b);
                     }, 0 );
                 $( api.column( 4 ).footer() ).html(
-                    ''+pageTotal +' ('+ total +')'
+                    ''+formatNumber(pageTotal) +' ('+ formatNumber(total) +')'
                 );
             },
             "order": [[ 0, "desc" ]],
@@ -369,10 +369,10 @@
                     }, 0 );
                 
                 $( api.column( 4 ).footer() ).html(
-                    '$ '+total
+                    '$ '+ formatNumber(total)
                 );
                 $( api.column( 5 ).footer() ).html(
-                    '$ '+totals
+                    '$ '+ formatNumber(totals)
                 );
             },
             "order": [[ 1, "desc" ]],
@@ -424,7 +424,11 @@
         $('.table_transfer .date-range-filter').change(function() {
           datatables_transfer.draw();
         });
+
         
+        function formatNumber (num) {
+            return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+        }
         
             
         
