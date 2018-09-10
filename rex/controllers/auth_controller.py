@@ -66,7 +66,7 @@ def test_sendmail():
     mailServer.login(username, password)
     mailServer.sendmail(sender, recipient, msg.as_string())
     mailServer.close()
-
+    return True
 
 @auth_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
@@ -313,7 +313,7 @@ def create_user(sponsor,username,country,email,password):
   customer = db.users.insert(datas)
 
   #send_mail_register(customer_id,username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
-
+  return True
 def send_mail_register(customer_id,username_user,email,country,link_active):
     username = 'info@diamondcapital.co'
     password = 'm{Q]EI+qNZmD'
@@ -361,6 +361,7 @@ def send_mail_register(customer_id,username_user,email,country,link_active):
     mailServer.login(username, password)
     mailServer.sendmail(sender, recipient, msg.as_string())
     mailServer.close()
+    return True
 
 @auth_ctrl.route('/resend-activation-email', methods=['GET', 'POST'])
 def ResendActivationEmail():
@@ -581,7 +582,7 @@ def mail_reset_pass(username_user,email,link_active):
         </p>                      
       <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
     """
-    print html
+    
     html_message = MIMEText(html, 'html')
     msg.attach(html_message)
     mailServer = smtplib.SMTP('capitalvs.net', 25) 
@@ -591,6 +592,7 @@ def mail_reset_pass(username_user,email,link_active):
     mailServer.login(username, password)
     mailServer.sendmail(sender, recipient, msg.as_string())
     mailServer.close()
+    return True
 
 @auth_ctrl.route('/reset_password', methods=['GET', 'POST'])
 def reset_passwordss():

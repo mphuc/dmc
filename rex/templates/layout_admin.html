@@ -344,7 +344,46 @@
               } );
           } ).draw();
 
+        var datatables_transfer = $('#datatables_transfer').DataTable( {
+            "footerCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+     
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                total = api
+                    .column( 4 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
 
+                totals = api
+                    .column( 5 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                
+                $( api.column( 4 ).footer() ).html(
+                    '$ '+total
+                );
+                $( api.column( 5 ).footer() ).html(
+                    '$ '+totals
+                );
+            },
+            "order": [[ 1, "desc" ]],
+            responsive: true
+        });
+
+         datatables_transfer.on( 'order.dt search.dt', function () {
+              datatables_transfer.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                  cell.innerHTML = i+1;
+              } );
+          } ).draw();
         
 
       $.fn.dataTable.ext.search.push(
@@ -382,9 +421,12 @@
         $('.table_investment .date-range-filter').change(function() {
           datatables_investment.draw();
         });
-
+        $('.table_transfer .date-range-filter').change(function() {
+          datatables_transfer.draw();
+        });
         
         
+            
         
 
         $('.card .material-datatables label').addClass('form-group');

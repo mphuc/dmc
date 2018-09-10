@@ -54,6 +54,23 @@ def ProfitDaiyly():
        
         }
     return render_template('admin/profit.html', data=data)
+
+@admin1_ctrl.route('/transfer-history', methods=['GET', 'POST'])
+def transfer_history():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    transfer = db.transfers.find({})
+    
+
+    data ={
+            'menu' : 'transfer_history',
+
+            'history': transfer
+       
+        }
+    return render_template('admin/transfer_history.html', data=data)
+
 @admin1_ctrl.route('/profit-generations', methods=['GET', 'POST'])
 def ProfitDaiylysystemgenerations():
     error = None

@@ -205,6 +205,22 @@
          </li>
      {% endif %}
 
+     {% if data.menu == 'transfer_history' %}
+        <li class="active">
+            <a href="/admin/transfer-history">
+              
+               <p>History Transfer</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/admin/transfer-history">
+               
+               <p>History Transfer</p>
+            </a>
+         </li>
+     {% endif %}
+
 
       {% if data.menu == 'notifications' %}
         <li class="active">

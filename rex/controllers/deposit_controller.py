@@ -998,6 +998,7 @@ def send_mail_active_package(email,username_user,package):
     mailServer.login(username, password)
     mailServer.sendmail(sender, recipient, msg.as_string())
     mailServer.close()  
+    return True
 
 
 #send_mail_active_package('vngroup12@gmail.com','vngroup','10000')
