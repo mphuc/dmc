@@ -886,6 +886,61 @@ def createdeposit(ids):
 
         return json.dumps({'status' : 'success'})
 
+#create Withdraw
+#SELECT A.*,B.tendangnhap,B.eth_address FROM `btc_tranfer` A INNER JOIN `member` B ON A.member_id = B.id
+@auto_ctrl.route('/createwithdraw/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
+def createwithdraw(ids):
+    if ids =='RsaW3Kb1gDkdRUGDo':
+        SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+        json_url = os.path.join(SITE_ROOT, "../static", "dbwithdraw.json")
+        data_dbdeposit = json.load(open(json_url))
+
+        import datetime
+        ticker = db.tickers.find_one({})
+        for x in data_dbdeposit:
+            
+            tendangnhap = x['tendangnhap']
+            
+            datecreated = x['datecreated']
+            price = x['price']
+            status = x['status']
+            eth_address = x['eth_address']
+
+            date_added = datetime.datetime.fromtimestamp(float(datecreated)).isoformat()
+
+            date_added = date_added.split("T")
+            
+            date_added = datetime.datetime.strptime(date_added[0]+' '+date_added[1], '%Y-%m-%d %H:%M:%S')
+            
+            print 'tendangnhap: '+tendangnhap
+            print 'price: '+price
+            print date_added
+                  
+            print "----------------------------"
+
+            customer = db.users.find_one({'username' : tendangnhap.lower()})
+
+            amount_curency = round(float(price)/float(ticker['eth_usd'])*0.7,8)
+            
+            data_investment = {
+                'uid' : customer['customer_id'],
+                'user_id': customer['_id'],
+                'username' : customer['username'],
+                'amount' : price,
+                'amount_curency' : amount_curency,
+                'tx': '',
+                'status' : int(status),
+                'date_added' : date_added,
+                'wallet' : eth_address,
+                'type' : 'ETH',
+                'code_active': id_generator(15),
+                'active_email' :0,
+                'id_withdraw' : '',
+                'price' : ticker['eth_usd']
+            }
+            db.withdrawas.insert(data_investment)
+        return json.dumps({'status' : 'success'})
+
 
 def create_investdb(user,package,date_added,date_profit):
     data_investment = {

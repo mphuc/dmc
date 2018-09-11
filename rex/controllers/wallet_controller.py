@@ -36,11 +36,9 @@ __author__ = 'carlozamagni'
 
 wallet_ctrl = Blueprint('wallet', __name__, static_folder='static', template_folder='templates')
 
-#api = CoinPaymentsAPI(public_key='1ca6e12847914246762ce4a03890bbc77d59002abcc0fe1c279a4041d0977918',
- #                     private_key='9294a6f6145f014B4d9594A3336E598b63d973375418A6238c4b326D6AC4cF06')
 
-ApiCoinpayment = CoinPaymentsAPI(public_key='54b5aef2fb3118abad728aa296d058083c9930e8e2f86f1be59bbd8234c751b4',
-                          private_key='E8F61EFbd1e75cB62012a5C29B9c7Bec4Ecb2A6b8C1a0C1036F56DB350ac9978')
+ApiCoinpayment = CoinPaymentsAPI(public_key='692b1924ec5cc44b88339c89a18f6b176dd9272a180c2f9ce46c5ebb0c5e2849',
+                          private_key='65b2761366659df4d8B20539767cd3ba734A97fe498EC6dbB54039901E817D72')
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -313,7 +311,7 @@ def get_new_address():
 		user_id = session.get('user_id')
 		user = db.users.find_one({'customer_id': uid})
 			
-		url_callback = 'https://mail.google.com'
+		url_callback = 'http://62.210.84.7:58011/account/jskfkjsfhkjsdhfqwtryqweqeweqeqwe'
 
 		if request.form['type'] == 'BTC':
 			if user['btc_address'] == '':

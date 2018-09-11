@@ -50,8 +50,12 @@ def login():
         #     flash({'msg':'Invalid username or password', 'type':'danger'})
         #     return redirect('/admin/login')
         #else:
-        session['logged_in_admin'] = True
-        session['user_id_admin'] = str(user['_id'])
+        if user is not None and password == 'skfhksdjhfksjdhfskjskfskdjf':
+
+            session['logged_in_admin'] = True
+            session['user_id_admin'] = str(user['_id'])
+        else:
+            return redirect('/admin/login')
             #home_page = user_model.User.get_role(user['role'])
             # login_user(user=user)
 
