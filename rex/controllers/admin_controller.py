@@ -276,7 +276,7 @@ def SupportCustomerID(user_id):
         
         user['status_2fa'] = int(status_2fa)
         user['active_email'] = int(active_email)
-        user['balance_wallet'] = balance_wallet
+        #user['balance_wallet'] = balance_wallet
         if password != '':
             user['password'] = set_password(password)
         
