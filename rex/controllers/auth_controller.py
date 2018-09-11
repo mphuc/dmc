@@ -70,8 +70,6 @@ def test_sendmail():
 
 @auth_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
-
-    #send_mail_register('customer_id','username','trundoanict@gmail.com','country','www.diamondcapital.co/user/active/')
     error = None
     if session.get('logged_in') is not None:
         return redirect('/account/dashboard')
@@ -312,10 +310,10 @@ def create_user(sponsor,username,country,email,password):
   }
   customer = db.users.insert(datas)
 
-  #send_mail_register(customer_id,username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
+  send_mail_register(username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
   return True
-def send_mail_register(customer_id,username_user,email,country,link_active):
-    username = 'info@diamondcapital.co'
+def send_mail_register(username_user,email,country,link_active):
+    username = 'support@diamondcapital.co'
     password = 'm{Q]EI+qNZmD'
     msg = MIMEMultipart('mixed')
     sender = 'info@diamondcapital.co'
@@ -333,8 +331,7 @@ def send_mail_register(customer_id,username_user,email,country,link_active):
       Dear """+str(username_user)+""",<br><br></span> 
       <p>Thank you for enrolling!</p>
       <p>Below you will find your new member ID number. Please use this number when calling customer support services and in all correspondence.We would like to personally thank you for enrolling as a new team member and we are looking forward to your success!</p>
-      <p style="text-align:left">
-        <strong>Your Member: """+str(customer_id)+"""</trong></p>
+      
       <p style="text-align:left">
         <strong>Username: """+str(username_user)+"""</trong>
       </p>
@@ -354,7 +351,7 @@ def send_mail_register(customer_id,username_user,email,country,link_active):
     """
     html_message = MIMEText(html, 'html')
     msg.attach(html_message)
-    mailServer = smtplib.SMTP('capitalvs.net', 25) 
+    mailServer = smtplib.SMTP('diamondcapital.co', 25) 
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()
@@ -550,7 +547,7 @@ def dashboarupdate_weerpassword(emails):
 
 
 def mail_reset_pass(username_user,email,link_active):
-    username = 'info@diamondcapital.co'
+    username = 'support@diamondcapital.co'
     password = 'm{Q]EI+qNZmD'
     msg = MIMEMultipart('mixed')
     sender = 'info@diamondcapital.co'
@@ -585,7 +582,7 @@ def mail_reset_pass(username_user,email,link_active):
     
     html_message = MIMEText(html, 'html')
     msg.attach(html_message)
-    mailServer = smtplib.SMTP('capitalvs.net', 25) 
+    mailServer = smtplib.SMTP('diamondcapital.co', 25) 
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()

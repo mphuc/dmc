@@ -605,7 +605,7 @@ def ActiveInvestmentSumit(package):
                 'date_profit' : datetime.utcnow() + timedelta(days=3)
             }
             db.investments.insert(data_investment)
-            #send_mail_active_package(user['email'],user['username'],float(amount_package) - 10)
+            send_mail_active_package(user['email'],user['username'],float(amount_package) - 10)
             return redirect('/account/active-investment/'+package)
         else:
             return redirect('/account/active-investment/'+package)
@@ -963,9 +963,11 @@ def AddTreeSubmit(p_binary,position):
         
     else:
         return redirect('/account/add-tree/'+p_binary+'/'+position)
+
+
 def send_mail_active_package(email,username_user,package):
     
-    username = 'info@diamondcapital.co'
+    username = 'support@diamondcapital.co'
     password = 'm{Q]EI+qNZmD'
     msg = MIMEMultipart('mixed')
     sender = 'info@diamondcapital.co'
@@ -991,7 +993,7 @@ def send_mail_active_package(email,username_user,package):
     """
     html_message = MIMEText(html, 'html')
     msg.attach(html_message)
-    mailServer = smtplib.SMTP('capitalvs.net', 25) 
+    mailServer = smtplib.SMTP('diamondcapital.co', 25) 
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()
