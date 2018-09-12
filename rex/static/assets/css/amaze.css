@@ -11860,11 +11860,11 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0px;
 }
 .img_tree_s{
-  width: 15px;
-  margin-left: -20px;
+  width: 30px;
+  margin-left: -25px;
   background: white;
-  height: 19px !important;
-  margin-top: -3px;
+  height: 30px !important;
+  margin-top: -4px;
   margin-right: 5px;
 }
 .wallet_item{
