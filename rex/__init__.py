@@ -322,141 +322,6 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/user/uploader-avatar', methods = ['GET', 'POST'])
-def upload_file():
-    if session.get(u'logged_in') is None:
-        return redirect('/user/login')
-    uid = session.get('uid')
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            extension = os.path.splitext(file.filename)[1]
-            name = id_generator()+uid
-            f_name = str(name) + extension
-
-            user = db.User.find_one({'customer_id': uid})
-            if user.img_profile != '':
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], user.img_profile))
-
-            db.users.update({ "customer_id" : uid }, { '$set': { "img_profile": f_name } })
-
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-            flash({'msg':'Update Avatar success!', 'type':'success'})
-            return redirect('/user/setting')
-    return redirect('/user/setting')
-# ================================
-# return redirect('/maintenance')
-@app.route('/maintenance')
-def maintenance():
-    data ={
-    'menu' : 'maintenance'
-    }
-    return render_template('maintenace.html', data=data)
-@app.route('/account/exchange')
-def exchnageApp():
-    if session.get(u'logged_in') is None:
-        return redirect('/user/login')
-    else:
-        uid = session.get('uid')
-        user = db.User.find_one({'customer_id': uid})
-    data ={
-    'user': user,
-    'menu' : 'exchange'
-    }
-    return render_template('account/exchange.html', data=data)
-@app.route('/login')
-def home_pagelogin():
-    data ={
-    'menu' : 'home'
-    }
-    return redirect('auth/login')
-
-@app.route('/')
-def home_page():
-    return redirect('auth/login')
-    from datetime import datetime
-    from dateutil.relativedelta import relativedelta
-
-    # print 'Today: ',datetime.now().strftime('%d/%m/%Y %H:%M:%S') 
-    # date_after_month = datetime.now()+ relativedelta(days=1)
-    # print 'After 5 Days:', date_after_month.strftime('%d/%m/%Y %H:%M:%S')
-    data ={
-    'menu' : 'home'
-    }
-    # return redirect('/user/login')
-    return render_template('homev2/index.html', data=data)
-@app.route('/policy.html')
-def home_policy():
-    data ={
-    'menu' : 'Policy'
-    }
-    # return redirect('/user/login')
-    return render_template('homev2/policy.html', data=data)
-@app.route('/investment.html')
-def home_lending():
-    data ={
-    'menu' : 'Trade & Mining'
-    }
-    # return redirect('/user/login')
-    return render_template('homev2/investment.html', data=data)
-@app.route('/affiliate.html')
-def home_affiliate():
-    data ={
-    'menu' : 'affiliate'
-    }
-    # return redirect('/user/login')
-    return render_template('homev2/affiliate.html', data=data)
-@app.route('/help.html')
-def home_roadmap():
-    data ={
-    'menu' : 'roadmap'
-    }
-    # return redirect('/user/login')
-    return render_template('homev2/help.html', data=data)
-@app.route('/faq.html')
-def home_ico():
-    data ={
-    'menu' : 'ico'
-    }
-    # return redirect('/user/login')
-    return render_template('homev2/faq.html', data=data)
-
-@app.route('/news.html')
-def home_news():
-    data ={
-    'menu' : 'news'
-    }
-    return render_template('homev2/news.html', data=data)
-
-@app.route('/faq-all-question')
-def home_adfpage():
-    data ={
-    'menu' : 'faq'
-    }
-    # return redirect('/user/login')
-    return render_template('home/faq-all-question.html', data=data)
-@app.route('/about-us')
-def about_us():
-    data ={
-    'menu' : 'home'
-    }
-    return redirect('/user/login')
-    return render_template('home/about-two.html', data=data)
-@app.route('/buy-bitcoin')
-def buy_bitcoin():
-    data ={
-    'menu' : 'home'
-    }
-    return redirect('/user/login')
-    return render_template('home/buy-bitcoin.html', data=data)
-
-@app.route('/contact')
-def contact_us():
-    data ={
-    'menu' : 'home'
-    }
-    return redirect('/user/login')
-    return render_template('home/contact-style-2.html', data=data)
 def set_password(password):
     return generate_password_hash(password)
 @app.route('/setup')
@@ -556,40 +421,66 @@ def setup():
    
 
 
-@socketio.on('getInfo', namespace='/SmartFVA')
-def test_message(message):
-    print('Client connect', request.sid)
-    data_ticker = db.tickers.find_one({})
-    data = {
-        'btc_usd':data_ticker['btc_usd'],
-        'sva_btc':data_ticker['sva_btc'],
-        'sva_usd':data_ticker['sva_usd']
+@app.route('/')
+def home_page():
+    data ={
+    'menu' : 'home'
     }
-    emit('my_response',data,broadcast=True)
+    return render_template('home/index.html', data=data)
 
-@socketio.on('clidisconnect')
-def disconnect_user():
-    print 'discocccccccccc================================================='
-    print('Client disconnected', request.sid)
+@app.route('/howitworks.aspx')
+def howitworks():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/howitworks.html', data=data)
 
+@app.route('/about.aspx')
+def about():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/about.html', data=data)
 
-@app.route('/getBalance')
-def homewalqwrwlet():
-    if session.get(u'logged_in') is None:
-        return json.dumps({ 'status': 'error' })
-    else:
-        uid = session.get('uid')
-        user_id = session.get('user_id')
-        user = db.User.find_one({'customer_id': uid})
-        data = {
-            'status': 'success',
-            'sva_balance': user['sva_balance'],
-            'btc_balance': user['btc_balance'],
-            'usd_balance': user['usd_balance'],
-            'total_capital_back': user['total_capital_back'],
-            'total_invest': user['total_invest'],
-            'total_earn': user['total_earn']
-
-        }
-        return json.dumps(data)
-
+@app.route('/srilanka.aspx')
+def srilanka():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/srilanka.html', data=data)
+@app.route('/singapore.aspx')
+def singapore():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/singapore.html', data=data)
+@app.route('/dubai.aspx')
+def dubai():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/dubai.html', data=data)
+@app.route('/other.aspx')
+def other():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/other.html', data=data)
+@app.route('/investment.aspx')
+def investment():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/investment.html', data=data)
+@app.route('/blog.aspx')
+def blog():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/blog.html', data=data)
+@app.route('/contact.aspx')
+def contact():
+    data ={
+    'menu' : 'home'
+    }
+    return render_template('home/contact.html', data=data)
