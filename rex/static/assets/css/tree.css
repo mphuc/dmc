@@ -163,52 +163,64 @@
     position: absolute
 }
 .leftline.linefloor2 {
-    background: url(../../img/package/left1.png) no-repeat;
+    /*background: url(../../img/package/left1.png) no-repeat;*/
     height: 37px;
     position: absolute;
     width: 210px;
-    left: -169px;
+    left: -179px;
     top: 59px;
+    border-left: 1px solid #3A94CC;
+    border-top: 1px solid #3A94CC;
 }
 .rightline.linefloor2 {
-    background: url(../../img/package/right1.png) no-repeat;
+    /*background: url(../../img/package/right1.png) no-repeat;*/
     height: 37px;
     position: absolute;
-    width: 223px;
-    right: -214px;
+    width: 212px;
+    right: -168px;
     top: 59px;
+    border-right: 1px solid #3A94CC;
+    border-top: 1px solid #3A94CC;
 }
 .leftline.linefloor3 {
-    background: url(../../img/package/left2.png) no-repeat;
+    /*background: url(../../img/package/left2.png) no-repeat;*/
     height: 35px;
     left: -81px;
     position: absolute;
     top: 59px;
-    width: 80px
+    width: 118px;
+    border-left: 1px solid #3A94CC;
+    border-top: 1px solid #3A94CC;
 }
 .rightline.linefloor3 {
-    background: url(../../img/package/right2.png) no-repeat;
+    /*background: url(../../img/package/right2.png) no-repeat;*/
         height: 35px;
     position: absolute;
-    width: 85px;
-    right: -75px;
-    top: 58px;
+    width: 118px;
+    right: -69px;
+    top: 59px;
+    border-right: 1px solid #3A94CC;
+    border-top: 1px solid #3A94CC;
 }
 .leftline.linefloor4 {
-    background: url(../../img/package/left3.png) no-repeat;
-        height: 57px;
-    left: -35px;
+    /*background: url(../../img/package/left3.png) no-repeat;*/
+     height: 57px;
+    left: -32px;
     position: absolute;
-    top: 56px;
-    width: 37px;
+    top: 60px;
+    width: 73px;
+    border-left: 1px solid #3A94CC;
+    border-top: 1px solid #3A94CC;
 }
 .rightline.linefloor4 {
-    background: url(../../img/package/right3.png) no-repeat;
-      height: 56px;
+    /*background: url(../../img/package/right3.png) no-repeat;*/
+        height: 56px;
     position: absolute;
-    width: 41px;
-    right: -25px;
-    top: 56px;
+    width: 72px;
+    right: -20px;
+    top: 60px;
+    border-right: 1px solid #3A94CC;
+    border-top: 1px solid #3A94CC;
 }
 .leftline.linefloor5,
 .leftline.linefloor6,
@@ -702,7 +714,7 @@ span.btn.btn-default.btn-tree {
 }
 .right_node.nodefloor3 {
         right: -110px;
-    top: 93px;
+    top: 92px;
 }
 .left_node.nodefloor4 {
     left: -63px;
@@ -749,7 +761,7 @@ span.btn.btn-default.btn-tree {
 
 .personal-tree .type-1 {
     background: url(../../img/package/package-1.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -757,7 +769,7 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-2 {
     background: url(../../img/package/package-2.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -765,7 +777,7 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-3 {
     background: url(../../img/package/package-3.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -773,7 +785,7 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-4 {
     background: url(../../img/package/package-4.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -781,7 +793,7 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-5 {
     background: url(../../img/package/package-5.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -789,7 +801,7 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-6 {
     background: url(../../img/package/package-6.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -797,7 +809,7 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-7 {
     background: url(../../img/package/package-7.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
     color: transparent!important;
     position: relative;
     top: -5px;
@@ -805,23 +817,23 @@ span.btn.btn-default.btn-tree {
 }
 .personal-tree .type-8 {
     background: url(../../img/package/package-8.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
 }
 .personal-tree .type-9 {
     background: url(../../img/package/package-9.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
 }
 .personal-tree .type-10 {
     background: url(../../img/package/package-10.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
 }
 .personal-tree .type-11 {
     background: url(../../img/package/package-11.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
 }
 .personal-tree .type-none {
     background: url(../../img/package/package-none.png) center center no-repeat;
-    background-size: 40px;
+    background-size: 65px;
 }
 
 .personal-tree .type-2,
@@ -838,7 +850,7 @@ a.adduser {
 }
 .personal-tree .type-add {
     background: url(../../img/package/package-0.png) center center no-repeat;
-    background-size: 40px
+    background-size: 65px
 }
 .personal-tree .none_tresss div{
     display: none;
