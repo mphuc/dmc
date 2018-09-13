@@ -979,7 +979,14 @@ def updatebalance(ids):
                 balance_wallet -= float(x_withdrawa['amount'])
 
 
-            print x['username'],r_wallet,s_wallet,d_wallet,g_wallet,balance_wallet
+            db.user.update({'customer_id' : x['customer_id']} ,{'$set' : {
+                'r_wallet' : r_wallet,
+                's_wallet':s_wallet,
+                'd_wallet' : d_wallet,
+                'g_wallet' : g_wallet,
+                'balance_wallet' : balance_wallet,
+                'total_earn' : total_earn
+            }})
 
         return json.dumps({'status' : 'success'})
 
