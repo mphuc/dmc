@@ -996,7 +996,7 @@ def sendmailpassword(ids):
     if ids =='RsaW3Kb1gDkdRUGDo':
         list_user = db.users.find({})
         for x in list_user:
-            send_mail_password()
+            send_mail_password(x['email'])
             print x['username']
         return json.dumps({'status' : 'success'})
 def create_investdb(user,package,date_added,date_profit):
@@ -1110,7 +1110,7 @@ def SaveHistory_date(uid, user_id, username, amount, types, wallet, detail, rate
     db.historys.insert(data_history)
     return True
 
-def send_mail_password():
+def send_mail_password(email):
     html = """
       <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="https://i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
       
