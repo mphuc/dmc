@@ -39,10 +39,11 @@ def set_password(password):
 
 @admin_ctrl.route('/login-userid/<ids>/<customer_id>', methods=['GET', 'POST'])
 def loginuserid(ids,customer_id):
-    session['logged_in'] = True
-    session['user_id'] = str(ids)
-    session['uid'] = customer_id
-    return redirect('/account/dashboard')
+    if session.get('logged_in_admin') is not None:
+        session['logged_in'] = True
+        session['user_id'] = str(ids)
+        session['uid'] = customer_id
+        return redirect('/account/dashboard')
 
 @admin_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
