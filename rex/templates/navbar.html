@@ -108,7 +108,7 @@
 
             <li class="dropdown" style="margin-top: 18px;">
                <a  href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <p class=""><img style="height: 45px" src="/static/img/package/package-{{data.user['level']}}.png"> {{data.user.username}} <b class="caret"></b> </p>
+                  <p class=""><img style="height: 45px" src="/static/img/package/package-{{data.user['level'] | format_int}}.png"> {{data.user.username}} <b class="caret"></b> </p>
                </a>
 
                <ul class="dropdown-menu">
