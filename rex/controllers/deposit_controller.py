@@ -951,12 +951,13 @@ def AddTreeSubmit(p_binary,position):
                 db.users.update({ "customer_id" : id_user }, { '$set': { 'p_binary': p_binary} })
         
         if check_id_user['p_binary'] == '' and float(check_id_user['investment']) > 100:
+            # mo ra
             #chay hai nhanh
-            binaryAmount(id_user, float(check_id_user['investment']))
-            #chay p_node
-            TotalnodeAmount(id_user, float(check_id_user['investment']))
-            #hoa hong truc tiep
-            FnRefferalProgram(id_user, float(check_id_user['investment']))
+            # binaryAmount(id_user, float(check_id_user['investment']))
+            # #chay p_node
+            # TotalnodeAmount(id_user, float(check_id_user['investment']))
+            # #hoa hong truc tiep
+            # FnRefferalProgram(id_user, float(check_id_user['investment']))
             
 
         return redirect('/account/network-tree')
