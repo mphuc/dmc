@@ -966,9 +966,9 @@ def updatebalance(ids):
             transfer = db.transfers.find({'uid': x['customer_id']})
             for x_transfer in transfer:
                 if  x_transfer['type'] == 'send':
-                    balance_wallet -= float(x_history['amount'])
+                    balance_wallet -= float(x_transfer['amount'])
                 else:
-                    balance_wallet += float(x_history['amount'])
+                    balance_wallet += float(x_transfer['amount'])
 
             deposit = db.deposits.find({'uid': x['customer_id']})
             for x_deposit in deposit:
