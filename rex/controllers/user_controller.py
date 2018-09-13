@@ -1198,14 +1198,12 @@ def confirm_activecode(customer_id):
 
 @user_ctrl.route('/active/<code>', methods=['GET', 'POST'])
 def confirm_user(code):
-    user = db.User.find_one({"$and" :[{'code_active': code}, {'status': 0}] })
+    user = db.User.find_one({"$and" :[{'code_active': code}, {'active_email': 0}] })
     if user is None:
-        flash({'msg':'Your account on the World Trade is active.', 'type':'success'})
         return redirect('/auth/login')
     else:
-        db.users.update({ "code_active" : code }, { '$set': { "status": 1 } })
+        db.users.update({ "code_active" : code }, { '$set': { "active_email": 1 } })
         # send_mail_confirm(user.email)
-        flash({'msg':'Congratulations, Your account on the World Trade is now registered and active.', 'type':'success'})
         return redirect('/auth/login')
 # @app.route('/<int:question_id>')
 @user_ctrl.route('/signup', methods=['GET', 'POST'])

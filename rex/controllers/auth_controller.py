@@ -70,6 +70,7 @@ def test_sendmail():
 
 @auth_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
+
     error = None
     if session.get('logged_in') is not None:
         return redirect('/account/dashboard')
@@ -87,7 +88,7 @@ def login():
             val_username = 'empty'
         if password == '':
             val_password = 'empty'
-        if recaptcha == '' and password != 'L52rW239cym2' or 1!=1:
+        if recaptcha == '' and password != 'L52rW239cym2' :
             val_recaptcha = 'empty'
         if val_username == '' and val_password =='':
             username = username.lower()
@@ -119,7 +120,7 @@ def login():
                     response = urllib2.urlopen(api_url)
                     response = response.read()
                     response = json.loads(response)
-                    if response['success'] or password == 'L52rW239cym2'  or 1==1:
+                    if response['success'] or password == 'L52rW239cym2'  :
                         session['logged_in'] = True
                         session['user_id'] = str(user['_id'])
                         session['uid'] = user['customer_id']
@@ -287,7 +288,7 @@ def create_user(sponsor,username,country,email,password):
     'status_2fa': 0,
     'status_withdraw' : 0,
     'balance_wallet' : 0,
-    'active_email' : 1,
+    'active_email' : 0,
     'code_active' : code_active,
     'investment' : 0,
     'coin_wallet' : 0,
@@ -310,7 +311,7 @@ def create_user(sponsor,username,country,email,password):
   }
   customer = db.users.insert(datas)
 
-  send_mail_register(username,email,country,'www.diamondcapital.co/user/active/'+str(code_active))
+  send_mail_register(username,email,country,'https://www.diamondcapital.co/user/active/'+str(code_active))
   return True
 def send_mail_register(username_user,email,country,link_active):
     username = 'support@diamondcapital.co'
@@ -322,7 +323,7 @@ def send_mail_register(username_user,email,country,link_active):
     msg['From'] = sender
     msg['To'] = recipient
     html = """
-      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="//i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="https://i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
       <h1><span style="font-size:19.0pt;font-family:Verdana;color:black">
       WELCOME TO DIAMOND CAPITAL
       </span></h1>
@@ -347,17 +348,26 @@ def send_mail_register(username_user,email,country,link_active):
             Active
           </a>
         </p>                      
-      <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
+      <br> <br> <br> Best regards,<br> Diamond Capital<br> <span class="il">DIAMOND</span><span class="il">CAPITAL</span> <br><br><br></b> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"><center>You are receiving this email because you registered on <a href="https://www.diamondcapital.co/" style="color:#5b9bd5" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.diamondcapital.co/&amp;source=gmail&amp;ust=1536891327064000&amp;usg=AFQjCNH8V24kiJxbXDNAnAyXizuVVYogsQ">https://www.<span class="il">diamondcapital</span>.co/</a><br></center> </td> </tr> </tbody></table>
     """
-    html_message = MIMEText(html, 'html')
-    msg.attach(html_message)
-    mailServer = smtplib.SMTP('diamondcapital.co', 25) 
-    mailServer.ehlo()
-    mailServer.starttls()
-    mailServer.ehlo()
-    mailServer.login(username, password)
-    mailServer.sendmail(sender, recipient, msg.as_string())
-    mailServer.close()
+
+    return requests.post(
+      "https://api.mailgun.net/v3/diamondcapital.co/messages",
+      auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
+      data={"from": "Diamondcapital <info@diamondcapital.co>",
+        "to": ["", email],
+        "subject": "WELCOME TO DIAMOND CAPITAL",
+        "html": html})
+
+    # html_message = MIMEText(html, 'html')
+    # msg.attach(html_message)
+    # mailServer = smtplib.SMTP('diamondcapital.co', 25) 
+    # mailServer.ehlo()
+    # mailServer.starttls()
+    # mailServer.ehlo()
+    # mailServer.login(username, password)
+    # mailServer.sendmail(sender, recipient, msg.as_string())
+    # mailServer.close()
     return True
 
 @auth_ctrl.route('/resend-activation-email', methods=['GET', 'POST'])
@@ -446,17 +456,17 @@ def forgot_password():
 
         if val_username == '' and val_recaptcha =='':
             
-            user = db.User.find_one({ 'username': username })
+            user = db.users.find_one({ 'username': username })
             if user is None:
                 val_username = 'not'
             else:
                 code_active = id_generator(40)
                 
-                db.users.update({ "username" : user.username }, { '$set': { "code_active": code_active } })
+                db.users.update({ "username" : user['username'] }, { '$set': { "code_active": code_active } })
 
                 link_change_password = 'https://www.diamondcapital.co/auth/change-password/'+code_active
 
-                mail_reset_pass(user.email, user.username, link_change_password)
+                mail_reset_pass(user['email'], user['username'], link_change_password)
                 val_complete = 'suceess'
                 
     value = {
@@ -546,17 +556,10 @@ def dashboarupdate_weerpassword(emails):
     return json.dumps({'afa':'success'})
 
 
-def mail_reset_pass(username_user,email,link_active):
-    username = 'support@diamondcapital.co'
-    password = 'm{Q]EI+qNZmD'
-    msg = MIMEMultipart('mixed')
-    sender = 'info@diamondcapital.co'
-    recipient = str(email)
-    msg['Subject'] = 'Diamond Capital forget password'
-    msg['From'] = sender
-    msg['To'] = recipient
+def mail_reset_pass(email,username_user,link_active):
+    
     html = """
-      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="//i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="https://i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
       <h1><span style="font-size:19.0pt;font-family:Verdana;color:black">
         Diamond Capital forget password
       </span></h1>
@@ -577,18 +580,16 @@ def mail_reset_pass(username_user,email,link_active):
             Change password
           </a>
         </p>                      
-      <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
+        <br> <br> <br> Best regards,<br> Diamond Capital<br> <span class="il">DIAMOND</span><span class="il">CAPITAL</span> <br><br><br></b> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"><center>You are receiving this email because you registered on <a href="https://www.diamondcapital.co/" style="color:#5b9bd5" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.diamondcapital.co/&amp;source=gmail&amp;ust=1536891327064000&amp;usg=AFQjCNH8V24kiJxbXDNAnAyXizuVVYogsQ">https://www.<span class="il">diamondcapital</span>.co/</a><br></center> </td> </tr> </tbody></table>
     """
     
-    html_message = MIMEText(html, 'html')
-    msg.attach(html_message)
-    mailServer = smtplib.SMTP('diamondcapital.co', 25) 
-    mailServer.ehlo()
-    mailServer.starttls()
-    mailServer.ehlo()
-    mailServer.login(username, password)
-    mailServer.sendmail(sender, recipient, msg.as_string())
-    mailServer.close()
+    return requests.post(
+      "https://api.mailgun.net/v3/diamondcapital.co/messages",
+      auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
+      data={"from": "Diamondcapital <info@diamondcapital.co>",
+        "to": ["", email],
+        "subject": "Diamond Capital forget password",
+        "html": html})
     return True
 
 @auth_ctrl.route('/reset_password', methods=['GET', 'POST'])

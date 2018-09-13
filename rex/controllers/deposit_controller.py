@@ -967,16 +967,9 @@ def AddTreeSubmit(p_binary,position):
 
 def send_mail_active_package(email,username_user,package):
     
-    username = 'support@diamondcapital.co'
-    password = 'm{Q]EI+qNZmD'
-    msg = MIMEMultipart('mixed')
-    sender = 'info@diamondcapital.co'
-    recipient = str(email)
-    msg['Subject'] = 'Activation of the investment package successfully'
-    msg['From'] = sender
-    msg['To'] = recipient
+    
     html = """
-      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="//i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="https://i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
       <h1><span style="font-size:19.0pt;font-family:Verdana;color:black">
       Activation of the investment package successfully
       </span></h1>
@@ -989,17 +982,24 @@ def send_mail_active_package(email,username_user,package):
         <strong>Package: $"""+str(package)+"""</trong></p>
        <br/>
        <br/>                    
-      <br> <br> <br> Best regards,<br> Diamond Capital<br> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"> </td> </tr> </tbody></table>
+       <br> <br> <br> Best regards,<br> Diamond Capital<br> <span class="il">DIAMOND</span><span class="il">CAPITAL</span> <br><br><br></b> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"><center>You are receiving this email because you registered on <a href="https://www.diamondcapital.co/" style="color:#5b9bd5" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.diamondcapital.co/&amp;source=gmail&amp;ust=1536891327064000&amp;usg=AFQjCNH8V24kiJxbXDNAnAyXizuVVYogsQ">https://www.<span class="il">diamondcapital</span>.co/</a><br></center> </td> </tr> </tbody></table>
     """
-    html_message = MIMEText(html, 'html')
-    msg.attach(html_message)
-    mailServer = smtplib.SMTP('diamondcapital.co', 25) 
-    mailServer.ehlo()
-    mailServer.starttls()
-    mailServer.ehlo()
-    mailServer.login(username, password)
-    mailServer.sendmail(sender, recipient, msg.as_string())
-    mailServer.close()  
+    # html_message = MIMEText(html, 'html')
+    # msg.attach(html_message)
+    # mailServer = smtplib.SMTP('diamondcapital.co', 25) 
+    # mailServer.ehlo()
+    # mailServer.starttls()
+    # mailServer.ehlo()
+    # mailServer.login(username, password)
+    # mailServer.sendmail(sender, recipient, msg.as_string())
+    # mailServer.close() 
+    return requests.post(
+      "https://api.mailgun.net/v3/diamondcapital.co/messages",
+      auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
+      data={"from": "Diamondcapital <info@diamondcapital.co>",
+        "to": ["", email],
+        "subject": "Activation of the investment package successfully",
+        "html": html}) 
     return True
 
 
