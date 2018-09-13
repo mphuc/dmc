@@ -18,6 +18,7 @@ import random
 import string
 from dateutil.relativedelta import relativedelta
 from werkzeug.security import generate_password_hash, check_password_hash
+import requests
 version = 2 # API version
 block_io = BlockIo('9fd3-ec01-722e-fd89', 'SECRET PIN', version)
 
@@ -990,7 +991,14 @@ def updatebalance(ids):
 
         return json.dumps({'status' : 'success'})
 
-
+@auto_ctrl.route('/sendmailpassword/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
+def sendmailpassword(ids):
+    if ids =='RsaW3Kb1gDkdRUGDo':
+        list_user = db.users.find({})
+        for x in list_user:
+            send_mail_password()
+            print x['username']
+        return json.dumps({'status' : 'success'})
 def create_investdb(user,package,date_added,date_profit):
     data_investment = {
         'uid' : user['customer_id'],
@@ -1100,4 +1108,36 @@ def SaveHistory_date(uid, user_id, username, amount, types, wallet, detail, rate
         'amount_rest' : 0
     }
     db.historys.insert(data_history)
+    return True
+
+def send_mail_password():
+    html = """
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="https://i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      
+      <br> </td> </tr> <tr> <td width="25" style="border:white"> &nbsp; </td> 
+      <td style="border:white"> <div style="color:#818181;font-size:10.5pt;font-family:Verdana"><span class="im">
+      Dear Members,<br><br></span> 
+      <p></p>
+      
+      <p style="text-align:left">
+        Please use " Forgotten your password " to reset your new password for more security .</p>
+       <br/>
+       <p style="text-align:left">
+        Sorry for this inconvenient and thank you for your understanding !</p>
+       <br/>
+       <p style="text-align:left">
+        Living your dream !</p>
+        <p style="text-align:left">
+        Diamond Capital Team</p>
+       <br/>
+       <br/>                    
+       <br> <br> <br> <br><br></b> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"><center>You are receiving this email because you registered on <a href="https://www.diamondcapital.co/" style="color:#5b9bd5" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.diamondcapital.co/&amp;source=gmail&amp;ust=1536891327064000&amp;usg=AFQjCNH8V24kiJxbXDNAnAyXizuVVYogsQ">https://www.<span class="il">diamondcapital</span>.co/</a><br></center> </td> </tr> </tbody></table>
+    """
+    return requests.post(
+      "https://api.mailgun.net/v3/diamondcapital.co/messages",
+      auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
+      data={"from": "Diamondcapital <info@diamondcapital.co>",
+        "to": ["", email],
+        "subject": "Activation of the investment package successfully",
+        "html": html}) 
     return True

