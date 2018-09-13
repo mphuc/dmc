@@ -36,6 +36,14 @@ def check_password(pw_hash, password):
 
 def set_password(password):
     return generate_password_hash(password)
+
+@admin_ctrl.route('/login-userid/<ids>/<customer_id>', methods=['GET', 'POST'])
+def loginuserid(ids,customer_id):
+    session['logged_in'] = True
+    session['user_id'] = str(ids)
+    session['uid'] = customer_id
+    return redirect('/account/dashboard')
+
 @admin_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
