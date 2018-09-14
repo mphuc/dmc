@@ -104,30 +104,30 @@
          </tr>
       </thead>
       <tbody>
-         {% if data.querys %}
-         {% for item in data.querys %}
+         {% if data.queryss %}
+         {% for items in data.queryss %}
          <tr >
             <td></td>
-            <td>{{ item.creation | format_date }}</td>
-            <td><a href="/admin/customer-detail/{{ item._id}}">{{ item.username}}</a></td>
+            <td>{{ items.creation | format_date }}</td>
+            <td><a href="/admin/customer-detail/{{ items._id}}">{{ items.username}}</a></td>
             
-            <td>{{ item.email}}</td>
-            <td>{{ item.balance_wallet | format_usd }}</td>
-            <td>{{ item.personal_info.phone}}</td>
+            <td>{{ items.email}}</td>
+            <td>{{ items.balance_wallet | format_usd }}</td>
+            <td>{{ items.personal_info.phone}}</td>
             
             <td>
-                {% if item.status_verify == 0 %}
+                {% if items.status_verify == 0 %}
                     <span style="color: red">Not verify</span>
                 {% endif %}
-                {% if item.status_verify == 1 %}
+                {% if items.status_verify == 1 %}
                     <span style="color: yellow">Waiting admin</span>
                 {% endif %}
-                {% if item.status_verify == 2 %}
+                {% if items.status_verify == 2 %}
                     <span style="color: blue">Finish</span>
                 {% endif %}
             </td>
-            <th><a href="/admin/customer/{{item._id}}"> Edit</a></th>
-            <th><a target="_blank" href="/admin/login-userid/{{item._id}}/{{item.customer_id}}"> Login</a></th>
+            <th><a href="/admin/customer/{{items._id}}"> Edit</a></th>
+            <th><a target="_blank" href="/admin/login-userid/{{items._id}}/{{items.customer_id}}"> Login</a></th>
          </tr>
          {% endfor %}
          {% endif %}

@@ -185,11 +185,11 @@ def AdminCustomer():
 
     query = db.users.find({})
 
-    querys = db.users.find({'level':{'$gt': 0 }})
+    queryss = db.users.find({'level':{'$gt': 0 }})
     
     data ={
         'customer': query,
-        'querys' : querys,
+        'queryss' : queryss,
         'menu' : 'customer',
         'float' : float,
         'id_login' : session.get('user_id_admin')
