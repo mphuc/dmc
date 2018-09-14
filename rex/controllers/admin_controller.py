@@ -141,7 +141,19 @@ def AdminDashboard():
     balance = 0
     
     balances = ApiCoinpayment.balances()
-    print balances
+    
+    if balances.has_key('BTC') is not True:
+        balances_btc = balances['balances']['balancef']
+    if balances.has_key('LTC') is not True:
+        balances_ltc = balances['balances']['balancef']
+    if balances.has_key('BCH') is not True:
+        balances_bch = balances['balances']['balancef']
+    if balances.has_key('ETH') is not True:
+        balances_eth = balances['balances']['balancef']
+    if balances.has_key('USDT') is not True:
+        balances_usdt = balances['balances']['balancef']
+    
+
     data ={
             'menu' : 'dashboard',
             'total_user': total_user,
@@ -149,7 +161,11 @@ def AdminDashboard():
             'total_btc': balance,
             'serverbtc' : 0,
             'id_login' : session.get('user_id_admin'),
-            'balances' : balances['result']
+            'balances_btc' : balances_btc,
+            'balances_ltc' : balances_ltc,
+            'balances_bch' : balances_bch,
+            'balances_eth' : balances_eth,
+            'balances_usdt' : balances_usdt
         }
     return render_template('admin/dashboard.html', data=data)
 
