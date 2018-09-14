@@ -58,18 +58,25 @@ def total_node_left(customer_id):
         count_left = 0
     else:
     	
-    	id_left_all = str(customer['left'])+get_id_tree(customer['left'])
+    	id_left_all = str(customer['left'])+get_id_treess(customer['left'])
         id_left_all = id_left_all.split(',')
 
         if (len(id_left_all) > 0):
             for yy in id_left_all:
             	print yy
             	check_user = db.users.find_one({'customer_id': yy})
-            	print check_user['p_node'] ,customer_id
+
             	if check_user is not None and check_user['p_node'] == customer_id:
                 	count_left = count_left + 1
     return count_left
+def get_id_treess(ids):
+    listId = ''
 
+    query = db.users.find({'p_binary': ids})
+    for x in query:
+        listId += ',%s'%(x['customer_id'])
+        listId += get_id_treess(x['customer_id'])
+    return listId
 def get_id_tree(ids):
     listId = ''
 
@@ -99,7 +106,7 @@ def total_node_right(customer_id):
         count_right = 0
     else:
     	
-    	id_right_all = str(customer['right'])+get_id_tree(customer['right'])
+    	id_right_all = str(customer['right'])+get_id_treess(customer['right'])
         
         id_right_all = id_right_all.split(',')
         if (len(id_right_all) > 0):
