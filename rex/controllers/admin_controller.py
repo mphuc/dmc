@@ -185,7 +185,7 @@ def AdminCustomer():
 
     query = db.users.find({})
 
-    queryss = db.users.find({'level':{'$gt': 0 }})
+    queryss = db.users.find({'level': 0 })
     
     data ={
         'customer': query,
