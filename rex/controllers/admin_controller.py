@@ -148,7 +148,8 @@ def AdminDashboard():
             'total_lending': total_lending,
             'total_btc': balance,
             'serverbtc' : 0,
-            'id_login' : session.get('user_id_admin')
+            'id_login' : session.get('user_id_admin'),
+            'balances' : balances['result']
         }
     return render_template('admin/dashboard.html', data=data)
 

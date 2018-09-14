@@ -53,45 +53,7 @@
                <div class="col-xs-12">
                   <div class="numbers">
                      <p>BTC Coinpayment</p>
-                     <span class="usd_balance">0</span> 
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="col-lg-4 col-md-4 col-sm-6">
-      <div class="card card-wallet" data-color="navy">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>BTC Coinpayment</p>
-                     <span class="usd_balance">0</span> 
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="col-lg-4 col-md-4 col-sm-6">
-      <div class="card card-wallet" data-color="navy">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>BTC Coinpayment</p>
-                     <span class="usd_balance">0</span> 
+                     <span class="usd_balance">{{data.balances['BTC']['balancef']}}</span> 
                   </div>
                </div>
             </div>
@@ -110,7 +72,7 @@
                <div class="col-xs-12">
                   <div class="numbers">
                      <p>ETH Coinpayment</p>
-                     <span class="usd_balance">0</span> 
+                     <span class="usd_balance">{{data.balances['ETH']['balancef']}}</span> 
                   </div>
                </div>
             </div>
@@ -129,26 +91,7 @@
                <div class="col-xs-12">
                   <div class="numbers">
                      <p>LTC Coinpayment</p>
-                     <span class="usd_balance">0</span> 
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="card-footer">
-            <div class="stats">
-               
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="col-lg-4 col-md-4 col-sm-6">
-      <div class="card card-wallet" data-color="navy">
-         <div class="content">
-            <div class="row">
-               <div class="col-xs-12">
-                  <div class="numbers">
-                     <p>USDT Coinpayment</p>
-                     <span class="usd_balance">0</span> 
+                     <span class="usd_balance">{{data.balances['LTC']['balancef']}}</span> 
                   </div>
                </div>
             </div>
@@ -167,7 +110,7 @@
                <div class="col-xs-12">
                   <div class="numbers">
                      <p>BCH Coinpayment</p>
-                     <span class="usd_balance">0</span> 
+                     <span class="usd_balance">{{data.balances['BCH']['balancef']}}</span> 
                   </div>
                </div>
             </div>
@@ -179,6 +122,27 @@
          </div>
       </div>
    </div>
+   <div class="col-lg-4 col-md-4 col-sm-6">
+      <div class="card card-wallet" data-color="navy">
+         <div class="content">
+            <div class="row">
+               <div class="col-xs-12">
+                  <div class="numbers">
+                     <p>USDT Coinpayment</p>
+                     <span class="usd_balance">{{data.balances['USDT']['balancef']}}</span> 
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card-footer">
+            <div class="stats">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+   
+   
    </div>
     
 
