@@ -63,6 +63,7 @@ def total_node_left(customer_id):
 
         if (len(id_left_all) > 0):
             for yy in id_left_all:
+            	print yy
             	check_user = db.users.find_one({'customer_id': yy})
             	if check_user is not None and check_user['p_node'] == customer_id:
                 	count_left = count_left + 1
