@@ -147,15 +147,15 @@ def AdminDashboard():
     balances_eth = 0
     balances_usdt = 0
     if balances.has_key('BTC') is not True:
-        balances_btc = balances['balances']['balancef']
+        balances_btc = balances['BTC']['balancef']
     if balances.has_key('LTC') is not True:
-        balances_ltc = balances['balances']['balancef']
+        balances_ltc = balances['LTC']['balancef']
     if balances.has_key('BCH') is not True:
-        balances_bch = balances['balances']['balancef']
+        balances_bch = balances['BCH']['balancef']
     if balances.has_key('ETH') is not True:
-        balances_eth = balances['balances']['balancef']
+        balances_eth = balances['ETH']['balancef']
     if balances.has_key('USDT') is not True:
-        balances_usdt = balances['balances']['balancef']
+        balances_usdt = balances['USDT']['balancef']
     
 
     data ={
