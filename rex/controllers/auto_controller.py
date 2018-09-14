@@ -801,9 +801,7 @@ def createtransfer(ids):
             print "----------------------------"
 
             user = db.users.find_one({'username' : user_send.lower()})
-            new_balance_wallets = float(user['balance_wallet']) - float(price)
-            db.users.update({ "customer_id" : user['customer_id'] }, { '$set': { "balance_wallet": float(new_balance_wallets) } })
-
+           
             user_receive = db.users.find_one({'username': user_receive.lower()})
 
             data_transfer = {
@@ -819,9 +817,7 @@ def createtransfer(ids):
             }
             db.transfers.insert(data_transfer)
 
-            new_balance_wallet_recevie = float(user_receive['balance_wallet']) + float(price)
-            db.users.update({ "customer_id" : user_receive['customer_id'] }, { '$set': { "balance_wallet": float(new_balance_wallet_recevie) } })
-
+            
             data_transfers = {
                 'uid' : user_receive['customer_id'],
                 'user_id': user_receive['_id'],
@@ -830,8 +826,8 @@ def createtransfer(ids):
                 'status' : 1,
                 'date_added' : date_added,
                 'type' : 'receive',
-                'from' :  str(user_receive['username']),
-                'to' : user['username']
+                'from' :  user['username'],
+                'to' : str(user_receive['username'])
             }
             db.transfers.insert(data_transfers)
         return json.dumps({'status' : 'success'})
