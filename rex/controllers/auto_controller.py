@@ -953,41 +953,8 @@ def updatebalance(ids):
             g_wallet = 0
             balance_wallet = 0
             total_earn = 0
-            history = db.historys.find({'uid': x['customer_id']})
-            for x_history in history:
-                if  x_history['type'] == 'dailyprofit':
-                    d_wallet += float(x_history['amount'])
-                if  x_history['type'] == 'referral':
-                    r_wallet += float(x_history['amount'])
-                if  x_history['type'] == 'binarybonus':
-                    s_wallet += float(x_history['amount'])
-                balance_wallet += float(x_history['amount'])
-                total_earn += float(x_history['amount'])
-
-            transfer = db.transfers.find({'uid': x['customer_id']})
-            for x_transfer in transfer:
-                if  x_transfer['type'] == 'send':
-                    balance_wallet -= float(x_transfer['amount'])
-                else:
-                    balance_wallet += float(x_transfer['amount'])
-
-            deposit = db.deposits.find({'uid': x['customer_id']})
-            for x_deposit in deposit:
-                balance_wallet += float(x_deposit['amount_usd'])
-
-            withdrawa = db.withdrawas.find({'uid': x['customer_id']})
-            for x_withdrawa in withdrawa:
-                balance_wallet -= float(x_withdrawa['amount'])
-
-            balance_wallet -= float(x['investment'])*1.03
-            if balance_wallet < 0:
-                balance_wallet = 0
+            total_earn = float(x['r_wallet'])+float(x['g_wallet'])+float(x['s_wallet'])
             db.users.update({'customer_id' : x['customer_id']} ,{'$set' : {
-                'r_wallet' : r_wallet,
-                's_wallet':s_wallet,
-                'd_wallet' : d_wallet,
-                'g_wallet' : g_wallet,
-                'balance_wallet' : balance_wallet,
                 'total_earn' : total_earn
             }})
 
