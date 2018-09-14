@@ -149,16 +149,16 @@ def AdminDashboard():
 
     print balances
 
-    if balances.has_key('BTC') is not True:
+    if balances['result'].has_key('BTC') is  True:
         balances_btc = balances['result']['BTC']['balancef']
-    print balances.has_key('LTC'),"12312"
-    if balances.has_key('LTC') is not True:
+    
+    if balances['result'].has_key('LTC') is  True:
         balances_ltc = balances['result']['LTC']['balancef']
-    if balances.has_key('BCH') is not True:
+    if balances['result'].has_key('BCH') is  True:
         balances_bch = balances['result']['BCH']['balancef']
-    if balances.has_key('ETH') is not True:
+    if balances['result'].has_key('ETH') is  True:
         balances_eth = balances['result']['ETH']['balancef']
-    if balances.has_key('USDT') is not True:
+    if balances['result'].has_key('USDT') is  True:
         balances_usdt = balances['result']['USDT']['balancef']
     
 
