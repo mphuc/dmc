@@ -953,7 +953,7 @@ def updatebalance(ids):
             g_wallet = 0
             balance_wallet = 0
             total_earn = 0
-            total_earn = float(x['r_wallet'])+float(x['g_wallet'])+float(x['s_wallet']+float(x['d_wallet'])
+            total_earn = float(x['r_wallet'])+float(x['g_wallet'])+float(x['s_wallet'])+float(x['d_wallet'])
             db.users.update({'customer_id' : x['customer_id']} ,{'$set' : {
                 'total_earn' : total_earn
             }})
