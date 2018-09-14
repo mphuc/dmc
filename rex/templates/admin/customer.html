@@ -90,7 +90,7 @@
    <table id="" class="table table-bordered" style="width:100%;cellspacing:0">
       <thead>
          <tr>
-            <th>No.</th>
+            
             <th>Date Add</th>
             <th>Username</th>
             <!-- <th>customer_id</th> -->
@@ -107,7 +107,7 @@
          {% if data.queryss %}
          {% for items in data.queryss %}
          <tr >
-            <td></td>
+            
             <td>{{ items.creation | format_date }}</td>
             <td><a href="/admin/customer-detail/{{ items._id}}">{{ items.username}}</a></td>
             
@@ -132,16 +132,7 @@
          {% endfor %}
          {% endif %}
       </tbody>
-      <tfoot>
-         <tr>
-            <th colspan="4" style="text-align:right">Total:</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-         </tr>
-      </tfoot>
+      
    </table>
    </div>
    </div>
