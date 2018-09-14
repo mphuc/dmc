@@ -141,7 +141,11 @@ def AdminDashboard():
     balance = 0
     
     balances = ApiCoinpayment.balances()
-    
+    balances_btc = 0
+    balances_ltc = 0
+    balances_bch = 0
+    balances_eth = 0
+    balances_usdt = 0
     if balances.has_key('BTC') is not True:
         balances_btc = balances['balances']['balancef']
     if balances.has_key('LTC') is not True:
