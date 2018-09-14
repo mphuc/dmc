@@ -146,6 +146,9 @@ def AdminDashboard():
     balances_bch = 0
     balances_eth = 0
     balances_usdt = 0
+
+    print balances
+
     if balances.has_key('BTC') is not True:
         balances_btc = balances['BTC']['balancef']
     if balances.has_key('LTC') is not True:
