@@ -952,13 +952,13 @@ def AddTreeSubmit(p_binary,position):
         
         if check_id_user['p_binary'] == '' and float(check_id_user['investment']) > 100:
             # mo ra
-            print "123123"
+            
             #chay hai nhanh
-            # binaryAmount(id_user, float(check_id_user['investment']))
-            # #chay p_node
-            # TotalnodeAmount(id_user, float(check_id_user['investment']))
-            # #hoa hong truc tiep
-            # FnRefferalProgram(id_user, float(check_id_user['investment']))
+            binaryAmount(id_user, float(check_id_user['investment']))
+            #chay p_node
+            TotalnodeAmount(id_user, float(check_id_user['investment']))
+            #hoa hong truc tiep
+            FnRefferalProgram(id_user, float(check_id_user['investment']))
             
 
         return redirect('/account/network-tree')
