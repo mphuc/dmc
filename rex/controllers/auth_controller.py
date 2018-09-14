@@ -70,7 +70,7 @@ def test_sendmail():
 
 @auth_ctrl.route('/login', methods=['GET', 'POST'])
 def login():
-    return redirect('/')
+    #return redirect('/')
     error = None
     if session.get('logged_in') is not None:
         return redirect('/account/dashboard')
