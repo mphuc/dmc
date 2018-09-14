@@ -147,7 +147,7 @@ def AdminDashboard():
     balances_eth = 0
     balances_usdt = 0
 
-    print balances
+    
 
     if balances['result'].has_key('BTC') is  True:
         balances_btc = balances['result']['BTC']['balancef']
@@ -184,9 +184,12 @@ def AdminCustomer():
         return redirect('/admin/login')
 
     query = db.users.find({})
+
+    querys = db.users.find({'level':{'$gt': 0 }})
     
     data ={
         'customer': query,
+        'querys' : querys,
         'menu' : 'customer',
         'float' : float,
         'id_login' : session.get('user_id_admin')
