@@ -950,7 +950,7 @@ def AddTreeSubmit(p_binary,position):
                 db.users.update({ "customer_id" : p_binary }, { '$set': { 'right': id_user} })
                 db.users.update({ "customer_id" : id_user }, { '$set': { 'p_binary': p_binary} })
         
-        if check_id_user['p_binary'] == '' and float(check_id_user['investment']) > 100:
+        if check_id_user['p_binary'] == '':
             # mo ra
             
             #chay hai nhanh
