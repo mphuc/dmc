@@ -139,9 +139,9 @@ def AdminDashboard():
     total_lending = db.investments.find({}).count()
     #rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@rpcbtcsvadfndawrwlcoin.co")
     balance = 0
-    # rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@127.0.0.1:23321")
-    # getbalance = rpc_connection.getbalance()
     
+    get_basic_info = ApiCoinpayment.get_basic_info()
+    print get_basic_info
     data ={
             'menu' : 'dashboard',
             'total_user': total_user,
