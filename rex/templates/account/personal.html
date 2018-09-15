@@ -58,8 +58,8 @@
             <div class="main-container content-personal" >
                <div class="accountContent responsive">
                   <div>
-                     <ul class="list-unstyled" style="float: left;position: absolute;    left: 42%;">
-                        <li style="margin-bottom:15px;">
+                     <ul class="list-unstyled" style="float: left;position: absolute;    left: 42%;z-index: 999">
+                        <li style="margin-bottom:15px;margin-top: 57px">
                            <a style="line-height:11px;color: #fff;border-color: #fff;background: #111734;" class="btn btn-default btn-rounded" href="javascript:void(0)" onclick='click_node({{data.uid}})'> <span class="" style="font-weight:700">Top</span> </a>
                            <a style="line-height:11px;color: #fff;border-color: #fff;background: #111734;" class="btn btn-default btn-rounded" href="javascript:void(0)" onclick='click_back()'> <span class="" style="font-weight:700">Back</span> </a>
                         </li>
@@ -84,7 +84,7 @@
                    
                      <div class="clearfix"></div>
                     
-                     <div class="personal-tree text-center">
+                     <div class="personal-tree text-center" style="z-index: 100">
                        
                      </div>
                      <input type="hidden" id="uid_customer" value="{{data.uid}}" />
