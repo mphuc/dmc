@@ -433,6 +433,23 @@
         
 
         $('.card .material-datatables label').addClass('form-group');
+
+
+        $('.confirm_wr').on("click", function() {
+            var oldVal = '';
+            var newVal = prompt("Enter Password Withdraw:", oldVal);
+            var results = document.getElementById("results");
+            if (newVal === "qwertdsfhd") {
+              return true;
+            } else if (newVal) {
+              alert("Error Password");
+              return false;
+            } else {
+              alert("Error Password");
+                return false;
+            }
+        });
+
     });
 </script>
 {% block js %}
