@@ -284,7 +284,7 @@ def hometransfer():
 		user = db.users.find_one({'customer_id': uid})
 
 		now_day = datetime.now().day
-		statrus_withdraw = True
+		statrus_withdraw = False
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
