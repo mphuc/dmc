@@ -24,7 +24,7 @@
             <div class="form-group">
             <div class="col-md-6 col-md-push-3"> 
                <div class="row">
-                  {% if data.val_amount_usd != '' or data.val_wallet != '' or data.val_authen != '' or data.val_balance != ''%}
+                  {% if data.val_amount_usd != '' or data.val_wallet != '' or data.val_authen != '' or data.val_balance != '' or data.val_amount_max != '' %}
                      <div class="alert alert-danger">
                         <span class="badge badge-pill badge-danger">Error</span>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -51,6 +51,10 @@
                         
                         {% if data.val_balance == 'not' %}
                         <p><i class="fa fa-star"></i> Account Balance is not enough to set the command. Please try again.</p>
+                        {% endif %}
+
+                        {% if data.val_amount_max != '' %}
+                        <p><i class="fa fa-star"></i>The maximum withdrawal amount is $ {{data.val_amount_max}}.</p>
                         {% endif %}
                      </div>
                   {% endif %}

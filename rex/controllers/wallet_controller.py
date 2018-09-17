@@ -83,10 +83,9 @@ def homewithdraw():
 		uid = session.get('uid')
 		user_id = session.get('user_id')
 		user = db.users.find_one({'customer_id': uid})
-			
-
 		val_withdraw = ''
 		val_amount_usd = ''
+		val_amount_max = ''
 		val_wallet = ''
 		val_authen = ''
 		val_balance = ''
@@ -97,9 +96,15 @@ def homewithdraw():
 				quantity = request.form['quantity']
 				address = request.form['address']
 				authen = request.form['authen']
+
+				max_withdraw = float(user['investment'])
+				if int(user['status_verify']) != 2:
+					max_withdraw = 100
 				if is_number(quantity) == False  or quantity == '' or float(quantity) < 10:
 					val_amount_usd = 'empty'
-
+				else:
+					if float(quantity) > float(max_withdraw):
+						val_amount_max = max_withdraw
 				if address == '':
 					val_wallet = 'empty'
 
@@ -111,7 +116,7 @@ def homewithdraw():
 					else:
 						if verify_totp(authen, user['secret_2fa']) == False:
 							val_authen = 'not'
-				if val_amount_usd == '' and val_wallet =='' and val_authen == '':
+				if val_amount_usd == '' and val_wallet =='' and val_authen == '' and val_amount_max == '':
 					#check balance
 					if float(user['balance_wallet']) >= float(quantity):
 						new_balance_wallets = float(user['balance_wallet']) - float(quantity)
@@ -167,7 +172,7 @@ def homewithdraw():
 		user = db.users.find_one({'customer_id': uid})
 
 		now_day = datetime.now().day
-		statrus_withdraw = True
+		statrus_withdraw = False
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
@@ -184,6 +189,7 @@ def homewithdraw():
 			'val_wallet' : val_wallet,
 			'val_authen' : val_authen,
 			'val_balance' : val_balance,
+			'val_amount_max' : val_amount_max,
 			'statrus_withdraw' : statrus_withdraw,
 			'number_notifications' : number_notifications,
         	'list_notifications' : list_notifications
