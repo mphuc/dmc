@@ -32,7 +32,11 @@
                                                     <th>No.</th>
                                                     <th>DateTime</th>
                                                     <th>Username</th>
-                                                    <th>Amount</th>
+                                                    <th>BTC</th>
+                                                    <th>ETH</th>
+                                                    <th>LTC</th>
+                                                    <th>BCH</th>
+                                                    <th>USDT</th>
                                                     <th>USD</th>
                                                     <th>Wallet</th>               
                                                     <th>Txid</th>
@@ -45,7 +49,11 @@
                                                     <td></td>
                                                     <td>{{ item.date_added | format_date }}</td>
                                                     <td><a href="/admin/customer-detail/{{ item.user_id}}">{{ item.username}}</a></td>
-                                                    <td>{{ item.amount}} {{ item.type}}</td>
+                                                    <td>{% if item.type == 'BTC' %}{{ item.amount}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'ETH' %}{{ item.amount}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'LTC' %}{{ item.amount}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'BCH' %}{{ item.amount}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'USDT' %}{{ item.amount}}{% else %}0{% endif %}</td>
                                                     <td>{{ item.amount_usd | number_format}}</td>
                                                     <td>{{ item.address }}</td>
                                                    
@@ -56,8 +64,15 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th colspan="4" style="text-align:right">Total:</th>
-                                                    <th colspan="3"></th>
+                                                    <th colspan="3" style="text-align:right">Total:</th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
+                                                    <th ></th>
                                                 </tr>
                                             </tfoot>
                                         </table>

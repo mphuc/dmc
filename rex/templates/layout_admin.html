@@ -132,24 +132,112 @@
                         typeof i === 'number' ?
                             i : 0;
                 };
-                total = api
+                totalbtc = api
+                    .column( 3 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotalbtc = api
+                    .column( 3, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                $( api.column( 3 ).footer() ).html(
+                    (pageTotalbtc) +' BTC ('+ (totalbtc) +' BTC)'
+                );
+
+                totaleth = api
                     .column( 4 )
                     .data()
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
-                pageTotal = api
+                pageTotaleth = api
                     .column( 4, { page: 'current'} )
                     .data()
                     .reduce( function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0 );
+
                 $( api.column( 4 ).footer() ).html(
-                    '$'+formatNumber(pageTotal) +' ($'+ formatNumber(total) +')'
+                    (pageTotaleth) +' ETH ('+ (totaleth) +' ETH)'
                 );
+
+
+                totalltc = api
+                    .column( 5 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotalltc = api
+                    .column( 5, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                $( api.column( 5 ).footer() ).html(
+                    (pageTotalltc) +' LTC ('+ (totalltc) +' LTC)'
+                );
+
+                totalbch = api
+                    .column( 6 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotalbch = api
+                    .column( 6, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                $( api.column( 6 ).footer() ).html(
+                    (pageTotalbch) +' BCH ('+ (totalbch) +' BCH)'
+                );
+
+                totalusdt = api
+                    .column( 7 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotalusdt = api
+                    .column( 7, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                $( api.column( 7 ).footer() ).html(
+                    (pageTotalusdt) +' USDT ('+ (totalusdt) +' USDT)'
+                );
+
+
+                totalusd = api
+                    .column( 8 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+                pageTotalusd = api
+                    .column( 8, { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                $( api.column( 8 ).footer() ).html(
+                    formatNumber(pageTotalusd) +' USD ('+ formatNumber(totalusd) +' USD)'
+                );
+
             },
-            "order": [[ 1, "desc" ]],
-            responsive: true
+            "order": [[ 1, "desc" ]]
         });
 
         datatables_depoist.on( 'order.dt search.dt', function () {
@@ -184,8 +272,7 @@
                     ''+formatNumber(pageTotal) +' ('+ formatNumber(total) +')'
                 );
             },
-            "order": [[ 1, "desc" ]],
-            responsive: true
+            "order": [[ 1, "desc" ]]
         });
 
         datatables_investment.on( 'order.dt search.dt', function () {
@@ -274,8 +361,8 @@
                     '$ '+formatNumber(total)
                 );
             },
-            "order": [[ 1, "desc" ]],
-            responsive: true
+            "order": [[ 1, "desc" ]]
+            
         });
 
          datatables_history.on( 'order.dt search.dt', function () {
@@ -311,8 +398,7 @@
                     ''+formatNumber(pageTotal) +' ('+ formatNumber(total) +')'
                 );
             },
-            "order": [[ 0, "desc" ]],
-            responsive: true
+            "order": [[ 0, "desc" ]]
         });
         
         table.on( 'order.dt search.dt', function () {
@@ -333,8 +419,7 @@
                 };
                 
             },
-            "order": [[ 0, "desc" ]],
-            responsive: true
+            "order": [[ 0, "desc" ]]
         });
         
         datatables_tables.on( 'order.dt search.dt', function () {
@@ -374,8 +459,7 @@
                     '$ '+ formatNumber(totals)
                 );
             },
-            "order": [[ 1, "desc" ]],
-            responsive: true
+            "order": [[ 1, "desc" ]]
         });
 
          datatables_transfer.on( 'order.dt search.dt', function () {
