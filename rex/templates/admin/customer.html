@@ -29,6 +29,7 @@
                         <!-- <th>customer_id</th> -->
                         <th>Email</th>
                         <th>Balance</th>
+                        <th>Investment</th>
                         <th>Telephone</th>
                         
                         <th>Verify</th>
@@ -46,6 +47,7 @@
                         
                         <td>{{ item.email}}</td>
                         <td>{{ item.balance_wallet | format_usd }}</td>
+                        <td>{{ item.investment | format_usd }}</td>
                         <td>{{ item.personal_info.phone}}</td>
                         
                         <td>
@@ -68,6 +70,7 @@
                   <tfoot>
                      <tr>
                         <th colspan="4" style="text-align:right">Total:</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

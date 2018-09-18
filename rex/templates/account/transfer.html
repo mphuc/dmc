@@ -46,8 +46,11 @@
                         {% if data.val_user_id == 'not' %}
                         <p><i class="fa fa-star"></i> The wrong username. Please try again.</p>
                         {% endif %}
+                        {% if data.val_user_id == 'not_node' %}
+                        <p><i class="fa fa-star"></i> Members are not in your system.</p>
+                        {% endif %}
                         {% if data.val_quantity == 'empty' %}
-                        <p><i class="fa fa-star"></i> Minimum withdrawal amount is $ 10.</p>
+                        <p><i class="fa fa-star"></i> Minimum withdrawal amount is $ 50.</p>
                         {% endif %}
                        
                         {% if data.val_authen == 'empty' %}

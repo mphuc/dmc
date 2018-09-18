@@ -49,6 +49,25 @@ def get_totp_uri(otp_secret):
 def verify_totp(token, otp_secret):
     return onetimepass.valid_totp(token, otp_secret)
 
+def get_id_tree_node(ids):
+    listId = ''
+    query = db.users.find({'p_node': ids})
+    for x in query:
+        listId += ',%s'%(x['customer_id'])
+        listId += get_id_tree_node(x['customer_id'])
+    return listId
+
+
+def check_user_send(ids,ids_send):
+	check_user_send = get_id_tree_node(ids)
+	check_user_send_array = check_user_send.split(',')
+	status_send = False
+	for xx in check_user_send_array:
+		if xx == ids_send:
+			status_send = True
+			break
+	return status_send
+
 @wallet_ctrl.route('/deposit', methods=['GET', 'POST'])
 def homedeposit():
 	if session.get(u'logged_in') is None:
@@ -57,7 +76,7 @@ def homedeposit():
 		uid = session.get('uid')
 		user_id = session.get('user_id')
 		user = db.users.find_one({'customer_id': uid})
-			
+
 		deposit = db.deposits.find({'uid': uid})
 		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()	
@@ -224,8 +243,11 @@ def hometransfer():
 					check_id_user = db.users.find_one({'username': username})
 					if check_id_user is None:
 						val_user_id = 'not'
+					else:
+						if check_user_send(uid,check_id_user['customer_id']) == False:
+							val_user_id = 'not_node'
 
-				if is_number(quantity) == False  or quantity == '' or float(quantity) < 10:
+				if is_number(quantity) == False  or quantity == '' or float(quantity) < 50:
 					val_quantity = 'empty'
 
 				if int(user['status_2fa']) == 1:
@@ -284,7 +306,7 @@ def hometransfer():
 		user = db.users.find_one({'customer_id': uid})
 
 		now_day = datetime.now().day
-		statrus_withdraw = False
+		statrus_withdraw = True
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
 
