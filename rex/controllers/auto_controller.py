@@ -381,6 +381,22 @@ def caculator_binary(ids):
                         detail = 'Weak branches $%s. Max out day' %(balanced)
                         SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'binarybonus', 'USD', detail, '', '')
 
+                else:
+                    if x['total_pd_left'] > x['total_pd_right']:
+                        balanced = x['total_pd_right']
+                        pd_left = float(x['total_pd_left'])-float(x['total_pd_right'])
+                        db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "total_pd_left": pd_left } })
+                        db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "total_pd_right": 0 } })
+                    else:
+                        balanced = x['total_pd_left']
+                        pd_right = float(x['total_pd_right'])-float(x['total_pd_left'])
+                        db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "total_pd_left": 0 } })
+                        db.users.update({ "customer_id" : x['customer_id'] }, { '$set': { "total_pd_right": pd_right } })
+                    
+
+                    customers = db.users.find_one({'customer_id': x['customer_id']})
+                    detail = 'You do not have 2F1'
+                    SaveHistory(customers['customer_id'],customers['_id'],customers['username'], 0, 'binarybonus', 'USD', detail, '', '')
 
 
         return json.dumps({'status' : 'success'})
