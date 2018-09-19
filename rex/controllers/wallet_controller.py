@@ -57,9 +57,18 @@ def get_id_tree_node(ids):
         listId += get_id_tree_node(x['customer_id'])
     return listId
 
+def get_id_tree_parent(ids):
+
+	listId = ''
+	customer = db.users.find_one({'customer_id': ids})
+	customer_node = db.users.find_one({'customer_id': customer['p_node']})
+	if customer_node is not None:
+		listId += ',%s'%(customer['p_node'])
+		listId += get_id_tree_parent(customer['p_node'])
+	return listId
 
 def check_user_send(ids,ids_send):
-	check_user_send = get_id_tree_node(ids)
+	check_user_send = get_id_tree_node(ids)+get_id_tree_parent(ids)
 	check_user_send_array = check_user_send.split(',')
 	status_send = False
 	for xx in check_user_send_array:
@@ -228,6 +237,7 @@ def hometransfer():
 		user_id = session.get('user_id')
 		user = db.users.find_one({'customer_id': uid})
 			
+		#print get_id_tree_parent(uid)
 
 		val_transfer = ''
 		val_user_id = ''
