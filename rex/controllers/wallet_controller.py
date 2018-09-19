@@ -194,6 +194,9 @@ def homewithdraw():
 		statrus_withdraw = False
 		if int(now_day) == 8 or int(now_day) == 18 or int(now_day) == 28:	
 			statrus_withdraw = True
+			withdrawa_no_active = db.withdrawas.find_one({'$and' : [{'uid': uid},{'status' : 0}]})
+			if withdrawa_no_active is not None:
+				statrus_withdraw = False
 
 		list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
 		number_notifications = list_notifications.count()	
@@ -288,8 +291,8 @@ def hometransfer():
 							'status' : 1,
 							'date_added' : datetime.utcnow(),
 							'type' : 'receive',
-							'from' :  str(check_id_user['username']),
-							'to' : user['username']
+							'from' :  user['username'],
+							'to' : str(check_id_user['username'])
 						}
 						db.transfers.insert(data_transfers)
 						val_transfer = 'complete'
