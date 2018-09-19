@@ -86,11 +86,11 @@
                                                     <td></td>
                                                     <td>{{ item.date_added | format_date }}</td>
                                                     <td><a href="/admin/customer-detail/{{ item.user_id}}">{{ item.username}}</a></td>
-                                                    <td>{% if item.type == 'BTC' %}{{ item.amount}}{% else %}0{% endif %}</td>
-                                                    <td>{% if item.type == 'ETH' %}{{ item.amount}}{% else %}0{% endif %}</td>
-                                                    <td>{% if item.type == 'LTC' %}{{ item.amount}}{% else %}0{% endif %}</td>
-                                                    <td>{% if item.type == 'BCH' %}{{ item.amount}}{% else %}0{% endif %}</td>
-                                                    <td>{% if item.type == 'USDT' %}{{ item.amount}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'BTC' %}{{ item.amount_curency}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'ETH' %}{{ item.amount_curency}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'LTC' %}{{ item.amount_curency}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'BCH' %}{{ item.amount_curency}}{% else %}0{% endif %}</td>
+                                                    <td>{% if item.type == 'USDT' %}{{ item.amount_curency}}{% else %}0{% endif %}</td>
                                                     <td>{{ item.amount | number_format}}</td>
                                                     <td>{{ item.wallet }}</td>
                                                     
