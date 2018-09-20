@@ -684,12 +684,12 @@ def newsupporReplyt():
             else:    
                 data_support = {
                 'user_id': 'admin',
-                'username' : 'WordTrade Support',
+                'username' : 'Diamond Capital Support',
                 'message': message,
                 'date_added' : datetime.utcnow()
                 }
                 db.supports.update({ "_id" : ObjectId(sp_id) }, { '$set': { "status": 1 }, '$push':{'reply':data_support } })
-                flash({'msg':'Success', 'type':'success'})
+                #flash({'msg':'Success', 'type':'success'})
                 return redirect('/admin/support/'+str(sp_id))    
 
     return redirect('/admin/support/'+str(sp_id))

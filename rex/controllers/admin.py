@@ -435,7 +435,7 @@ def newsupporReplyt():
             else:    
                 data_support = {
                 'user_id': 'admin',
-                'username' : 'SmartFVA Support',
+                'username' : 'Diamond Capital Support',
                 'message': message,
                 'date_added' : datetime.utcnow()
                 }

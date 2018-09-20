@@ -14,7 +14,7 @@ support_ctrl = Blueprint('support', __name__, static_folder='static', template_f
 
 @support_ctrl.route('/support', methods=['GET', 'POST'])
 def support():
-	return redirect('/account/login')
+	#return redirect('/account/login')
 	if session.get(u'logged_in') is None:
 		return redirect('/user/login')
 	uid = session.get('uid')
@@ -119,7 +119,7 @@ def newsupporReplyt():
 					'date_added' : datetime.utcnow()
 					}
 					db.supports.update({ "_id" : ObjectId(sp_id) }, { '$set': { "status": 0 }, '$push':{'reply':data_support } })
-					flash({'msg':'Success', 'type':'success'})
+					#flash({'msg':'Success', 'type':'success'})
 					return redirect('/account/support/'+str(sp_id))
 				else:
 					flash({'msg':'Wrong catcha, Please try again', 'type':'danger'})
@@ -167,7 +167,7 @@ def newsupportsubmit():
 				'status': 0
 				}
 				db.supports.insert(data_support)
-				flash({'msg':'Success', 'type':'success'})
+				#flash({'msg':'Success', 'type':'success'})
 				return redirect('/account/support')
 			else:
 				flash({'msg':'Wrong catcha, Please try again', 'type':'danger'})

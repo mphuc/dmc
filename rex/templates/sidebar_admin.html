@@ -235,6 +235,20 @@
             </a>
          </li>
      {% endif %}
+
+     {% if data.menu == 'support' %}
+        <li class="active">
+            <a href="/admin/support">
+               <p>Support</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/admin/support">
+               <p>Support</p>
+            </a>
+         </li>
+     {% endif %}
       
    
          <li>
