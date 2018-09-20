@@ -443,7 +443,7 @@ def CallbackCoinPayment():
 			query_search = {'btc_address' : address}
 			price = ticker['btc_usd']
 		if currency == 'ETH':
-			query_search = {'ethaddress' : address}
+			query_search = {'eth_address' : address}
 			price = ticker['eth_usd']
 		if currency == 'LTC':
 			query_search = {'ltc_address' : address}
