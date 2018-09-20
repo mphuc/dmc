@@ -848,13 +848,12 @@ def FnRefferalProgram(user_id, amount_invest):
                 if int(i) == 1:
                     percent = 5
                 if  int(i) == 2:   
-                    percent = 3
-                if  int(i) == 3:   
                     percent = 2
-                if  int(i) == 4:   
+                if  int(i) == 3:   
                     percent = 1
-                if  int(i) > 4:   
+                if  int(i) == 4:   
                     percent = 0.5
+                
                 if int(customers['level']) > 1:
                     commission = float(amount_invest)*percent/100
                     commission = round(commission,2)
@@ -890,7 +889,8 @@ def FnRefferalProgram(user_id, amount_invest):
                                 SaveHistory(customers['customer_id'],customers['_id'],customers['username'], commission, 'referral', 'USD', detail, '', '')
                             else:
 
-                                if binary_left(customers['customer_id']) == 1 and binary_right(customers['customer_id']) == 1:
+                                if binary_left(customers['customer_id']) == 1 and binary_right(customers['customer_id']) == 1 and int(customers['level']) >= i:
+                                    
                                     g_wallet = float(customers['g_wallet'])
                                     new_g_wallet = float(g_wallet) + float(commission)
                                     new_g_wallet = float(new_g_wallet)

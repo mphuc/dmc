@@ -14,6 +14,7 @@ support_ctrl = Blueprint('support', __name__, static_folder='static', template_f
 
 @support_ctrl.route('/support', methods=['GET', 'POST'])
 def support():
+	return redirect('/account/login')
 	if session.get(u'logged_in') is None:
 		return redirect('/user/login')
 	uid = session.get('uid')
@@ -32,6 +33,28 @@ def support():
     'list_notifications' : list_notifications,
 	}
 	return render_template('account/support.html', data=data)
+
+@support_ctrl.route('/new-support', methods=['GET', 'POST'])
+def newsupports():
+	if session.get(u'logged_in') is None:
+		return redirect('/user/login')
+	uid = session.get('uid')
+	user_id = session.get('user_id')
+	query = db.supports.find({'user_id': user_id})
+	user = db.User.find_one({'customer_id': uid})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	number_notifications = list_notifications.count()
+	data ={
+		'support' : query,
+		'title': 'Support',
+		'menu' : 'support',
+		'user': user,
+		'uid': uid,
+		'number_notifications' : number_notifications,
+	    'list_notifications' : list_notifications,
+	}
+	return render_template('account/new-support.html', data=data)
+
 @support_ctrl.route('/support/<ids>', methods=['GET', 'POST'])
 def Replysupport(ids):
 	if session.get(u'logged_in') is None:
@@ -41,15 +64,16 @@ def Replysupport(ids):
 	support = db.supports.find_one({'_id': ObjectId(ids)})
 	user = db.User.find_one({'customer_id': uid})
 	data_ticker = db.tickers.find_one({})
+	list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
+	number_notifications = list_notifications.count()
 	data ={
 	'data_support' : support,
 	'title': 'Support',
 	'menu' : 'support',
 	'user': user,
 	'uid': uid,
-	'btc_usd':data_ticker['btc_usd'],
-    'sva_btc':data_ticker['sva_btc'],
-    'sva_usd':data_ticker['sva_usd']
+	'number_notifications' : number_notifications,
+    'list_notifications' : list_notifications,
 	}
 	return render_template('account/reply_support.html', data=data)
 
@@ -103,8 +127,8 @@ def newsupporReplyt():
 
 	return redirect('/account/support/'+str(sp_id))
 
-@support_ctrl.route('/support/new-support', methods=['POST'])
-def newsupport():
+@support_ctrl.route('/support/new-support-submit', methods=['POST'])
+def newsupportsubmit():
 	if session.get(u'logged_in') is None:
 		flash({'msg':'Please login', 'type':'danger'})
 		return redirect('/user/login')

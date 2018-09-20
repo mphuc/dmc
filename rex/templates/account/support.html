@@ -9,14 +9,53 @@
 	
 
 {% block main %}
-<div class="section__content section__content--p30">
+<div class="section__content section__contentp--30">
   <div class="card">
       <div class="card-header">
-         <strong class="card-title">Email Support</strong>
+         <strong class="card-title">Support and Ticket</strong>
       </div>
       <div class="card-body">
-          <p>&nbsp;<span style="font-size: 16px; caret-color: rgb(32, 32, 32); color: rgb(32, 32, 32); font-family: roboto, " helvetica="" neue",="" helvetica,="" arial,="" sans-serif;"="">If you have any questions , please feel free to get in touch via&nbsp;</span></p>
-        Email: <a style="font-size: 18px;" href="mailto:support@diamondcapital.co"> support@diamondcapital.co </a>
+        <a href="/account/new-support">
+          <button class="btn btn-success pull-right" style="margin-bottom: 20px;">Create Support</button>
+        </a>
+        <div class="material-datatables">
+           <table id="datatables" class="table table-bordered datatables_referrals" style="width:100%;cellspacing:0">
+              <thead>
+                 <tr>
+                    <th>No.</th>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                 </tr>
+              </thead>
+              <tbody>
+                 {% if data.support %}
+                 {% for item in data.support %}
+                 <tr>
+                    <td></td>
+                    <td>{{ item.date_added | format_date }}</td>
+                    <td><a href="/account/support/{{item._id}}" class="">{{ item.subject }}</a> </td>
+                    <td>{{ item.message }}</td>
+                    <td>
+                        {% if item.status == 0 %}
+                            <a href="/account/support/{{item._id}}" class="label label-warning">NOT ANSWERED</a>
+
+                        {% endif %}
+                        {% if item.status == 1 %}
+                           <a href="/account/support/{{item._id}}" class="label label-success">ANSWERED</a>
+                        {% endif %}
+                       
+                   </td>
+                 </tr>
+                 {% endfor %}
+                 {% endif %}
+              </tbody>
+           </table>
+        </div>
+
+        
+
       </div>
   </div>
 </div>
