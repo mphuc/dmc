@@ -955,10 +955,10 @@ def AddTreeSubmit(p_binary,position):
             
             #chay hai nhanh
             #+ float(check_id_user['total_amount_left']) + float(check_id_user['total_amount_right'])
-            binaryAmount(id_user, float(check_id_user['investment'])  )
+            binaryAmount(id_user, float(check_id_user['investment'])  + float(check_id_user['total_amount_left']) + float(check_id_user['total_amount_right']))
             #chay p_node
             #+ float(check_id_user['total_node'])   
-            TotalnodeAmount(id_user, float(check_id_user['investment']) )
+            TotalnodeAmount(id_user, float(check_id_user['investment']) + float(check_id_user['total_node']))
             #hoa hong truc tiep
             FnRefferalProgram(id_user, float(check_id_user['investment']))
             
