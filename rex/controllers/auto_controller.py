@@ -980,7 +980,7 @@ def sendmailpassword(ids):
             send_mail_password(x['email'])
             #send_mail_password('trungdoanict@gmail.com')
             print x['username']
-            break
+            #break
         return json.dumps({'status' : 'success'})
 def create_investdb(user,package,date_added,date_profit):
     data_investment = {
