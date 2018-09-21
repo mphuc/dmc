@@ -387,7 +387,7 @@ def ReinvestInvestmentSumit(package):
             user = db.users.find_one({'customer_id': uid})
             new_balance_wallet = float(user['balance_wallet'])  - float(amount_package)
             new_coin_wallet = float(user['coin_wallet']) + float(coin_amount)
-            db.users.update({ "customer_id" : uid }, { '$set': { "coin_wallet" : new_coin_wallet, "balance_wallet": float(new_balance_wallet) ,"level" : int(package),"investment" : float(amount_package) - 10 ,'max_out_day' : 0,'max_out_package' : 0} })
+            db.users.update({ "customer_id" : uid }, { '$set': { "coin_wallet" : new_coin_wallet, "balance_wallet": float(new_balance_wallet) ,"level" : int(package),"investment" : float(amount_package) - 10 ,'max_out_day' : 0,'max_out_package' : 0,'total_earn' : 0} })
     #create investment
             
             db.investments.update({'_id' : ObjectId(investment['_id'])},{'$set' : {'status' : 0}})
@@ -957,7 +957,7 @@ def AddTreeSubmit(p_binary,position):
             #+ float(check_id_user['total_amount_left']) + float(check_id_user['total_amount_right'])
             binaryAmount(id_user, float(check_id_user['investment'])  )
             #chay p_node
-            #+ float(check_id_user['total_node'])
+            #+ float(check_id_user['total_node'])   
             TotalnodeAmount(id_user, float(check_id_user['investment']) )
             #hoa hong truc tiep
             FnRefferalProgram(id_user, float(check_id_user['investment']))
