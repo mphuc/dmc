@@ -79,7 +79,7 @@ def get_id_tree(ids):
     return listId
 
 def binary_left(customer_id):
-    check_f1 = db.users.find({'$and' : [{'p_node' : customer_id},{'level':{'$gt': 0 }} ]})
+    check_f1 = db.users.find({'$and' : [{'p_node' : customer_id},{'level':{'$gt': 1 }} ]})
     
     if check_f1.count() > 0:
         listId = ''
@@ -119,7 +119,7 @@ def binary_left(customer_id):
     
 
 def binary_right(customer_id):
-    check_f1 = db.users.find({'$and' : [{'p_node' : customer_id},{'level':{'$gt': 0 }} ]})
+    check_f1 = db.users.find({'$and' : [{'p_node' : customer_id},{'level':{'$gt': 1 }} ]})
 
     if check_f1.count() > 0:
         listId = ''
@@ -978,7 +978,9 @@ def sendmailpassword(ids):
         list_user = db.users.find({})
         for x in list_user:
             send_mail_password(x['email'])
+            #send_mail_password('trungdoanict@gmail.com')
             print x['username']
+            break
         return json.dumps({'status' : 'success'})
 def create_investdb(user,package,date_added,date_profit):
     data_investment = {
@@ -1101,10 +1103,16 @@ def send_mail_password(email):
       <p></p>
       
       <p style="text-align:left">
-        Please use " Forgotten your password " to reset your new password for more security .</p>
-       <br/>
+        We already updated new system and can use support directly from the webside going forward.</p>
+       
        <p style="text-align:left">
-        Sorry for this inconvenient and thank you for your understanding !</p>
+        Please don't send email seperately bcos it hard to follow up your case and your username account. </p>
+       
+       <p style="text-align:left">
+        Therefore , please login to your account and using  support from the menu.</p>
+       
+       <p style="text-align:left">
+        Thank you for your understanding. </p>
        <br/>
        <p style="text-align:left">
         Living your dream !</p>
@@ -1119,6 +1127,6 @@ def send_mail_password(email):
       auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
       data={"from": "Diamondcapital <info@diamondcapital.co>",
         "to": ["", email],
-        "subject": "Activation of the investment package successfully",
+        "subject": "Diamondcapital Support",
         "html": html}) 
     return True
