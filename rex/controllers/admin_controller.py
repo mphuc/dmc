@@ -491,9 +491,31 @@ def AdminWithdraw():
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
     query = db.withdrawas.find({ 'status': 0})
+    ticker = db.tickers.find_one({})
+
     
+
+    
+    for x in query:
+        if x['type'] == 'BTC':
+            price = ticker['btc_usd']
+        if x['type'] == 'ETH':
+            
+            price = ticker['eth_usd']
+        if x['type'] == 'LTC':
+            
+            price = ticker['ltc_usd']
+        if x['type'] == 'BCH':
+            
+            price = ticker['bch_usd']
+        if x['type'] == 'USDT':
+            
+            price = 1
+        amount_curency = round(float(x['amount'])/float(price),8)*0.7
+        db.withdrawas.update({'_id' : ObjectId(x['_id'])},{'$set' : {'price' : price,'amount_curency' : amount_curency}})
+    querys = db.withdrawas.find({ 'status': 0})
     data ={
-        'withdraw' : query,
+        'withdraw' : querys,
         'menu' : 'withdraw',
         'float': float
     }

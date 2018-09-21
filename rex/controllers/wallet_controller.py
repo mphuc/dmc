@@ -174,7 +174,7 @@ def homewithdraw():
 							'user_id': user['_id'],
 							'username' : user['username'],
 							'amount' : quantity,
-							'amount_curency' : amount_curency,
+							'amount_curency' : '',
 							'tx': '',
 							'status' : 0,
 							'date_added' : datetime.utcnow(),

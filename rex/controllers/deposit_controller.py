@@ -954,9 +954,11 @@ def AddTreeSubmit(p_binary,position):
             # mo ra
             
             #chay hai nhanh
-            binaryAmount(id_user, float(check_id_user['investment']))
+            #+ float(check_id_user['total_amount_left']) + float(check_id_user['total_amount_right'])
+            binaryAmount(id_user, float(check_id_user['investment'])  )
             #chay p_node
-            TotalnodeAmount(id_user, float(check_id_user['investment']))
+            #+ float(check_id_user['total_node'])
+            TotalnodeAmount(id_user, float(check_id_user['investment']) )
             #hoa hong truc tiep
             FnRefferalProgram(id_user, float(check_id_user['investment']))
             

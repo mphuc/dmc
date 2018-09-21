@@ -972,6 +972,21 @@ def updatebalance(ids):
 
         return json.dumps({'status' : 'success'})
 
+@auto_ctrl.route('/historysssss/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
+def historysssss(ids):
+    if ids =='RsaW3Kb1gDkdRUGDo':
+        list_history = db.historys.find({})
+        db.users.update({}, {'$set': {'total_earn': 0}}, multi= True)
+        for x in list_history:
+            customers = db.users.find_one({'customer_id' : x['uid']})
+            if customers is not None:
+                total_earn = float(customers['total_earn'])
+                new_total_earn = float(total_earn) + float(x['amount'])
+                new_total_earn = float(new_total_earn) 
+
+                db.users.update({ "customer_id" : x['uid']}, { '$set': {'total_earn': new_total_earn,'max_out_package' : new_total_earn } })
+        return json.dumps({'status' : 'success'})
+
 @auto_ctrl.route('/sendmailpassword/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
 def sendmailpassword(ids):
     if ids =='RsaW3Kb1gDkdRUGDo':
