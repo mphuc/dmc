@@ -49,7 +49,7 @@ def loginuserid(ids,customer_id):
 def login():
     error = None
     if session.get('logged_in_admin') is not None:
-        return redirect('/admin/dashboard')
+        return redirect('/admin/customer')
     if request.method == 'POST':
 
         username = request.form['username']
@@ -70,7 +70,7 @@ def login():
             #home_page = user_model.User.get_role(user['role'])
             # login_user(user=user)
 
-        return redirect('/admin/dashboard')
+        return redirect('/admin/customer')
     return render_template('admin/login.html', error=error)
 @admin_ctrl.route('/signup', methods=['GET', 'POST'])
 def new():
