@@ -497,7 +497,8 @@ def UpgradeInvestmentSumit(package):
                 'package': float(amount_package) - 10,
                 'upgrade' : 1,
                 'date_upgrade' : datetime.utcnow(),
-                'reinvest' : 0
+                'reinvest' : 0,
+                'date_profit' : datetime.utcnow() + timedelta(days=3)
             }})
 
             if user['p_binary'] != '':
