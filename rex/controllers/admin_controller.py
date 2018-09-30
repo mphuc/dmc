@@ -140,7 +140,9 @@ def AdminDashboard():
     #rpc_connection = AuthServiceProxy("http://Ecy4M83321mWk7szPoiY2cw:DrWdoW83321Zrdi2ftYKVPt4P2Cb7HoQUZUuP6@rpcbtcsvadfndawrwlcoin.co")
     balance = 0
     
-    balances = ApiCoinpayment.balances()
+
+
+    #balances = ApiCoinpayment.balances()
     balances_btc = 0
     balances_ltc = 0
     balances_bch = 0
@@ -149,17 +151,17 @@ def AdminDashboard():
 
     
 
-    if balances['result'].has_key('BTC') is  True:
-        balances_btc = balances['result']['BTC']['balancef']
+    # if balances['result'].has_key('BTC') is  True:
+    #     balances_btc = balances['result']['BTC']['balancef']
     
-    if balances['result'].has_key('LTC') is  True:
-        balances_ltc = balances['result']['LTC']['balancef']
-    if balances['result'].has_key('BCH') is  True:
-        balances_bch = balances['result']['BCH']['balancef']
-    if balances['result'].has_key('ETH') is  True:
-        balances_eth = balances['result']['ETH']['balancef']
-    if balances['result'].has_key('USDT') is  True:
-        balances_usdt = balances['result']['USDT']['balancef']
+    # if balances['result'].has_key('LTC') is  True:
+    #     balances_ltc = balances['result']['LTC']['balancef']
+    # if balances['result'].has_key('BCH') is  True:
+    #     balances_bch = balances['result']['BCH']['balancef']
+    # if balances['result'].has_key('ETH') is  True:
+    #     balances_eth = balances['result']['ETH']['balancef']
+    # if balances['result'].has_key('USDT') is  True:
+    #     balances_usdt = balances['result']['USDT']['balancef']
     
 
     data ={
@@ -169,13 +171,45 @@ def AdminDashboard():
             'total_btc': balance,
             'serverbtc' : 0,
             'id_login' : session.get('user_id_admin'),
-            'balances_btc' : balances_btc,
-            'balances_ltc' : balances_ltc,
-            'balances_bch' : balances_bch,
-            'balances_eth' : balances_eth,
-            'balances_usdt' : balances_usdt
+            'balances_btc' : '...',
+            'balances_ltc' : '...',
+            'balances_bch' : '...',
+            'balances_eth' : '...',
+            'balances_usdt' : '...'
         }
     return render_template('admin/dashboard.html', data=data)
+
+@admin_ctrl.route('/get-balance', methods=['GET', 'POST'])
+def AdminGetBalance():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    
+    balances_btc = 0
+    balances_ltc = 0
+    balances_bch = 0
+    balances_eth = 0
+    balances_usdt = 0
+
+    balances = ApiCoinpayment.balances()
+    if balances['result'].has_key('BTC') is  True:
+        balances_btc = balances['result']['BTC']['balancef']
+    if balances['result'].has_key('LTC') is  True:
+        balances_ltc = balances['result']['LTC']['balancef']
+    if balances['result'].has_key('BCH') is  True:
+        balances_bch = balances['result']['BCH']['balancef']
+    if balances['result'].has_key('ETH') is  True:
+        balances_eth = balances['result']['ETH']['balancef']
+    if balances['result'].has_key('USDT') is  True:
+        balances_usdt = balances['result']['USDT']['balancef']
+
+    return json.dumps({
+        'balances_btc' : balances_btc,
+        'balances_ltc' : balances_ltc,
+        'balances_bch' : balances_bch,
+        'balances_eth' : balances_eth,
+        'balances_usdt' : balances_usdt
+    })
 
 @admin_ctrl.route('/customer', methods=['GET', 'POST'])
 def AdminCustomer():
