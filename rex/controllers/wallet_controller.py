@@ -168,7 +168,7 @@ def homewithdraw():
 							
 							price = 1
 
-						amount_curency = round(float(quantity)/float(price),8)*0.7
+						amount_curency = round(float(quantity)/float(price),8)*0.97
 						data_investment = {
 							'uid' : uid,
 							'user_id': user['_id'],
