@@ -144,7 +144,7 @@ def homewithdraw():
 					else:
 						if verify_totp(authen, user['secret_2fa']) == False:
 							val_authen = 'not'
-				if val_amount_usd == '' and val_wallet =='' and val_authen == '' and val_amount_max == '':
+				if int(user['level']) > 1 and val_amount_usd == '' and val_wallet =='' and val_authen == '' and val_amount_max == '':
 					#check balance
 					if float(user['balance_wallet']) >= float(quantity):
 						new_balance_wallets = float(user['balance_wallet']) - float(quantity)
