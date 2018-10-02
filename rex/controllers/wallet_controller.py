@@ -125,7 +125,7 @@ def homewithdraw():
 				address = request.form['address']
 				authen = request.form['authen']
 
-				max_withdraw = float(user['investment'])
+				max_withdraw = float(user['investment'])*2.5
 				if int(user['status_verify']) != 2:
 					max_withdraw = 100
 				if is_number(quantity) == False  or quantity == '' or float(quantity) < 10:
@@ -168,7 +168,7 @@ def homewithdraw():
 							
 							price = 1
 
-						amount_curency = round(float(quantity)/float(price),8)*0.95
+						amount_curency = round(float(quantity)/float(price),8)*0.97
 						data_investment = {
 							'uid' : uid,
 							'user_id': user['_id'],
