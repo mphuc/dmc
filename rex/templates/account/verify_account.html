@@ -13,6 +13,7 @@
       <div class="card-body">
          <div class="">
             <div class="">
+               {% if data.user['status_verify'] == 0%}
                <form  action="/user/updateaccount" enctype="multipart/form-data" method="post">
                   <div class="content">
                      <div class="f-fl" style="margin-bottom: 30px">
@@ -75,13 +76,23 @@
 
                      
                      <input type="hidden" name="token_crt" value="{{data.token_crt}}">
-                     {% if data.user['status_verify'] == 0%}
+                     
                      <div class="text-center" style="margin-top: 35px;">
                         <button type="submit" style="background-color: #41b5e2; border-color: #40b5e3;" class="btn btn-rose btn-fill btn-wd">Begin Verification</button>
                      </div>
-                     {% endif %}
+                     
                   </div>
                </form>
+               {% endif %}
+
+               {% if data.user['status_verify'] == 1%}
+                  <h4 class="text-center">Verification status: <span style="color: #FFC107;">PENDING</span></h4>
+                  
+               {% endif %}
+
+               {% if data.user['status_verify'] == 2%}
+                  <h4 class="text-center">Verification status: <span style="color: #FFC107;">VERIFIED</span></h4>
+               {% endif %}
             </div>
          </div>
       </div>
