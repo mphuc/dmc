@@ -424,6 +424,22 @@ def my_profile():
         return redirect('/user/login')
     uid = session.get('uid')
     user = db.users.find_one({'customer_id': uid})
+
+
+    if user['secret_2fa'] == '':
+      otp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
+      db.users.update({"customer_id": uid}, { "$set": { "secret_2fa":otp_secret} })
+    else:
+      otp_secret = user['secret_2fa']
+
+    url_otp = get_totp_uri(otp_secret,user)
+
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "../static", "country-list.json")
+    data_country = json.load(open(json_url))
+    data_ticker = db.tickers.find_one({})
+    token_crt = id_generator(15) 
+    session['token_crt'] = token_crt
     list_notifications = db.notifications.find({'$and' : [{'read' : 0},{'status' : 0},{'$or' : [{'uid' : uid},{'type' : 'all'}]}]})
     number_notifications = list_notifications.count()
 
@@ -432,7 +448,10 @@ def my_profile():
     'title': 'Account',
     'menu' : 'my_profile',
     'list_notifications' : list_notifications,
-    'number_notifications' : number_notifications
+    'number_notifications' : number_notifications,
+    'url_otp' : url_otp,
+    'data_country' : data_country,
+    'token_crt' : token_crt
     }
     return render_template('account/my_profile.html', data=data)
 
@@ -545,7 +564,7 @@ def Check2FA():
       msg = 'Change status success'
       types = 'success'
     flash({'msg': msg, 'type':types})
-  return redirect('/user/two-factor-auth')
+  return redirect('/user/my-profile')
 
 @user_ctrl.route('/updateaccount', methods=['GET', 'POST'])
 def updateaccount():
@@ -576,7 +595,7 @@ def updateaccount():
         
         session['token_crt'] = id_generator(15)
         return redirect('/user/verify-account/identity')
-    return redirect('/user/verify-account')
+    return redirect('/user/my-profile')
 
 @user_ctrl.route('/account/identity', methods=['GET', 'POST'])
 def identity():
@@ -634,8 +653,8 @@ def identity():
 
         
         session['token_crt'] = id_generator(15) 
-        return redirect('/user/verify-account/identity')
-    return redirect('/user/verify-account/identity')
+        return redirect('/user/my-profile')
+    return redirect('/user/my-profile')
 
 @user_ctrl.route('/updatewallet', methods=['GET', 'POST'])
 def updatewallet():
@@ -679,18 +698,18 @@ def update_password():
         repeat_new_password= request.form['repeat_new_password']
         if old_password == "" or new_password == "":
             flash({'msg':'Invalid password. Please try again!', 'type':'danger'})
-            return redirect('/user/change-password')
+            return redirect('/user/my-profile')
 
         if check_password(user.password, old_password) == False:
             flash({'msg':'Invalid old password. Please try again!', 'type':'danger'})
-            return redirect('/user/change-password')
+            return redirect('/user/my-profile')
         if new_password != repeat_new_password:
             flash({'msg':'Password repeat incorrectly. Please try again!', 'type':'danger'})
-            return redirect('/user/change-password')
+            return redirect('/user/my-profile')
         if new_password == repeat_new_password and check_password(user.password, old_password) == True:
             flash({'msg':'Update Password success', 'type':'success'})
             db.users.update({ "customer_id" : uid }, { '$set': { "password": set_password(new_password) }})
-            return redirect('/user/change-password')
+            return redirect('/user/my-profile')
 
 
 @user_ctrl.route('/update-tran-password', methods=['GET', 'POST'])
