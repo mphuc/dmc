@@ -574,7 +574,7 @@ def updateaccount():
     user = db.users.find_one({'customer_id': uid})
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     if request.method == 'POST' and request.form['token_crt'] == session['token_crt']:
-        
+        telephone = request.form['telephone']
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         date_birthday = request.form['date_birthday']
@@ -590,7 +590,7 @@ def updateaccount():
         user['personal_info']['postalcode'] = postalcode
         user['personal_info']['city'] = city
         user['personal_info']['country'] = country
-        
+        user['telephone'] = telephone
         db.users.save(user)
         
         session['token_crt'] = id_generator(15)
