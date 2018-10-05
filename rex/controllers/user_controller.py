@@ -582,7 +582,7 @@ def updateaccount():
         postalcode = request.form['postalcode']
         city = request.form['city']
         country = request.form['country']
-        
+        email = request.form['email']
         user['personal_info']['firstname'] = firstname
         user['personal_info']['lastname'] = lastname
         user['personal_info']['date_birthday'] = date_birthday
@@ -591,6 +591,7 @@ def updateaccount():
         user['personal_info']['city'] = city
         user['personal_info']['country'] = country
         user['telephone'] = telephone
+        user['email'] = email
         db.users.save(user)
         
         session['token_crt'] = id_generator(15)

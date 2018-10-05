@@ -45,6 +45,12 @@
                               </div>
                            </div>
                            <div class="row" style="margin-bottom: 10px">
+                              <label class="col-md-2 control-label text-right" for="Comm_Type"> Email</label>
+                              <div class="col-md-6">
+                                 <input class="form-control"  value="{{data.user['email']}}" required="true" name="email" type="text" >
+                              </div>
+                           </div>
+                           <div class="row" style="margin-bottom: 10px">
                               <label class="col-md-2 control-label text-right" for="Comm_Type"> Date of birth</label>
                               <div class="col-md-6">
                                  <input class="form-control" value="{{data.user['personal_info']['date_birthday']}}" required="true" name="date_birthday" type="date" >
@@ -133,7 +139,7 @@
                      </div>
                      <div class="row" style="margin-bottom: 10px">
                         <label class="col-md-3 control-label text-left" for="Comm_Type"> Address</label>
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                            <textarea style="height: 60px;" class="form-control" required="true" name="address">{{data.user['personal_info']['address']}}</textarea>
                         </div>
                      </div>
