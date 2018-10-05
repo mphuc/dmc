@@ -725,12 +725,13 @@ def newsupporReplyt():
         flash({'msg':'Please login', 'type':'danger'})
         return redirect('/admin/login')
     if request.method == 'POST':
+        
         user_id = session.get('user_id')
         sp_id = request.form['sp_id']
         support = db.supports.find_one({'_id': ObjectId(sp_id)})
         if support is None:
             flash({'msg':'Not Found', 'type':'danger'})
-            return redirect('/admin/support/'+str(sp_id))
+            return json.dumps({'complete': True})
         else: 
             user = db.users.find_one({'_id': ObjectId(user_id)})
             message = request.form['message']
@@ -746,6 +747,6 @@ def newsupporReplyt():
                 }
                 db.supports.update({ "_id" : ObjectId(sp_id) }, { '$set': { "status": 1 }, '$push':{'reply':data_support } })
                 #flash({'msg':'Success', 'type':'success'})
-                return redirect('/admin/support/'+str(sp_id))    
+                return json.dumps({'complete': True})
 
-    return redirect('/admin/support/'+str(sp_id))
+    return json.dumps({'complete': True})

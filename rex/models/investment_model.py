@@ -24,7 +24,6 @@ class Investment(Document):
         'reinvest' : int,
         'total_income' : float,
         'status_income' : int,
-        'number_frofit' : int,
         'date_income' : datetime.datetime,
         'date_profit' : datetime.datetime
     }

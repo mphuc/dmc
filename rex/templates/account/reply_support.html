@@ -25,7 +25,7 @@
                                   <span class="glyphicon glyphicon-time pull-right"></span>{{data.data_support.date_added | format_date}}</small>
                           </div>
                           <p>
-                             {{data.data_support.message}}
+                             {% autoescape on %}{{data.data_support.message}}{% endautoescape %}
                           </p>
                       </div>
                   </li>
@@ -40,7 +40,7 @@
                                   <span class="glyphicon glyphicon-time pull-right"></span>{{item.date_added | format_date}}</small>
                           </div>
                           <p>
-                             {{item.message}}
+                             {% autoescape on %}{{item.message}}{% endautoescape %}
                           </p>
                       </div>
                   </li>

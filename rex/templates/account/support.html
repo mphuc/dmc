@@ -36,7 +36,7 @@
                     <td></td>
                     <td>{{ item.date_added | format_date }}</td>
                     <td><a href="/account/support/{{item._id}}" class="">{{ item.subject }}</a> </td>
-                    <td>{{ item.message }}</td>
+                    <td>{% autoescape on %}{{ item.message }}{% endautoescape %}</td>
                     <td>
                         {% if item.status == 0 %}
                             <a href="/account/support/{{item._id}}" class="label label-warning">NOT ANSWERED</a>
