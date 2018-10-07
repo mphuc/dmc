@@ -414,7 +414,15 @@ def updatemax_out_day(ids):
     else:
         return json.dumps({'status' : 'error'})
 
+@auto_ctrl.route('/update-amounttransfer/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
+def updatemax_out_day(ids):
+    if ids =='RsaW3Kb1gDkdRUGDo':
 
+        db.users.update({}, {'$set': {'amount_transfer': 0 }}, multi=True)
+
+        return json.dumps({'status' : 'success'})
+    else:
+        return json.dumps({'status' : 'error'})
 # Create User
 #SELECT A.*,B.countries_name FROM `member` A INNER JOIN `countries` B ON A.country_id = B.id
 @auto_ctrl.route('/adduser/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])

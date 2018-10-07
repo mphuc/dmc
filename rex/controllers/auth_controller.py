@@ -290,6 +290,7 @@ def create_user(sponsor,username,country,email,password):
     'max_out_day' : 0,
     'max_out_package' : 0,
     'status_verify' : 0,
+    'amount_transfer' : 0,
     'personal_info' : { 
       'firstname' : '',
       'lastname' : '',

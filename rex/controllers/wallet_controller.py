@@ -244,6 +244,7 @@ def hometransfer():
 		val_quantity = ''
 		val_authen = ''
 		val_balance = ''
+		val_max_transfer = ''
 		if request.method == 'POST':
 			if request.form['token_crt'] == session['token_crt']:
 				quantity = request.form['quantity']
@@ -260,6 +261,17 @@ def hometransfer():
 						if check_user_send(uid,check_id_user['customer_id']) == False:
 							val_user_id = 'not_node'
 
+
+				max_transfer = float(user['investment']) - float(user['amount_transfer'])
+				if int(user['status_verify']) != 2:
+					max_transfer = 100
+
+				if float(user['investment']) == 100:
+					max_transfer = 0
+
+				if float(quantity) > max_transfer:
+					val_max_transfer = max_transfer
+
 				if is_number(quantity) == False  or quantity == '' or float(quantity) < 50:
 					val_quantity = 'empty'
 
@@ -269,11 +281,12 @@ def hometransfer():
 					else:
 						if verify_totp(authen, user['secret_2fa']) == False:
 							val_authen = 'not'
-				if val_quantity == '' and val_user_id =='' and val_authen == '':
+				if val_quantity == '' and val_user_id =='' and val_authen == '' and val_max_transfer == '':
 					#check balance
 					if float(user['balance_wallet']) >= float(quantity):
 						new_balance_wallets = float(user['balance_wallet']) - float(quantity)
-						db.users.update({ "customer_id" : uid }, { '$set': { "balance_wallet": float(new_balance_wallets) } })
+						new_transfer_wallet = float(user['amount_transfer']) + float(quantity)
+						db.users.update({ "customer_id" : uid }, { '$set': { "balance_wallet": float(new_balance_wallets) ,"amount_transfer" : float(new_transfer_wallet)} })
 
 						data_transfer = {
 							'uid' : uid,
@@ -336,6 +349,7 @@ def hometransfer():
 			'val_user_id' : val_user_id,
 			'val_authen' : val_authen,
 			'val_balance' : val_balance,
+			'val_max_transfer' : val_max_transfer,
 			'statrus_withdraw' : statrus_withdraw,
 			'number_notifications' : number_notifications,
         	'list_notifications' : list_notifications

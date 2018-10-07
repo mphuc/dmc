@@ -60,6 +60,7 @@ class User(Document):
         'max_out_day' : float,
         'max_out_package' : float,
         'status_verify': int,
+        'amount_transfer' : float,
         'personal_info': {
             'firstname' : unicode,
             'lastname' : unicode,
