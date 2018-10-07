@@ -415,7 +415,7 @@ def updatemax_out_day(ids):
         return json.dumps({'status' : 'error'})
 
 @auto_ctrl.route('/update-amounttransfer/asdadertetqweqwe/<ids>', methods=['GET', 'POST'])
-def updatemax_out_day(ids):
+def updatemax_amounttransfer(ids):
     if ids =='RsaW3Kb1gDkdRUGDo':
 
         db.users.update({}, {'$set': {'amount_transfer': 0 }}, multi=True)
