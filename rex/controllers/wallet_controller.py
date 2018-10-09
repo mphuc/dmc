@@ -262,7 +262,8 @@ def hometransfer():
 							val_user_id = 'not_node'
 
 
-				max_transfer = float(user['investment']) - float(user['amount_transfer'])
+				#max_transfer = float(user['investment']) - float(user['amount_transfer'])
+				max_transfer = 1000000000000
 				if int(user['status_verify']) != 2:
 					max_transfer = 100
 
