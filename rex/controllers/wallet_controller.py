@@ -266,7 +266,7 @@ def hometransfer():
 				#max_transfer = float(user['investment']) - float(user['amount_transfer'])
 				max_transfer = 1000000000000
 				if int(user['status_verify']) != 2:
-					max_transfer = 100
+					max_transfer = float(user['investment'])
 
 				if float(user['investment']) == 100:
 					max_transfer = 0
