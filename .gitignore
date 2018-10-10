@@ -3,7 +3,9 @@ venv
 TEMP
 .idea/
 app.py
+config.py
 ./app.py
+./config.py
 ./rex/setting.py
 rex/setting.py
 */setting.py
