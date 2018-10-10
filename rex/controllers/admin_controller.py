@@ -546,7 +546,7 @@ def AdminWithdraw():
         if x['type'] == 'USDT':
             
             price = 1
-        amount_curency = round(float(x['amount'])/float(price),8)*0.7
+        amount_curency = round(float(x['amount'])/float(price),8)*0.97
         db.withdrawas.update({'_id' : ObjectId(x['_id'])},{'$set' : {'price' : price,'amount_curency' : amount_curency}})
     querys = db.withdrawas.find({ 'status': 0})
     data ={
