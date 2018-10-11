@@ -236,6 +236,20 @@
          </li>
      {% endif %}
 
+      {% if data.menu == 'sendmail' %}
+        <li class="active">
+            <a href="/admin/create-sendmail">
+               <p>Sendmail</p>
+            </a>
+         </li>
+     {% else %}
+       <li>
+            <a href="/admin/create-sendmail">
+               <p>Sendmail</p>
+            </a>
+         </li>
+     {% endif %}
+
      {% if data.menu == 'support' %}
         <li class="active">
             <a href="/admin/support">

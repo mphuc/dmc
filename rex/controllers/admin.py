@@ -180,6 +180,44 @@ def create_notifications_submit():
         
         return json.dumps({'complete': True})
 
+@admin1_ctrl.route('/create-sendmail-submit', methods=['GET', 'POST'])
+def create_sendmail_submit():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    if request.method == 'POST':
+        print request.form
+        content = request.form['content']
+        subject = request.form['subject']
+        option = request.form['option']
+        email = request.form['email']
+
+       
+        user_id_user = ''
+        uid_user = ''
+        username_user = ''
+        if option == 'account':
+            
+            send_mail_all(email,subject,content)
+        else:
+            list_user = db.users.find({})
+            for x in list_user:
+                send_mail_all(x['email'],subject,content)
+        
+        return json.dumps({'complete': True})
+
+
+@admin1_ctrl.route('/create-sendmail', methods=['GET', 'POST'])
+def create_sendmail():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+    
+    data ={
+        'menu' : 'sendmail'
+    }
+    return render_template('admin/create-sendmail.html', data=data)
+
 @admin1_ctrl.route('/edit-notifications-submit/<ids>', methods=['GET', 'POST'])
 def edit_notifications_submit(ids):
     error = None
@@ -1020,3 +1058,22 @@ def madwqer():
     return json.dumps({'status' : 'error'})
     # else:
     #     db.profits.update({ "status" :0 }, { '$set': { "status": 1 } })
+
+
+def send_mail_all(email,subject,content):
+    html = """
+      <table border="1" cellpadding="0" cellspacing="0" style="border:solid #e7e8ef 3.0pt;font-size:10pt;font-family:Calibri" width="600"><tbody><tr style="border:#e7e8ef;padding:0 0 0 0"><td style="background-color: #465770; text-align: center;" colspan="2"> <br> <img width="300" alt="Diamond Capital" src="https://i.imgur.com/dy3oBYY.png" class="CToWUd"><br> <br> </td> </tr> <tr> <td width="25" style="border:white"></td> <td style="border:white"> <br>
+      
+      <br> </td> </tr> <tr> <td width="25" style="border:white"> &nbsp; </td> 
+      <td style="border:white"> <div style="color:#818181;font-size:10.5pt;font-family:Verdana"><span class="im">
+      """+content+"""
+       <br> <br> <br> <br><br></b> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"><center>You are receiving this email because you registered on <a href="https://www.diamondcapital.co/" style="color:#5b9bd5" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.diamondcapital.co/&amp;source=gmail&amp;ust=1536891327064000&amp;usg=AFQjCNH8V24kiJxbXDNAnAyXizuVVYogsQ">https://www.<span class="il">diamondcapital</span>.co/</a><br></center> </td> </tr> </tbody></table>
+    """
+    return requests.post(
+      "https://api.mailgun.net/v3/diamondcapital.co/messages",
+      auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
+      data={"from": "Diamondcapital <info@diamondcapital.co>",
+        "to": ["", email],
+        "subject": subject,
+        "html": html}) 
+    return True
