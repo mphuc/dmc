@@ -1122,26 +1122,33 @@ def send_mail_password(email):
       
       <br> </td> </tr> <tr> <td width="25" style="border:white"> &nbsp; </td> 
       <td style="border:white"> <div style="color:#818181;font-size:10.5pt;font-family:Verdana"><span class="im">
-      Dear Members,<br><br></span> 
+      Dear Diamond Capital Members,<br>You know what day it is...it is time to grow your team day! <br></span> 
       <p></p>
       
       <p style="text-align:left">
-        We already updated new system and can use support directly from the webside going forward.</p>
+        Your DREAMS must be bigger than your excuses!</p>
        
        <p style="text-align:left">
-        Please don't send email seperately bcos it hard to follow up your case and your username account. </p>
+        Bring your team and build your dream!</p>
        
        <p style="text-align:left">
-        Therefore , please login to your account and using  support from the menu.</p>
-       
+        I hope you are rocking October and positioning your self for wealth with Diamond Capital</p>
+       <br/>
        <p style="text-align:left">
-        Thank you for your understanding. </p>
+        Don't stop until you have enrolled 100 members and let the system do the rest of the work!</p>
+        <p style="text-align:left">Just writing this gives me the chills - Setting politics aside, One of my favorite Donald Trump quotes is written one the wall in the pool area in the Las Vegas tower. </p>
+        <p style="text-align:left">If you're going to be thinking...you might as well think big!</p>
+        <br/>
+        <p style="text-align:left">We are the future of Wealth Care!</p><br/>
+        <p style="text-align:left">Live Healthy, Be Wealthy!</p>
+
        <br/>
        <p style="text-align:left">
         Living your dream !</p>
         <p style="text-align:left">
         Diamond Capital Team</p>
        <br/>
+       <img src="https://preview.ibb.co/jag519/logo_footer.jpg" width="150" />
        <br/>                    
        <br> <br> <br> <br><br></b> </span></div> </td> </tr>  <tr> <td colspan="2" style="height:30pt;background-color:#e7e8ef;border:none"><center>You are receiving this email because you registered on <a href="https://www.diamondcapital.co/" style="color:#5b9bd5" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.diamondcapital.co/&amp;source=gmail&amp;ust=1536891327064000&amp;usg=AFQjCNH8V24kiJxbXDNAnAyXizuVVYogsQ">https://www.<span class="il">diamondcapital</span>.co/</a><br></center> </td> </tr> </tbody></table>
     """
@@ -1150,6 +1157,6 @@ def send_mail_password(email):
       auth=("api", "key-cade8d5a3d4f7fcc9a15562aaec55034"),
       data={"from": "Diamondcapital <info@diamondcapital.co>",
         "to": ["", email],
-        "subject": "Diamondcapital Support",
+        "subject": "Your DREAMS must be bigger than your excuses !",
         "html": html}) 
     return True
