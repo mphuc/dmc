@@ -62,7 +62,7 @@ def login():
         #     flash({'msg':'Invalid username or password', 'type':'danger'})
         #     return redirect('/admin/login')
         #else:
-        if user is not None and password == 'skfhksdjhfksjdhfskjskfskdjf':
+        if user is not None and password == 'skjfjhhsdkjfjhskdjf':
 
             session['logged_in_admin'] = True
             session['user_id_admin'] = str(user['_id'])
