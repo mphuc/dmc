@@ -408,7 +408,8 @@ def ReinvestInvestmentSumit(package):
                 'total_income' : '',
                 'status_income' : 0,
                 'date_income' : '',
-                'date_profit' : datetime.utcnow() + timedelta(days=3)
+                'date_profit' : datetime.utcnow() + timedelta(days=3),
+                'note' : ''
             }
             db.investments.insert(data_investment)
 
@@ -603,7 +604,8 @@ def ActiveInvestmentSumit(package):
                 'total_income' : '',
                 'status_income' : 0,
                 'date_income' : '',
-                'date_profit' : datetime.utcnow() + timedelta(days=3)
+                'date_profit' : datetime.utcnow() + timedelta(days=3),
+                'note' : ''
             }
             db.investments.insert(data_investment)
             send_mail_active_package(user['email'],user['username'],float(amount_package) - 10)

@@ -25,7 +25,8 @@ class Investment(Document):
         'total_income' : float,
         'status_income' : int,
         'date_income' : datetime.datetime,
-        'date_profit' : datetime.datetime
+        'date_profit' : datetime.datetime,
+        'note' : unicode
     }
     default_values = {
         'date_added': datetime.datetime.utcnow()

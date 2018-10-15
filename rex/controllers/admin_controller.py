@@ -621,6 +621,12 @@ def investment():
     if session.get('logged_in_admin') is None:
         return redirect('/admin/login')
        
+    if request.method == 'POST':
+            
+        note = request.form['note']
+        ids = request.form['ids'] 
+        db.investments.update({'_id' : ObjectId(ids)},{'$set' : {'note' : note}})
+        
     query = db.investments.find()
    
     data ={
@@ -629,6 +635,15 @@ def investment():
         'float': float
     }
     return render_template('admin/investment.html', data=data)
+
+@admin_ctrl.route('/investment/note/<ids>', methods=['GET', 'POST'])
+def investmentnote(ids):
+    
+    note = request.form['note']
+    db.investments.update({'_id' : ObjectId(ids)},{'$set' : {'note' : note}})
+        
+    return redirect('/admin/investment')
+    #return render_template('admin/investment.html', data=data)
 
 @admin_ctrl.route('/withdraw-submit', methods=['GET', 'POST'])
 def SubmitWithdraw():
