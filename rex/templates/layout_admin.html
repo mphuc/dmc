@@ -90,6 +90,7 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 
 <!-- Sweet Alert 2 plugin -->
 <script src="/static/assets/vendors/sweetalert/js/sweetalert2.min.js"></script>
@@ -127,6 +128,10 @@
 
 
         var datatables_depoist = $('#datatables_depoist').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -251,6 +256,10 @@
           } ).draw();
 
         var datatables_investment = $('#datatables_investment').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -289,6 +298,10 @@
         
 
         $('#datatables_withdraw').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -318,6 +331,10 @@
 
 
         $('#datatables_trademining').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -345,6 +362,10 @@
             },
         });
         var datatables_history = $('#datatables_history').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -377,6 +398,10 @@
 
 
         var table = $('#datatables_customer').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -428,6 +453,10 @@
           } ).draw();
 
         var datatables_tables = $('#datatables_tables').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      
@@ -449,6 +478,10 @@
           } ).draw();
 
         var datatables_transfer = $('#datatables_transfer').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf'
+            ],
             "footerCallback": function ( row, data, start, end, display ) {
                 var api = this.api(), data;
      

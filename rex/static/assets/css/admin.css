@@ -19,3 +19,17 @@ body .wrapper{
 #username_select{
   display: none;
 }
+
+.material-datatables .dt-buttons{
+  
+  width: 100%;
+  margin-bottom: 20px;
+  float: left;
+
+}
+.material-datatables .dt-button{
+  padding: 10px;
+  background: #eee;
+  float: right;
+  margin-left: 10px;
+}
