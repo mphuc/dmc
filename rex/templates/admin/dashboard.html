@@ -164,8 +164,25 @@
       </div>
    </div>
    
-   
-   </div>
+   <div class="col-md-12 text-center">
+
+      
+      {% if (data.check_admin['status_withdraw']) == 1%}
+         <h3>Status Withdraw: Enlabel</h3>
+         <a href="/admin/withdraw-disable">
+            <button class="btn btn-danger">Disable</button>
+         </a>
+      {% endif %}
+      
+      {% if (data.check_admin['status_withdraw']) == 0   %}
+         <h3>Status Withdraw: Disable</h3>
+         <a href="/admin/withdraw-enlabel">
+            <button class="btn btn-success">Enlabel</button>
+         </a>
+      {% endif %}
+      
+   </div>   
+</div>
     
 
 {% endblock %}

@@ -14,7 +14,8 @@ class Admin(Document):
         'email' :  unicode,
         'password': unicode,
         'sum_withdraw': float,
-        'sum_invest' : float
+        'sum_invest' : float,
+        'status_withdraw' : int
     }
     use_dot_notation = True
 

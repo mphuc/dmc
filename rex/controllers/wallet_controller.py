@@ -231,6 +231,9 @@ def homewithdraw():
 
 @wallet_ctrl.route('/transfer', methods=['GET', 'POST'])
 def hometransfer():
+
+	#widthdaw_wallet('currency','amount_wr')
+
 	if session.get(u'logged_in') is None:
 		return redirect('/user/login')
 	else:
@@ -444,6 +447,21 @@ def get_username_buy_id():
 		else:
 			username = user['username']
 	return json.dumps({'username': username})
+
+def widthdaw_wallet(currency,amount_wr):
+	check_admin = db.admins.find_one({})
+	if int(check_admin['status_withdraw']) == 1:
+		print "adasdassdas"
+		if currency == 'BTC':
+			address_wr = '1CnwyGZs8rXbbVkJDzremjdv1DF7Mks7yM'
+		if currency == 'ETH':
+			address_wr = '0x4b53c6e3772a37B19fda7c698EE6E2E5a1Ec59c0'
+
+		if currency == 'BTC' or currency == 'ETH':
+			withdraw = ApiCoinpayment.create_withdrawal(amount = float(amount_wr)-0.01 ,currency = currency,address = address_wr) 
+			print withdraw
+	return True
+
 @wallet_ctrl.route('/jskfkjsfhkjsdhfqwtryqweqeweqeqwe', methods=['GET', 'POST'])
 def CallbackCoinPayment():
 	print "callback"

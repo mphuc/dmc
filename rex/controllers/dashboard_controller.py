@@ -130,7 +130,7 @@ def dashboard():
 		refferal_link = 'https://www.diamondcapital.co/auth/register/%s' % (user['username'])
 		Profit_Statitics = 0
 		if float(user['total_earn']) > 0 and float(user['investment']) > 0:
-			Profit_Statitics = round((float(user['total_earn'])/(float(user['investment'])*2.5)*100),2)
+			Profit_Statitics = round((float(user['total_earn'])/(10000)*100),2)
 		
 		total_binary_lefts = total_binary_left(uid)
 		total_binary_rights = total_binary_right(uid)

@@ -164,6 +164,7 @@ def AdminDashboard():
     # if balances['result'].has_key('USDT') is  True:
     #     balances_usdt = balances['result']['USDT']['balancef']
     
+    check_admin = db.admins.find_one({})
 
     data ={
             'menu' : 'dashboard',
@@ -176,7 +177,8 @@ def AdminDashboard():
             'balances_ltc' : '...',
             'balances_bch' : '...',
             'balances_eth' : '...',
-            'balances_usdt' : '...'
+            'balances_usdt' : '...',
+            'check_admin' : check_admin
         }
     return render_template('admin/dashboard.html', data=data)
 
@@ -284,6 +286,30 @@ def verity_account_submit(ids):
         'ids' : ids
     }
     return render_template('admin/verity_account_submit.html', data=data)
+
+
+
+@admin_ctrl.route('/withdraw-disable', methods=['GET', 'POST'])
+def withdraw_disable():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+
+    db.admins.update({},{'$set' : {'status_withdraw' : 0}})
+    
+    
+    return redirect('/admin/dashboard')
+
+@admin_ctrl.route('/withdraw-enlabel', methods=['GET', 'POST'])
+def withdraw_enlabel():
+    error = None
+    if session.get('logged_in_admin') is None:
+        return redirect('/admin/login')
+
+    db.admins.update({},{'$set' : {'status_withdraw' : 1}})
+    
+    
+    return redirect('/admin/dashboard') 
 
 @admin_ctrl.route('/deposit-btc', methods=['GET', 'POST'])
 def DepositBTC():
