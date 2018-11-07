@@ -119,7 +119,7 @@ def homewithdraw():
 		val_authen = ''
 		val_balance = ''
 		if request.method == 'POST':
-			
+			return redirect('/auth/login')
 			if request.form['token_crt'] == session['token_crt']:
 				currency = request.form['currency']
 				quantity = request.form['quantity']
@@ -250,6 +250,7 @@ def hometransfer():
 		val_balance = ''
 		val_max_transfer = ''
 		if request.method == 'POST':
+			return redirect('/auth/login')
 			if request.form['token_crt'] == session['token_crt']:
 				quantity = request.form['quantity']
 				username = request.form['username']
