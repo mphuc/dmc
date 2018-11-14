@@ -80,7 +80,7 @@ def login():
     val_recaptcha = ''
     val_login = ''
     if request.method == 'POST':
-
+        return redirect('/')
         username = request.form['username']
         password = request.form['password']
         recaptcha = request.form['g-recaptcha-response']
@@ -148,6 +148,7 @@ def signup(id_sponsor):
     val_terms = ''
     val_recaptcha = ''
     if request.method == 'POST':
+      return redirect('/')
       sponsor = request.form['sponsor']
       country = request.form['country']
       email = request.form['email']
